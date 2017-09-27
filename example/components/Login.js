@@ -18,7 +18,13 @@ function Login() {
         }
         return errors;
       }}
-      onSubmit={login}
+      onSubmit={async values => {
+        const res = await login(values);
+        if (res.error.match('username')) {
+          return { username: res.error };
+        }
+        return {};
+      }}
     >
       {({ handleSubmit }) => (
         <Aux>

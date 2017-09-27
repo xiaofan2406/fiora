@@ -7,7 +7,11 @@ function delay(ms) {
 export const login = async data => {
   console.log('[Server] - Processing login request...');
   await delay(500);
-  return { ...data, success: true };
+
+  return {
+    success: data.username === 'admin',
+    error: data.username === 'admin' || 'Invalid username'
+  };
 };
 
 export const createUser = async data => {
