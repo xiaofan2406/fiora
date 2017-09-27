@@ -9,20 +9,14 @@ function Login() {
     <Fiora
       name="Login"
       validate={async data => {
-        console.log(data);
         const errors = {};
-        const feedbacks = {};
         if (data.username.length < 5) {
           errors.username = 'hum...need more than 5 characters';
-        } else {
-          feedbacks.username = 'A very good username';
         }
         if (data.email.indexOf('@') === -1) {
           errors.email = 'hum...need a valid email';
-        } else {
-          feedbacks.email = 'A very good email';
         }
-        return { errors, feedbacks };
+        return errors;
       }}
       onSubmit={login}
     >
