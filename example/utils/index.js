@@ -1,0 +1,1 @@
+export serviceWorker from './serviceWorker';

@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should match snapshot 1`] = `
+<div>
+  <NavLink
+    activeClassName="css-rg4nls"
+    ariaCurrent="true"
+    className="css-1xa38ke"
+    exact={true}
+    key="/"
+    to="/"
+  >
+    Home
+  </NavLink>
+  <NavLink
+    activeClassName="css-rg4nls"
+    ariaCurrent="true"
+    className="css-1xa38ke"
+    key="/about"
+    to="/about"
+  >
+    About
+  </NavLink>
+  <NavLink
+    activeClassName="css-rg4nls"
+    ariaCurrent="true"
+    className="css-1xa38ke"
+    key="/contact"
+    to="/contact"
+  >
+    Contact
+  </NavLink>
+</div>
+`;

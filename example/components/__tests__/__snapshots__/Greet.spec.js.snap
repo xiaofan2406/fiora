@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot is matching 1`] = `
+<div
+  className="css-1yriv2r"
+>
+  <div>
+    <span>
+      Say 
+    </span>
+    <input
+      onChange={[Function]}
+      type="text"
+      value="World"
+    />
+     
+    <input
+      min={1}
+      onChange={[Function]}
+      type="number"
+      value={1}
+    />
+     
+    times
+    <button
+      onClick={[Function]}
+    >
+      Clear
+    </button>
+  </div>
+  <div
+    className="result"
+  >
+    Hello 
+    World
+  </div>
+</div>
+`;
