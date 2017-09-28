@@ -7,6 +7,18 @@ module.exports = {
     node: true,
     jest: true
   },
+  settings: {
+    'import/ignore': ['node_modules'],
+    'import/extensions': ['.js'],
+    'import/resolver': {
+      webpack: {
+        config: './config/webpack.dev.js'
+      },
+      node: {
+        extensions: ['.js', '.json']
+      }
+    }
+  },
   parser: 'babel-eslint',
   parserOptions: {
     sourceType: 'module',

@@ -1,10 +1,13 @@
 {
   "name": "fiora",
   "version": "0.0.1",
-  "author":
-    "Xiaofan Wu <xiaofan2406@gmail.com> (https://github.com/xiaofan2406)",
+  "author": "Xiaofan Wu <xiaofan2406@gmail.com> (https://github.com/xiaofan2406)",
   "description": "Forms, with react + redux",
-  "keywords": ["react", "redux", "forms"],
+  "keywords": [
+    "react",
+    "redux",
+    "forms"
+  ],
   "repository": "xiaofan2406/fiora",
   "bugs": {
     "url": "https://github.com/xiaofan2406/fiora/issues"
@@ -25,16 +28,11 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
-    "babel-eslint": "^8.0.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-dynamic-import-node": "^1.1.0",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-eslint": "^8.0.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-plugin-transform-react-jsx-self": "^6.22.0",
-    "babel-plugin-transform-react-jsx-source": "^6.22.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.8",
     "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
@@ -42,17 +40,12 @@
     "babel-preset-react": "^6.24.1",
     "eslint": "^4.7.2",
     "eslint-config-airbnb": "^15.1.0",
-    "eslint-import-resolver-webpack": "^0.8.3",
-    "eslint-loader": "^1.9.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.3.0",
-    "extract-text-webpack-plugin": "^3.0.0",
-    "prop-types": "^15.5.10",
+    "eslint-plugin-react": "^7.4.0",
+    "prop-types": "^15.6.0",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
-    "react-test-renderer": "^16.0.0",
     "redux": "^3.7.2"
   }
 }
