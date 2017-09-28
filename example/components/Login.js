@@ -1,5 +1,5 @@
 import React from 'react';
-import Fiora, { Field } from 'fiora';
+import Fiora, { Field, FormError } from 'fiora';
 import { login } from 'utils/api';
 import Aux from './Aux';
 import Input from './Input';
@@ -9,14 +9,11 @@ function Login() {
     <Fiora
       name="Login"
       validate={async data => {
-        const errors = {};
-        if (data.username.length < 5) {
-          errors.username = 'hum...need more than 5 characters';
+        let formError;
+        if (data.username === data.email) {
+          formError = 'username and email cannot be the same';
         }
-        if (data.email.indexOf('@') === -1) {
-          errors.email = 'hum...need a valid email';
-        }
-        return errors;
+        return { form: formError };
       }}
       onSubmit={async values => {
         const res = await login(values);
@@ -26,41 +23,59 @@ function Login() {
         return {};
       }}
     >
-      {({ handleSubmit }) => (
-        <Aux>
-          <Field name="username">
-            {({ value, error, handleChange }) => {
-              console.log('render username Field');
-              return (
-                <Input
-                  type="text"
-                  value={value}
-                  error={error}
-                  onChange={event => {
-                    handleChange(event.target.value);
-                  }}
-                />
-              );
-            }}
-          </Field>
-          <Field name="email">
-            {({ value, error, handleChange }) => {
-              console.log('render email Field');
-              return (
-                <Input
-                  type="email"
-                  value={value}
-                  error={error}
-                  onChange={event => {
-                    handleChange(event.target.value);
-                  }}
-                />
-              );
-            }}
-          </Field>
-          <button onClick={handleSubmit}>Submit</button>
-        </Aux>
-      )}
+      {({ handleSubmit }) => {
+        console.log('render the form');
+        return (
+          <Aux>
+            <FormError>
+              {({ formError }) => (
+                <div>{formError && <span>Error: {formError}</span>}</div>
+              )}
+            </FormError>
+            <Field
+              name="username"
+              validate={async username =>
+                username.length < 5
+                  ? 'hum...need more than 5 characters'
+                  : null}
+            >
+              {({ value, error, handleChange }) => {
+                console.log('render username Field');
+                return (
+                  <Input
+                    type="text"
+                    value={value}
+                    error={error}
+                    onChange={event => {
+                      handleChange(event.target.value);
+                    }}
+                  />
+                );
+              }}
+            </Field>
+            <Field
+              name="email"
+              validate={async email =>
+                email.indexOf('@') === -1 ? 'hum...need a valid email' : null}
+            >
+              {({ value, error, handleChange }) => {
+                console.log('render email Field');
+                return (
+                  <Input
+                    type="email"
+                    value={value}
+                    error={error}
+                    onChange={event => {
+                      handleChange(event.target.value);
+                    }}
+                  />
+                );
+              }}
+            </Field>
+            <button onClick={handleSubmit}>Submit</button>
+          </Aux>
+        );
+      }}
     </Fiora>
   );
 }
