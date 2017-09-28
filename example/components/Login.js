@@ -8,7 +8,7 @@ function Login() {
   return (
     <Fiora
       name="Login"
-      validate={async data => {
+      onValidate={async data => {
         let formError;
         if (data.username === data.email) {
           formError = 'username and email cannot be the same';
@@ -34,18 +34,19 @@ function Login() {
             </FormError>
             <Field
               name="username"
-              validate={async username =>
+              onValidate={async username =>
                 username.length < 5
                   ? 'hum...need more than 5 characters'
                   : null}
             >
-              {({ value, error, handleChange }) => {
+              {({ value, error, handleChange, handleValidate }) => {
                 console.log('render username Field');
                 return (
                   <Input
                     type="text"
                     value={value}
                     error={error}
+                    onBlur={handleValidate}
                     onChange={event => {
                       handleChange(event.target.value);
                     }}
@@ -55,16 +56,17 @@ function Login() {
             </Field>
             <Field
               name="email"
-              validate={async email =>
+              onValidate={async email =>
                 email.indexOf('@') === -1 ? 'hum...need a valid email' : null}
             >
-              {({ value, error, handleChange }) => {
+              {({ value, error, handleChange, handleValidate }) => {
                 console.log('render email Field');
                 return (
                   <Input
                     type="email"
                     value={value}
                     error={error}
+                    onBlur={handleValidate}
                     onChange={event => {
                       handleChange(event.target.value);
                     }}
