@@ -38,6 +38,5 @@ node_modules/
 
 # App specific #
 ################
-dist/
+lib/
 coverage/
-*.emotion.css

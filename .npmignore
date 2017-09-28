@@ -1,8 +1,6 @@
-example/
-config/
 .babelrc
 .babelrc.js
 .eslintrc.js
-.travis.yml
 .gitignore
+.travis.yml
 yarn.lock
