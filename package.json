@@ -1,9 +1,13 @@
 {
   "name": "fiora",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Xiaofan Wu (https://github.com/xiaofan2406)",
   "description": "Forms, with react + redux",
-  "keywords": ["react", "redux", "forms"],
+  "keywords": [
+    "react",
+    "redux",
+    "forms"
+  ],
   "repository": "xiaofan2406/fiora",
   "bugs": {
     "url": "https://github.com/xiaofan2406/fiora/issues"
