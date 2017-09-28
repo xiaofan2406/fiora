@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import hoistStatics from 'hoist-non-react-statics';
 import { storeShape } from 'react-redux/lib/utils/PropTypes';
 
-const fioralise = (
+const withFiora = (
   { componentWillMount, formNameKey = 'formName' } = {}
 ) => Component => {
   class C extends React.Component {
@@ -18,7 +18,6 @@ const fioralise = (
 
     componentWillMount() {
       if (typeof componentWillMount === 'function') {
-        console.log('excueingt componentWillMount');
         componentWillMount(this.props, this.context);
       }
     }
@@ -32,10 +31,10 @@ const fioralise = (
     }
   }
 
-  C.displayName = `fioralise(${Component.displayName || Component.name})`;
+  C.displayName = `withFiora(${Component.displayName || Component.name})`;
   C.WrappedComponent = Component;
 
   return hoistStatics(C, Component);
 };
 
-export default fioralise;
+export default withFiora;

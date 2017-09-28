@@ -10,4 +10,4 @@
 [coverage-badge]: https://img.shields.io/codecov/c/github/xiaofan2406/fiora/redux.svg?style=flat-square
 [coverage]: https://codecov.io/gh/xiaofan2406/fiora/branches/redux
 
-A simple library helps with building forms in React + redux
+Forms, with react + redux

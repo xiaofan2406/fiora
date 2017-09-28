@@ -1,11 +1,7 @@
 import { combineReducers } from 'redux';
 
 import actionTypes from './actions';
-import {
-  getFormFieldKey,
-  DEFAULT_FIELD_VALUE,
-  DEFAULT_ERROR
-} from './utils/helpers';
+import { getFormFieldKey, DEFAULT_FIELD_VALUE, DEFAULT_ERROR } from './helpers';
 
 const initialFormMeta = {
   // dirty: false,

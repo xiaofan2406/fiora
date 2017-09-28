@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createField, updateFieldValue, updateError } from './actions';
 import { getFieldValue, getError } from './selectors';
-import { DEFAULT_ERROR, DEFAULT_FIELD_VALUE } from './utils/helpers';
-import fioralise from './utils/fioralise';
+import { DEFAULT_ERROR, DEFAULT_FIELD_VALUE } from './helpers';
+import withFiora from './withFiora';
 
 class Field extends React.Component {
   static propTypes = {
@@ -59,7 +59,7 @@ const mapStateToProps = (state, { formName, name }) => ({
 });
 
 const enhance = compose(
-  fioralise({
+  withFiora({
     componentWillMount: (
       { name, initialValue = DEFAULT_FIELD_VALUE },
       { fiora: { formName }, store: { dispatch } }

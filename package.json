@@ -1,18 +1,10 @@
 {
   "name": "fiora",
   "version": "0.0.1",
-  "author": "Xiaofan Wu",
-  "description": "fiora",
-  "keywords": [
-    "react",
-    "react-router",
-    "redux",
-    "babel",
-    "webpack",
-    "eslint",
-    "prettier",
-    "progressive web app"
-  ],
+  "author":
+    "Xiaofan Wu <xiaofan2406@gmail.com> (https://github.com/xiaofan2406)",
+  "description": "Forms, with react + redux",
+  "keywords": ["react", "redux", "forms"],
   "repository": "xiaofan2406/fiora",
   "bugs": {
     "url": "https://github.com/xiaofan2406/fiora/issues"
@@ -22,19 +14,11 @@
     "node": ">=6"
   },
   "main": "lib/index.js",
-  "scripts": {
-    "dev": "NODE_ENV=development ./node_modules/.bin/webpack-dev-server --config ./config/webpack.dev.js",
-    "test": "NODE_ENV=test ./node_modules/.bin/jest --watch --env=jsdom --updateSnapshot",
-    "coverage": "NODE_ENV=test ./node_modules/.bin/jest --env=jsdom --coverage --watchAll --updateSnapshot",
-    "prebuild": "rm -rf ./dist",
-    "build": "NODE_ENV=production ./node_modules/.bin/webpack --config ./config/webpack.prod.js",
-    "lint": "./node_modules/.bin/eslint -c .eslintrc.js ./src ./config ./example",
-    "prod": "NODE_ENV=production node ./config/test-prod-server"
-  },
+  "scripts": {},
   "peerDependencies": {
     "react": "^16.0.0",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2"
   },
   "dependencies": {
     "hoist-non-react-statics": "^2.3.1"
@@ -42,7 +26,6 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.0",
-    "babel-jest": "^21.0.2",
     "babel-loader": "^7.1.2",
     "babel-plugin-dynamic-import-node": "^1.1.0",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
@@ -57,11 +40,6 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
-    "css-loader": "^0.28.7",
-    "emotion": "^7.3.2",
-    "enzyme": "^3.0.0",
-    "enzyme-adapter-react-16": "^1.0.0",
-    "enzyme-to-json": "^3.0.1",
     "eslint": "^4.7.2",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-import-resolver-webpack": "^0.8.3",
@@ -70,78 +48,11 @@
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.3.0",
     "extract-text-webpack-plugin": "^3.0.0",
-    "file-loader": "^0.11.2",
-    "html-webpack-plugin": "^2.30.1",
-    "jest": "^21.1.0",
-    "json-loader": "^0.5.7",
-    "object-assign": "^4.1.1",
-    "promise": "^8.0.1",
     "prop-types": "^15.5.10",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-hot-loader": "^3.0.0-beta.7",
     "react-redux": "^5.0.6",
-    "react-router-dom": "^4.2.2",
     "react-test-renderer": "^16.0.0",
-    "redux": "^3.7.2",
-    "redux-immutable-state-invariant": "^2.0.0",
-    "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0",
-    "serve": "^6.1.0",
-    "style-loader": "^0.18.2",
-    "sw-precache-webpack-plugin": "^0.11.4",
-    "url-loader": "^0.5.9",
-    "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.8.2",
-    "webpack-manifest-plugin": "^1.3.2",
-    "whatwg-fetch": "^2.0.3"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.js"
-    ],
-    "setupFiles": [
-      "<rootDir>/config/polyfills.js"
-    ],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.js"
-    ],
-    "testEnvironment": "node",
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "moduleNameMapper": {
-      "^assets(.*)$": "<rootDir>/src/assets$1",
-      "^components(.*)$": "<rootDir>/src/components$1",
-      "^configs(.*)$": "<rootDir>/src/configs$1",
-      "^hocs(.*)$": "<rootDir>/src/hocs$1",
-      "^store(.*)$": "<rootDir>/src/store$1",
-      "^styles(.*)$": "<rootDir>/src/styles$1",
-      "^utils(.*)$": "<rootDir>/src/utils$1",
-      "^widgets(.*)$": "<rootDir>/src/widgets$1"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "json"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 80,
-        "functions": 80,
-        "lines": 80,
-        "statements": 80
-      }
-    },
-    "coveragePathIgnorePatterns": [
-      "<rootDir>/src/store/reducer.js",
-      "<rootDir>/src/utils/serviceWorker.js",
-      "index.js"
-    ]
+    "redux": "^3.7.2"
   }
 }

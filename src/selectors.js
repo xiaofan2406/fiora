@@ -1,4 +1,4 @@
-import { getFormFieldKey } from './utils/helpers';
+import { getFormFieldKey } from './helpers';
 
 export const getFieldValue = (state, { formName, fieldName }) =>
   state.fiora.fieldValue[getFormFieldKey({ formName, fieldName })];

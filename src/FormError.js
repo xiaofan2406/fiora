@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getError } from './selectors';
-import { FORM_AS_FIELD_NAME, DEFAULT_ERROR } from './utils/helpers';
-import fioralise from './utils/fioralise';
+import { FORM_AS_FIELD_NAME, DEFAULT_ERROR } from './helpers';
+import withFiora from './withFiora';
 
 class FormError extends React.Component {
   render() {
@@ -26,6 +26,6 @@ const mapStateToProps = (state, { formName }) => ({
   error: getError(state, { formName, fieldName: FORM_AS_FIELD_NAME })
 });
 
-const enhance = compose(fioralise(), connect(mapStateToProps));
+const enhance = compose(withFiora(), connect(mapStateToProps));
 
 export default enhance(FormError);
