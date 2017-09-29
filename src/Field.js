@@ -6,7 +6,15 @@ import { getFieldValue, getError } from './selectors';
 import { DEFAULT_FIELD_VALUE } from './helpers';
 import withFiora from './withFiora';
 
-function Field({ onValidate, value, formName, name, dispatch, error }) {
+function Field({
+  onValidate,
+  value,
+  formName,
+  name,
+  dispatch,
+  error,
+  children
+}) {
   // return true if there IS error
   const handleValidate = async () => {
     const validationError = await onValidate(value);
@@ -21,7 +29,7 @@ function Field({ onValidate, value, formName, name, dispatch, error }) {
   const handleChange = newValue =>
     dispatch(updateFieldValue(formName, name, newValue));
 
-  return this.props.children({
+  return children({
     value,
     error,
     handleChange,
