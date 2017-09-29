@@ -14,26 +14,15 @@ export const createForm = formName => ({
 
 export const createField = (formName, fieldName) => ({
   type: actionTypes.CREATE_FIELD,
-  payload: {
-    formName,
-    fieldName
-  }
+  payload: { formName, fieldName }
 });
 
 export const updateFieldValue = (formName, fieldName, value) => ({
   type: actionTypes.UPDATE_FIELD_VALUE,
-  payload: {
-    formName,
-    fieldName,
-    value
-  }
+  payload: { formName, fieldName, value }
 });
 
 export const updateError = (formName, fieldName, error) => ({
   type: actionTypes.UPDATE_ERROR,
-  payload: {
-    formName,
-    fieldName,
-    error
-  }
+  payload: { formName, fieldName, error }
 });

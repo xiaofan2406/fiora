@@ -7,7 +7,8 @@ import {
 import {
   getFormFieldKey,
   DEFAULT_FIELD_VALUE,
-  DEFAULT_ERROR
+  DEFAULT_ERROR,
+  FORM_AS_FIELD_NAME
 } from '../src/helpers';
 
 const formName = 'login';
@@ -159,7 +160,39 @@ describe('fieldValueRecuder', () => {
 
 describe('errorsReducer', () => {
   const mockState = override => ({
-    [getFormFieldKey(formName, existingField)]: override || DEFAULT_ERROR
+    [getFormFieldKey(formName, existingField)]: DEFAULT_ERROR,
+    ...override
+  });
+
+  it('initializes the defaul form error if form does not exist for CREATE_FORM', () => {
+    const fieldName = FORM_AS_FIELD_NAME;
+    const action = {
+      type: actionTypes.CREATE_FORM,
+      payload: { formName, fieldName }
+    };
+    const fieldKeyName = getFormFieldKey(formName, fieldName);
+
+    const state = mockState();
+    expect(state).not.toHaveProperty(fieldKeyName);
+
+    const newState = errorsReducer(state, action);
+    expect(newState[fieldKeyName]).toBe(DEFAULT_ERROR);
+  });
+
+  it('sets the default error if form exists for CREATE_FORM', () => {
+    const fieldName = FORM_AS_FIELD_NAME;
+    const existingError = 'Invalid';
+    const action = {
+      type: actionTypes.CREATE_FORM,
+      payload: { formName, fieldName }
+    };
+    const fieldKeyName = getFormFieldKey(formName, fieldName);
+
+    const state = mockState({ [fieldKeyName]: existingError });
+    expect(state).toHaveProperty(fieldKeyName, existingError);
+
+    const newState = errorsReducer(state, action);
+    expect(newState[fieldKeyName]).toBe(DEFAULT_ERROR);
   });
 
   it('initializes the defaul error if form field does not exist for CREATE_FIELD', () => {
@@ -185,7 +218,7 @@ describe('errorsReducer', () => {
     };
     const fieldKeyName = getFormFieldKey(formName, existingField);
 
-    const state = mockState(existingError);
+    const state = mockState({ [fieldKeyName]: existingError });
     expect(state).toHaveProperty(fieldKeyName, existingError);
 
     const newState = errorsReducer(state, action);
@@ -215,7 +248,7 @@ describe('errorsReducer', () => {
     };
     const fieldKeyName = getFormFieldKey(formName, existingField);
 
-    const state = mockState(existingError);
+    const state = mockState({ [fieldKeyName]: existingError });
     expect(state).toHaveProperty(fieldKeyName, existingError);
 
     const newState = errorsReducer(state, action);
