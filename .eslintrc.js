@@ -35,6 +35,7 @@ module.exports = {
       'LabeledStatement',
       'WithStatement'
     ],
+    'react/require-default-props': 0,
     'jsx-a11y/no-static-element-interactions': 0, // allow div onClick etc
     'import/no-extraneous-dependencies': 0, // allow usage of devDependencies
     'react/forbid-prop-types': 0, // allow PropTypes.object

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import hoistStatics from 'hoist-non-react-statics';
 import { storeShape } from 'react-redux/lib/utils/PropTypes';
 
 const withFiora = (
@@ -34,7 +33,7 @@ const withFiora = (
   C.displayName = `withFiora(${Component.displayName || Component.name})`;
   C.WrappedComponent = Component;
 
-  return hoistStatics(C, Component);
+  return C;
 };
 
 export default withFiora;

@@ -56,9 +56,6 @@
     "react-redux": "^5.0.6",
     "redux": "^3.7.2"
   },
-  "dependencies": {
-    "hoist-non-react-statics": "^2.3.1"
-  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",

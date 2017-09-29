@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -6,11 +5,8 @@ import { getError } from './selectors';
 import { FORM_AS_FIELD_NAME, DEFAULT_ERROR } from './helpers';
 import withFiora from './withFiora';
 
-class FormError extends React.Component {
-  render() {
-    const { children, error } = this.props;
-    return children({ formError: error });
-  }
+function FormError({ children, error }) {
+  return children({ formError: error });
 }
 
 FormError.propTypes = {

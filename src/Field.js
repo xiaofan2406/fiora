@@ -1,57 +1,43 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createField, updateFieldValue, updateError } from './actions';
 import { getFieldValue, getError } from './selectors';
-import { DEFAULT_ERROR, DEFAULT_FIELD_VALUE } from './helpers';
+import { DEFAULT_FIELD_VALUE } from './helpers';
 import withFiora from './withFiora';
 
-class Field extends React.Component {
-  static propTypes = {
-    name: PropTypes.any.isRequired,
-    children: PropTypes.func.isRequired,
-    onValidate: PropTypes.func.isRequired,
-    error: PropTypes.any,
-    value: PropTypes.any.isRequired,
-    formName: PropTypes.string.isRequired,
-    dispatch: PropTypes.func.isRequired
-  };
-
-  static defaultProps = {
-    error: DEFAULT_ERROR
-  };
-
+function Field({ onValidate, value, formName, name, dispatch, error }) {
   // return true if there IS error
-  handleValidate = async () => {
-    const { onValidate, value, formName, name, dispatch } = this.props;
+  const handleValidate = async () => {
+    const validationError = await onValidate(value);
 
-    const error = await onValidate(value);
-
-    if (error) {
-      dispatch(updateError(formName, name, error));
+    if (validationError) {
+      dispatch(updateError(formName, name, validationError));
       return true;
     }
     return false;
   };
 
-  handleChange = newValue => {
-    const { dispatch, formName, name } = this.props;
+  const handleChange = newValue =>
     dispatch(updateFieldValue(formName, name, newValue));
-  };
 
-  render() {
-    console.log('render Field');
-    const { value, error } = this.props;
-
-    return this.props.children({
-      value,
-      error,
-      handleChange: this.handleChange,
-      handleValidate: this.handleValidate
-    });
-  }
+  return this.props.children({
+    value,
+    error,
+    handleChange,
+    handleValidate
+  });
 }
+
+Field.propTypes = {
+  name: PropTypes.any.isRequired,
+  children: PropTypes.func.isRequired,
+  onValidate: PropTypes.func.isRequired,
+  error: PropTypes.any,
+  value: PropTypes.any.isRequired,
+  formName: PropTypes.string.isRequired,
+  dispatch: PropTypes.func.isRequired
+};
 
 const mapStateToProps = (state, { formName, name }) => ({
   value: getFieldValue(state, { formName, fieldName: name }),

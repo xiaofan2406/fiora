@@ -35,7 +35,7 @@ class Fiora extends React.Component {
     return { fiora: { formName: this.props.name } };
   }
 
-  // return true if there is NO error
+  // return true if there is error
   handleErrorsIfAny = errors => {
     const { name } = this.props;
     const { dispatch } = this.context.store;
@@ -45,9 +45,9 @@ class Fiora extends React.Component {
       errorFields.map(fieldName =>
         dispatch(updateError(name, fieldName, errors[fieldName]))
       );
-      return false;
+      return true;
     }
-    return true;
+    return false;
   };
 
   handleSubmit = async () => {
@@ -56,16 +56,14 @@ class Fiora extends React.Component {
 
     const formValues = getFormValues(getState(), { formName: name });
     const validationErrors = await onValidate(formValues);
-    if (this.handleErrorsIfAny(validationErrors)) {
+    if (!this.handleErrorsIfAny(validationErrors)) {
       const submitErrors = await onSubmit(formValues);
       this.handleErrorsIfAny(submitErrors);
     }
   };
 
   render() {
-    console.log('render Fiora');
-    const { children } = this.props;
-    return children({ handleSubmit: this.handleSubmit });
+    return this.props.children({ handleSubmit: this.handleSubmit });
   }
 }
 
