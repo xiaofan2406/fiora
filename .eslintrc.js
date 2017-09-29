@@ -23,15 +23,10 @@ module.exports = {
     'new-cap': 0, // disable for HigherOrderComponent wrapping
     'no-console': 0, // allow console.log etc
     'no-underscore-dangle': 0, // allow _func
-    'no-param-reassign': 0, // e.target.value = '';
+    'no-param-reassign': ['error', { props: false }], // e.target.value = '';
     'no-plusplus': 0, // allow i++
     'no-confusing-arrow': 0,
     'no-mixed-operators': 0,
-    'react/jsx-indent': 0,
-    'react/jsx-indent-props': 0,
-    'react/jsx-closing-bracket-location': 0,
-    'react/jsx-wrap-multilines': 0,
-    indent: 0, // prettier takes care of indenting
     'comma-dangle': [2, 'never'], // disallow trailing comma
     'global-require': 0,
     'no-restricted-syntax': [
