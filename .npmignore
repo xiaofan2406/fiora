@@ -1,3 +1,5 @@
+config/
+test/
 .babelrc
 .babelrc.js
 .eslintrc.js

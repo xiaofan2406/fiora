@@ -16,7 +16,39 @@
   "scripts": {
     "prebuild": "rm -rf lib",
     "build": "babel src --out-dir lib",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "test": "NODE_ENV=test jest --watch --env=jsdom --updateSnapshot",
+    "coverage": "NODE_ENV=test jest --env=jsdom --coverage"
+  },
+  "lint-staged": {
+    "*.{js,json,css}": ["./node_modules/.bin/prettier --write", "git add"]
+  },
+  "prettier": {
+    "singleQuote": true
+  },
+  "jest": {
+    "collectCoverageFrom": ["src/**/*.js"],
+    "setupFiles": [
+      "<rootDir>/config/jest-polyfill.js",
+      "<rootDir>/config/enzymeAdapter.js"
+    ],
+    "testMatch": ["<rootDir>/test/**/*.js"],
+    "testEnvironment": "node",
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+    },
+    "transformIgnorePatterns": ["[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"],
+    "moduleFileExtensions": ["js", "json"],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    },
+    "coveragePathIgnorePatterns": ["<rootDir>/src/index.js"]
   },
   "peerDependencies": {
     "react": "^16.0.0",
@@ -39,23 +71,22 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
+    "enzyme": "^3.0.0",
+    "enzyme-adapter-react-16": "^1.0.0",
     "eslint": "^4.7.2",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.4.0",
     "husky": "^0.14.3",
+    "jest": "^21.2.1",
     "lint-staged": "^4.2.3",
     "prettier": "^1.7.2",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
+    "react-test-renderer": "^16.0.0",
     "redux": "^3.7.2"
-  },
-  "lint-staged": {
-    "*.{js,json,css}": ["./node_modules/.bin/prettier --write", "git add"]
-  },
-  "prettier": {
-    "singleQuote": true
   }
 }
