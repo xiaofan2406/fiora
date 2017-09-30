@@ -13,11 +13,9 @@ const withFiora = ({ initialize } = {}) => Component => {
       children: PropTypes.func.isRequired
     };
 
-    constructor(props, context) {
-      super(props);
-
+    componentWillMount() {
       if (typeof initialize === 'function') {
-        initialize(props, context);
+        initialize(this.props, this.context);
       }
     }
 

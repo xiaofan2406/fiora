@@ -39,11 +39,15 @@ function Field({
 Field.propTypes = {
   name: PropTypes.any.isRequired,
   children: PropTypes.func.isRequired,
-  onValidate: PropTypes.func.isRequired,
+  onValidate: PropTypes.func,
   error: PropTypes.any,
   value: PropTypes.any.isRequired,
   formName: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired
+};
+
+Field.defaultProps = {
+  onValidate: async () => null
 };
 
 const mapStateToProps = (state, { formName, name }) => ({
@@ -54,13 +58,14 @@ const mapStateToProps = (state, { formName, name }) => ({
 const enhance = compose(
   withFiora({
     initialize: (
-      { name, initialValue },
-      { fiora: { formName }, store: { dispatch } }
+      { name, onValidate, initialValue },
+      { fiora: { formName, setValidateFunc }, store: { dispatch } }
     ) => {
       dispatch(createField(formName, name));
       if (initialValue) {
         dispatch(updateFieldValue(formName, name, initialValue));
       }
+      setValidateFunc(name, onValidate);
     }
   }),
   connect(mapStateToProps)

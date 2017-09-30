@@ -21,6 +21,7 @@ module.exports = {
   rules: {
     'import/no-extraneous-dependencies': 0, // allow import devDependencies
     'react/forbid-prop-types': 0, // allow all types of PropTypes
+    'react/require-default-props': 0,
     'react/jsx-filename-extension': 0 // enfore all .js extension
   }
 };
