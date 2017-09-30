@@ -13,8 +13,9 @@ export const getFormValues = (state, { formName }) => {
   const formValues = {};
   const formFields = getFormFields(state, { formName });
 
-  for (const fieldName of formFields) {
+  formFields.forEach(fieldName => {
     formValues[fieldName] = getFieldValue(state, { formName, fieldName });
-  }
+  });
+
   return formValues;
 };
