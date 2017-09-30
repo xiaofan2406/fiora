@@ -19,10 +19,7 @@ describe('formFieldsRecuder', () => {
 
   it('initializes the form fields if form does not exist for CREATE_FORM', () => {
     const newForm = 'register';
-    const action = {
-      type: actionTypes.CREATE_FORM,
-      payload: { formName: newForm }
-    };
+    const action = { type: actionTypes.CREATE_FORM, formName: newForm };
 
     const state = mockState();
     expect(state).not.toHaveProperty(newForm);
@@ -32,7 +29,7 @@ describe('formFieldsRecuder', () => {
   });
 
   it('returns current state if form exists for CREATE_FORM', () => {
-    const action = { type: actionTypes.CREATE_FORM, payload: { formName } };
+    const action = { type: actionTypes.CREATE_FORM, formName };
 
     const state = mockState();
     expect(state).toHaveProperty(formName);
@@ -45,7 +42,8 @@ describe('formFieldsRecuder', () => {
     const newField = 'username';
     const action = {
       type: actionTypes.CREATE_FIELD,
-      payload: { formName, fieldName: newField }
+      formName,
+      fieldName: newField
     };
 
     const state = mockState();
@@ -61,7 +59,8 @@ describe('formFieldsRecuder', () => {
     const newForm = 'register';
     const action = {
       type: actionTypes.CREATE_FIELD,
-      payload: { formName: newForm, fieldName: newField }
+      formName: newForm,
+      fieldName: newField
     };
 
     const state = mockState();
@@ -72,10 +71,7 @@ describe('formFieldsRecuder', () => {
   });
 
   it('does not duplicate the field if field exists for CREATE_FIELD', () => {
-    const action = {
-      type: actionTypes.CREATE_FIELD,
-      payload: { formName, fieldName }
-    };
+    const action = { type: actionTypes.CREATE_FIELD, formName, fieldName };
 
     const state = mockState();
     expect(state).toHaveProperty(formName, [fieldName]);
@@ -85,7 +81,7 @@ describe('formFieldsRecuder', () => {
   });
 
   it('returns current state for other actions', () => {
-    const action = { type: 'Unknown', payload: {} };
+    const action = { type: 'Unknown' };
     const state = mockState();
     const newState = formFieldsRecuder(state, action);
     expect(newState).toEqual(state);
@@ -101,7 +97,8 @@ describe('fieldValueRecuder', () => {
     const newField = 'username';
     const action = {
       type: actionTypes.CREATE_FIELD,
-      payload: { formName, fieldName: newField }
+      formName,
+      fieldName: newField
     };
     const fieldKeyName = getFormFieldKey(formName, newField);
 
@@ -114,10 +111,7 @@ describe('fieldValueRecuder', () => {
 
   it('returns current state if form field exists for CREATE_FIELD', () => {
     const existingValue = 'admin';
-    const action = {
-      type: actionTypes.CREATE_FIELD,
-      payload: { formName, fieldName }
-    };
+    const action = { type: actionTypes.CREATE_FIELD, formName, fieldName };
     const fieldKeyName = getFormFieldKey(formName, fieldName);
 
     const state = mockState(existingValue);
@@ -132,7 +126,9 @@ describe('fieldValueRecuder', () => {
     const newValue = 'super user';
     const action = {
       type: actionTypes.UPDATE_FIELD_VALUE,
-      payload: { formName, fieldName, value: newValue }
+      formName,
+      fieldName,
+      value: newValue
     };
     const fieldKeyName = getFormFieldKey(formName, fieldName);
 
@@ -148,8 +144,11 @@ describe('fieldValueRecuder', () => {
     const newValue = 'super user';
     const action = {
       type: actionTypes.UPDATE_FIELD_VALUE,
-      payload: { formName, fieldName: newField, value: newValue }
+      formName,
+      fieldName: newField,
+      value: newValue
     };
+
     const fieldKeyName = getFormFieldKey(formName, newField);
 
     const state = mockState();
@@ -160,7 +159,7 @@ describe('fieldValueRecuder', () => {
   });
 
   it('returns current state for other actions', () => {
-    const action = { type: 'Unknown', payload: {} };
+    const action = { type: 'Unknown' };
     const state = mockState();
     const newState = fieldValueRecuder(state, action);
     expect(newState).toEqual(state);
@@ -174,10 +173,8 @@ describe('errorsReducer', () => {
   });
 
   it('initializes the defaul form error if form does not exist for CREATE_FORM', () => {
-    const action = {
-      type: actionTypes.CREATE_FORM,
-      payload: { formName }
-    };
+    const action = { type: actionTypes.CREATE_FORM, formName };
+
     const fieldKeyName = getFormFieldKey(formName, FORM_AS_FIELD_NAME);
 
     const state = mockState();
@@ -191,8 +188,10 @@ describe('errorsReducer', () => {
     const newField = 'username';
     const action = {
       type: actionTypes.CREATE_FIELD,
-      payload: { formName, fieldName: newField }
+      formName,
+      fieldName: newField
     };
+
     const fieldKeyName = getFormFieldKey(formName, newField);
 
     const state = mockState();
@@ -204,10 +203,8 @@ describe('errorsReducer', () => {
 
   it('returns current state if form error exists for CREATE_FORM', () => {
     const existingError = 'Invalid';
-    const action = {
-      type: actionTypes.CREATE_FORM,
-      payload: { formName }
-    };
+    const action = { type: actionTypes.CREATE_FORM, formName };
+
     const fieldKeyName = getFormFieldKey(formName, FORM_AS_FIELD_NAME);
 
     const state = mockState({ [fieldKeyName]: existingError });
@@ -219,10 +216,8 @@ describe('errorsReducer', () => {
 
   it('returns current state if field error exists for CREATE_FIELD', () => {
     const existingError = 'Invalid';
-    const action = {
-      type: actionTypes.CREATE_FIELD,
-      payload: { formName, fieldName }
-    };
+    const action = { type: actionTypes.CREATE_FIELD, formName, fieldName };
+
     const fieldKeyName = getFormFieldKey(formName, fieldName);
 
     const state = mockState({ [fieldKeyName]: existingError });
@@ -236,8 +231,11 @@ describe('errorsReducer', () => {
     const existingError = 'Invalid';
     const action = {
       type: actionTypes.UPDATE_FIELD_VALUE,
-      payload: { formName, fieldName, value: 'super user' }
+      formName,
+      fieldName,
+      value: 'super user'
     };
+
     const fieldKeyName = getFormFieldKey(formName, fieldName);
 
     const state = mockState({ [fieldKeyName]: existingError });
@@ -251,8 +249,11 @@ describe('errorsReducer', () => {
     const newField = 'username';
     const action = {
       type: actionTypes.UPDATE_FIELD_VALUE,
-      payload: { formName, fieldName: newField, value: 'super user' }
+      formName,
+      fieldName: newField,
+      value: 'super user'
     };
+
     const fieldKeyName = getFormFieldKey(formName, newField);
 
     const state = mockState();
@@ -266,8 +267,11 @@ describe('errorsReducer', () => {
     const newError = 'Invalid';
     const action = {
       type: actionTypes.UPDATE_ERROR,
-      payload: { formName, fieldName, error: newError }
+      formName,
+      fieldName,
+      error: newError
     };
+
     const fieldKeyName = getFormFieldKey(formName, fieldName);
 
     const state = mockState();
@@ -281,8 +285,11 @@ describe('errorsReducer', () => {
     const newField = 'username';
     const action = {
       type: actionTypes.UPDATE_ERROR,
-      payload: { formName, fieldName: newField, error: 'Invalid' }
+      formName,
+      fieldName: newField,
+      error: 'Invalid'
     };
+
     const fieldKeyName = getFormFieldKey(formName, newField);
 
     const state = mockState();
@@ -293,7 +300,7 @@ describe('errorsReducer', () => {
   });
 
   it('returns current state for other actions', () => {
-    const action = { type: 'Unknown', payload: {} };
+    const action = { type: 'Unknown' };
     const state = mockState();
     const newState = errorsReducer(state, action);
     expect(newState).toEqual(state);

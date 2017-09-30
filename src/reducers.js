@@ -14,12 +14,12 @@ import {
 //   submitted: 0
 // };
 
-// function formMetaRecuder(state = {}, { type, payload }) {
-//   switch (type) {
+// function formMetaRecuder(state = {}, action) {
+//   switch (action.type) {
 //     case actionTypes.CREATE_FORM:
 //       return {
 //         ...state,
-//         [payload.formName]: initialFormMeta
+//         [action.formName]: initialFormMeta
 //       };
 //     default:
 //       return state;
@@ -30,33 +30,33 @@ import {
 //   touched: false
 // };
 
-// function fieldMetaRecuder(state = {}, { type, payload }) {
-//   switch (type) {
+// function fieldMetaRecuder(state = {}, action) {
+//   switch (action.type) {
 //     case actionTypes.CREATE_FIELD:
 //       return {
 //         ...state,
-//         [getFormFieldKey(payload.formName, payload.fieldName)]: initialFieldMeta
+//         [getFormFieldKey(action.formName, action.fieldName)]: initialFieldMeta
 //       };
 //     default:
 //       return state;
 //   }
 // }
 
-function formFieldsRecuder(state = {}, { type, payload }) {
-  switch (type) {
+function formFieldsRecuder(state = {}, action) {
+  switch (action.type) {
     case actionTypes.CREATE_FORM:
-      return Object.keys(state).includes(payload.formName)
+      return Object.keys(state).includes(action.formName)
         ? state
         : {
             ...state,
-            [payload.formName]: []
+            [action.formName]: []
           };
     case actionTypes.CREATE_FIELD:
-      return Object.keys(state).includes(payload.formName)
+      return Object.keys(state).includes(action.formName)
         ? {
             ...state,
-            [payload.formName]: [
-              ...new Set([...state[payload.formName], payload.fieldName])
+            [action.formName]: [
+              ...new Set([...state[action.formName], action.fieldName])
             ]
           }
         : state;
@@ -65,9 +65,9 @@ function formFieldsRecuder(state = {}, { type, payload }) {
   }
 }
 
-function fieldValueRecuder(state = {}, { type, payload }) {
-  const fieldKeyName = getFormFieldKey(payload.formName, payload.fieldName);
-  switch (type) {
+function fieldValueRecuder(state = {}, action) {
+  const fieldKeyName = getFormFieldKey(action.formName, action.fieldName);
+  switch (action.type) {
     case actionTypes.CREATE_FIELD:
       return Object.keys(state).includes(fieldKeyName)
         ? state
@@ -79,7 +79,7 @@ function fieldValueRecuder(state = {}, { type, payload }) {
       return Object.keys(state).includes(fieldKeyName)
         ? {
             ...state,
-            [fieldKeyName]: payload.value
+            [fieldKeyName]: action.value
           }
         : state;
     default:
@@ -87,12 +87,12 @@ function fieldValueRecuder(state = {}, { type, payload }) {
   }
 }
 
-function errorsReducer(state = {}, { type, payload }) {
+function errorsReducer(state = {}, action) {
   const fieldKeyName = getFormFieldKey(
-    payload.formName,
-    payload.fieldName || FORM_AS_FIELD_NAME // CREATE_FORM does not have payload.fieldName
+    action.formName,
+    action.fieldName || FORM_AS_FIELD_NAME // CREATE_FORM does not have action.fieldName
   );
-  switch (type) {
+  switch (action.type) {
     case actionTypes.CREATE_FORM:
     case actionTypes.CREATE_FIELD:
       return Object.keys(state).includes(fieldKeyName)
@@ -112,7 +112,7 @@ function errorsReducer(state = {}, { type, payload }) {
       return Object.keys(state).includes(fieldKeyName)
         ? {
             ...state,
-            [fieldKeyName]: payload.error
+            [fieldKeyName]: action.error
           }
         : state;
     default:
