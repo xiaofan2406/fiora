@@ -44,80 +44,77 @@ import {
 
 function formFieldsRecuder(state = {}, { type, payload }) {
   switch (type) {
-    case actionTypes.CREATE_FORM: {
-      if (Object.keys(state).includes(payload.formName)) {
-        return state;
-      }
-      return {
-        ...state,
-        [payload.formName]: []
-      };
-    }
-    case actionTypes.CREATE_FIELD: {
-      if (Object.keys(state).includes(payload.formName)) {
-        return {
-          ...state,
-          [payload.formName]: [
-            ...new Set([...state[payload.formName], payload.fieldName])
-          ]
-        };
-      }
-      return state;
-    }
+    case actionTypes.CREATE_FORM:
+      return Object.keys(state).includes(payload.formName)
+        ? state
+        : {
+            ...state,
+            [payload.formName]: []
+          };
+    case actionTypes.CREATE_FIELD:
+      return Object.keys(state).includes(payload.formName)
+        ? {
+            ...state,
+            [payload.formName]: [
+              ...new Set([...state[payload.formName], payload.fieldName])
+            ]
+          }
+        : state;
     default:
       return state;
   }
 }
 
 function fieldValueRecuder(state = {}, { type, payload }) {
+  const fieldKeyName = getFormFieldKey(payload.formName, payload.fieldName);
   switch (type) {
     case actionTypes.CREATE_FIELD:
-      return {
-        ...state,
-        [getFormFieldKey(
-          payload.formName,
-          payload.fieldName
-        )]: DEFAULT_FIELD_VALUE
-      };
-    case actionTypes.UPDATE_FIELD_VALUE: {
-      // This does NOT protect it if the form does not exist
-      const fieldKeyName = getFormFieldKey(payload.formName, payload.fieldName);
-      if (Object.keys(state).includes(fieldKeyName)) {
-        return {
-          ...state,
-          [fieldKeyName]: payload.value
-        };
-      }
-      return state;
-    }
+      return Object.keys(state).includes(fieldKeyName)
+        ? state
+        : {
+            ...state,
+            [fieldKeyName]: DEFAULT_FIELD_VALUE
+          };
+    case actionTypes.UPDATE_FIELD_VALUE:
+      return Object.keys(state).includes(fieldKeyName)
+        ? {
+            ...state,
+            [fieldKeyName]: payload.value
+          }
+        : state;
     default:
       return state;
   }
 }
 
 function errorsReducer(state = {}, { type, payload }) {
+  const fieldKeyName = getFormFieldKey(
+    payload.formName,
+    payload.fieldName || FORM_AS_FIELD_NAME // CREATE_FORM does not have payload.fieldName
+  );
   switch (type) {
-    case actionTypes.CREATE_FIELD:
-    case actionTypes.UPDATE_FIELD_VALUE:
-      return {
-        ...state,
-        [getFormFieldKey(payload.formName, payload.fieldName)]: DEFAULT_ERROR
-      };
     case actionTypes.CREATE_FORM:
-      return {
-        ...state,
-        [getFormFieldKey(payload.formName, FORM_AS_FIELD_NAME)]: DEFAULT_ERROR
-      };
-    case actionTypes.UPDATE_ERROR: {
-      const fieldKeyName = getFormFieldKey(payload.formName, payload.fieldName);
-      if (Object.keys(state).includes(fieldKeyName)) {
-        return {
-          ...state,
-          [fieldKeyName]: payload.error
-        };
-      }
-      return state;
-    }
+    case actionTypes.CREATE_FIELD:
+      return Object.keys(state).includes(fieldKeyName)
+        ? state
+        : {
+            ...state,
+            [fieldKeyName]: DEFAULT_ERROR
+          };
+    case actionTypes.UPDATE_FIELD_VALUE:
+      return Object.keys(state).includes(fieldKeyName)
+        ? {
+            ...state,
+            [fieldKeyName]: DEFAULT_ERROR
+          }
+        : state;
+    case actionTypes.UPDATE_ERROR:
+      return Object.keys(state).includes(fieldKeyName)
+        ? {
+            ...state,
+            [fieldKeyName]: payload.error
+          }
+        : state;
     default:
       return state;
   }
