@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createField, updateFieldValue, updateError } from './actions';
 import { getFieldValue, getError } from './selectors';
-import { DEFAULT_FIELD_VALUE } from './helpers';
 import withFiora from './withFiora';
 
 function Field({
@@ -54,12 +53,14 @@ const mapStateToProps = (state, { formName, name }) => ({
 
 const enhance = compose(
   withFiora({
-    componentWillMount: (
-      { name, initialValue = DEFAULT_FIELD_VALUE },
+    initialize: (
+      { name, initialValue },
       { fiora: { formName }, store: { dispatch } }
     ) => {
       dispatch(createField(formName, name));
-      dispatch(updateFieldValue(formName, name, initialValue));
+      if (initialValue) {
+        dispatch(updateFieldValue(formName, name, initialValue));
+      }
     }
   }),
   connect(mapStateToProps)

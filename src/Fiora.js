@@ -42,6 +42,7 @@ class Fiora extends React.Component {
 
     const errorFields = Object.keys(errors);
     if (errorFields.length > 0) {
+      // TODO consider falsy value
       errorFields.map(fieldName =>
         dispatch(updateError(name, fieldName, errors[fieldName]))
       );
