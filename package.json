@@ -14,14 +14,16 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "prebuild": "yarn lint && rm -rf lib",
-    "build": "babel src --out-dir lib",
     "precommit": "lint-staged",
-    "lint": "eslint -c .eslintrc.js src && prettier-check src/**/*.js",
-    "test": "NODE_ENV=test jest --watch --env=jsdom --updateSnapshot",
+    "lint:eslint": "eslint -c .eslintrc.js src",
+    "lint:prettier": "prettier-check src/**/*.js",
+    "lint": "yarn lint:eslint && yarn lint:prettier",
+    "clean": "rm -rf lib",
+    "prebuild": "yarn lint && yarn clean",
+    "build": "NODE_ENV=production babel src --out-dir lib",
+    "test": "NODE_ENV=test jest --watch --env=jsdom",
     "coverage": "NODE_ENV=test jest --env=jsdom --coverage",
-    "prepublish": "yarn build",
-    "publish": "yarn publish"
+    "prepublish": "NODE_ENV=production yarn build"
   },
   "lint-staged": {
     "*.{js,json,css}": ["./node_modules/.bin/prettier --write", "git add"]
