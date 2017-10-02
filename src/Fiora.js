@@ -57,31 +57,41 @@ class Fiora extends React.Component {
     return errorFields.some(fieldName => errors[fieldName]);
   };
 
-  runFieldValidataion = async (fieldName, value) =>
+  runFormValidation = async values => {
     // const { dispatch } = this.context.store;
-    // dispatch(startValidating(fieldName))
-    this.fieldValidations[fieldName](value);
-  // dispatch(finishValidating(fieldName))
+    // dispatch(startValidatingForm(formName))
+    let result = await this.props.onValidate(values);
+    // dispatch(finishValidatingForm(formName))
+    result = result || {};
+    if (!result[FORM_AS_FIELD_NAME]) {
+      result[FORM_AS_FIELD_NAME] = DEFAULT_ERROR;
+    }
+    return result;
+  };
+
+  runFieldValidation = async (fieldName, value) => {
+    // const { dispatch } = this.context.store;
+    // dispatch(startValidatingField(fieldName))
+    const result = await this.fieldValidations[fieldName](value);
+    // dispatch(finishValidatingField(fieldName))
+    return result || DEFAULT_ERROR;
+  };
 
   runValidations = async formValues => {
-    const { onValidate } = this.props;
     const fields = Object.keys(formValues);
-
     const [formErrors, ...fieldErrors] = await Promise.all([
-      onValidate(formValues),
+      this.runFormValidation(formValues),
       ...fields.map(fieldName =>
-        this.runFieldValidataion(fieldName, formValues[fieldName])
+        this.runFieldValidation(fieldName, formValues[fieldName])
       )
     ]);
 
     const errors = {};
     [...fields, FORM_AS_FIELD_NAME].forEach((fieldName, index) => {
-      if (formErrors[fieldName]) {
+      if (Object.prototype.hasOwnProperty.call(formErrors, fieldName)) {
         errors[fieldName] = formErrors[fieldName];
-      } else if (fieldErrors[index]) {
-        errors[fieldName] = fieldErrors[index];
       } else {
-        errors[fieldName] = DEFAULT_ERROR;
+        errors[fieldName] = fieldErrors[index];
       }
     });
     return errors;
