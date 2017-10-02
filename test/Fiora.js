@@ -6,36 +6,56 @@ import * as selectors from '../src/selectors';
 import { DEFAULT_ERROR, FORM_AS_FIELD_NAME } from '../src/helpers';
 
 const formName = 'login';
-const withStore = (component, store) =>
-  mount(component, { context: { store } });
-
 let wrapper;
-let store;
 beforeEach(() => {
-  store = {
-    dispatch: jest.fn(),
-    subscribe: jest.fn(),
-    getState: jest.fn()
-  };
-  wrapper = withStore(<Fiora name={formName}>{() => ''}</Fiora>, store);
+  wrapper = mount(<Fiora name={formName}>{() => ''}</Fiora>, {
+    context: {
+      store: {
+        dispatch: jest.fn(),
+        subscribe: jest.fn(),
+        getState: jest.fn()
+      }
+    }
+  });
 });
 
-it('triggers dispatch for creating the form', () => {
-  expect(store.dispatch).toHaveBeenCalledTimes(1);
-  expect(store.dispatch).toHaveBeenCalledWith(createForm(formName));
-});
+describe('default react hooks and methods', () => {
+  it('triggers dispatch for creating the form during componentWillMount', () => {
+    wrapper.instance().context.store.dispatch = jest.fn();
+    const { dispatch } = wrapper.instance().context.store;
+    expect(dispatch).toHaveBeenCalledTimes(0);
 
-it('sets the correct fiora formName context', () => {
-  const childContext = wrapper.instance().getChildContext();
-  expect(childContext.fiora).toHaveProperty('formName', formName);
-});
+    wrapper.instance().componentWillMount();
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(dispatch).toHaveBeenCalledWith(createForm(formName));
+  });
 
-it('sets the correct fiora setValidateFunc context', () => {
-  const childContext = wrapper.instance().getChildContext();
-  expect(wrapper.instance().fieldValidations).toEqual({});
+  it('sets the correct default onValidate prop', async () => {
+    const result = await wrapper.prop('onValidate')();
+    expect(result).toEqual({});
+  });
 
-  childContext.fiora.setValidateFunc('username', jest.fn());
-  expect(wrapper.instance().fieldValidations).toHaveProperty('username');
+  it('sets the correct fiora formName context', () => {
+    const { fiora } = wrapper.instance().getChildContext();
+    expect(fiora).toHaveProperty('formName', formName);
+  });
+
+  it('sets the correct fiora setValidateFunc context', () => {
+    const childContext = wrapper.instance().getChildContext();
+    expect(wrapper.instance().fieldValidations).toEqual({});
+
+    childContext.fiora.setValidateFunc('username', () => {});
+    const { username } = wrapper.instance().fieldValidations;
+    expect(typeof username).toBe('function');
+  });
+
+  it('returns children with handleSubmit on render', () => {
+    wrapper.setProps({ children: jest.fn(() => '') });
+    expect(wrapper.prop('children')).toHaveBeenCalledWith({
+      handleSubmit: wrapper.instance().handleSubmit
+    });
+    expect(wrapper.text()).toEqual('');
+  });
 });
 
 describe('handleErrorsIfAny', () => {
@@ -47,6 +67,8 @@ describe('handleErrorsIfAny', () => {
     };
     const { context, handleErrorsIfAny } = wrapper.instance();
     context.store.dispatch = jest.fn();
+    expect(context.store.dispatch).toHaveBeenCalledTimes(0);
+
     handleErrorsIfAny(errors);
     expect(context.store.dispatch).toHaveBeenCalledTimes(3);
     expect(context.store.dispatch).toHaveBeenCalledWith(
@@ -66,23 +88,21 @@ describe('handleErrorsIfAny', () => {
   });
 
   it('returns false if errors is empty', () => {
-    const errors = {};
-    expect(wrapper.instance().handleErrorsIfAny(errors)).toBe(false);
+    expect(wrapper.instance().handleErrorsIfAny({})).toBe(false);
     expect(wrapper.instance().handleErrorsIfAny()).toBe(false);
   });
 });
 
 describe('runFormValidation', () => {
+  const withOnValidate = onValidate => wrapper.setProps({ onValidate });
+
   it('returns the result from the field validation function', async () => {
     const errors = { username: 'Invalid', form: 'Invalid' };
     const onValidate = jest.fn(async () => errors);
-    wrapper = withStore(
-      <Fiora name={formName} onValidate={onValidate}>
-        {() => ''}
-      </Fiora>,
-      store
-    );
+    withOnValidate(onValidate);
     const values = { username: 'admin' };
+    expect(wrapper.prop('onValidate')).toHaveBeenCalledTimes(0);
+
     const result = await wrapper.instance().runFormValidation(values);
     expect(result).toEqual(errors);
     expect(wrapper.prop('onValidate')).toHaveBeenCalledTimes(1);
@@ -91,13 +111,10 @@ describe('runFormValidation', () => {
 
   it('returns an default form error object if onValidate returns falsy value', async () => {
     const onValidate = jest.fn(async () => null);
-    wrapper = withStore(
-      <Fiora name={formName} onValidate={onValidate}>
-        {() => ''}
-      </Fiora>,
-      store
-    );
+    withOnValidate(onValidate);
     const values = { username: 'admin' };
+    expect(wrapper.prop('onValidate')).toHaveBeenCalledTimes(0);
+
     const result = await wrapper.instance().runFormValidation(values);
     expect(result).toEqual({ [FORM_AS_FIELD_NAME]: DEFAULT_ERROR });
     expect(wrapper.prop('onValidate')).toHaveBeenCalledTimes(1);
@@ -106,13 +123,10 @@ describe('runFormValidation', () => {
 
   it('returns an default form error object if onValidate does not contain form error', async () => {
     const onValidate = jest.fn(async () => ({ username: 'Invalid' }));
-    wrapper = withStore(
-      <Fiora name={formName} onValidate={onValidate}>
-        {() => ''}
-      </Fiora>,
-      store
-    );
+    withOnValidate(onValidate);
     const values = { username: 'admin' };
+    expect(wrapper.prop('onValidate')).toHaveBeenCalledTimes(0);
+
     const result = await wrapper.instance().runFormValidation(values);
     expect(result).toEqual({
       username: 'Invalid',
@@ -133,6 +147,8 @@ describe('runFieldValidation', () => {
       .getChildContext()
       .fiora.setValidateFunc(fieldName, jest.fn(async () => error));
     const validationFunc = wrapper.instance().fieldValidations[fieldName];
+    expect(validationFunc).toHaveBeenCalledTimes(0);
+
     const result = await wrapper
       .instance()
       .runFieldValidation(fieldName, value);
@@ -149,6 +165,8 @@ describe('runFieldValidation', () => {
       .getChildContext()
       .fiora.setValidateFunc(fieldName, jest.fn(async () => undefined));
     const validationFunc = wrapper.instance().fieldValidations[fieldName];
+    expect(validationFunc).toHaveBeenCalledTimes(0);
+
     const result = await wrapper
       .instance()
       .runFieldValidation(fieldName, value);
@@ -178,6 +196,8 @@ describe('runValidations', () => {
   it('runs form validations with the form values', async () => {
     const formValues = { username: 'admin', password: '12345' };
     const { runFormValidation, runValidations } = wrapper.instance();
+    expect(runFormValidation).toHaveBeenCalledTimes(0);
+
     await runValidations(formValues);
     expect(runFormValidation).toHaveBeenCalledTimes(1);
     expect(runFormValidation).toHaveBeenCalledWith(formValues);
@@ -186,6 +206,8 @@ describe('runValidations', () => {
   it('runs all the field validations with its values', async () => {
     const formValues = { username: 'admin', password: '12345' };
     const { runFieldValidation, runValidations } = wrapper.instance();
+    expect(runFieldValidation).toHaveBeenCalledTimes(0);
+
     await runValidations(formValues);
     expect(runFieldValidation).toHaveBeenCalledTimes(2);
     expect(runFieldValidation).toHaveBeenCalledWith('username', 'admin');
@@ -214,31 +236,29 @@ describe('runValidations', () => {
 });
 
 describe('runSumbit', () => {
-  let onSubmit;
   const errors = {};
   const formValues = { username: 'admin', password: '12345' };
   const submitErrors = { username: 'invalid' };
   beforeEach(() => {
-    onSubmit = jest.fn(async () => submitErrors);
-    wrapper = withStore(
-      <Fiora name={formName} onSubmit={onSubmit}>
-        {() => ''}
-      </Fiora>,
-      store
-    );
+    wrapper.setProps({ onSubmit: jest.fn(async () => submitErrors) });
   });
   it('does not trigger onSubmit if handleErrorsIfAny return true', async () => {
     wrapper.instance().handleErrorsIfAny = jest.fn(() => true);
-    await wrapper.instance().runSumbit(errors, formValues);
     const { handleErrorsIfAny } = wrapper.instance();
+    expect(handleErrorsIfAny).toHaveBeenCalledTimes(0);
+
+    await wrapper.instance().runSumbit(errors, formValues);
     expect(wrapper.prop('onSubmit')).toHaveBeenCalledTimes(0);
     expect(handleErrorsIfAny).toHaveBeenCalledTimes(1);
     expect(handleErrorsIfAny).toHaveBeenCalledWith(errors);
   });
   it('triggers onSubmit and handle its error again if handleErrorsIfAny return false', async () => {
     wrapper.instance().handleErrorsIfAny = jest.fn(() => false);
-    await wrapper.instance().runSumbit(errors, formValues);
     const { handleErrorsIfAny } = wrapper.instance();
+    expect(handleErrorsIfAny).toHaveBeenCalledTimes(0);
+    expect(wrapper.prop('onSubmit')).toHaveBeenCalledTimes(0);
+
+    await wrapper.instance().runSumbit(errors, formValues);
     expect(wrapper.prop('onSubmit')).toHaveBeenCalledTimes(1);
     expect(handleErrorsIfAny).toHaveBeenCalledTimes(2);
     expect(handleErrorsIfAny).toHaveBeenCalledWith(errors);
@@ -259,6 +279,9 @@ describe('handleSubmit', () => {
   });
 
   it('gets all the values form the store', async () => {
+    expect(selectors.getFormValues).toHaveBeenCalledTimes(0);
+    expect(wrapper.instance().context.store.getState).toHaveBeenCalledTimes(0);
+
     await wrapper.instance().handleSubmit();
     expect(selectors.getFormValues).toHaveBeenCalledTimes(1);
     expect(selectors.getFormValues).toHaveBeenCalledWith(state, { formName });
@@ -267,27 +290,19 @@ describe('handleSubmit', () => {
 
   it('triggers runValidations', async () => {
     const { handleSubmit, runValidations } = wrapper.instance();
-    await handleSubmit();
+    expect(runValidations).toHaveBeenCalledTimes(0);
 
+    await handleSubmit();
     expect(runValidations).toHaveBeenCalledTimes(1);
     expect(runValidations).toHaveBeenCalledWith(formValues);
   });
 
   it('triggers runSubmitruns', async () => {
     const { handleSubmit, runSubmit } = wrapper.instance();
+    expect(runSubmit).toHaveBeenCalledTimes(0);
+
     await handleSubmit();
     expect(runSubmit).toHaveBeenCalledTimes(1);
     expect(runSubmit).toHaveBeenCalledWith(errors, formValues);
-  });
-});
-
-describe('render', () => {
-  it('returns children with handleSubmit', () => {
-    const children = jest.fn(() => '');
-    wrapper = withStore(<Fiora name={formName}>{children}</Fiora>, store);
-    expect(children).toHaveBeenCalledWith({
-      handleSubmit: wrapper.instance().handleSubmit
-    });
-    expect(wrapper.text()).toEqual('');
   });
 });
