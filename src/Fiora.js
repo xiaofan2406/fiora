@@ -57,6 +57,8 @@ class Fiora extends React.Component {
     return errorFields.some(fieldName => errors[fieldName]);
   };
 
+  // These run* functions can be refactored into actions uses redux-thunks
+  // However, they are written in these way to avoid the dependency
   runFormValidation = async values => {
     // const { dispatch } = this.context.store;
     // dispatch(startValidatingForm(formName))
@@ -97,16 +99,21 @@ class Fiora extends React.Component {
     return errors;
   };
 
-  handleSubmit = async () => {
-    const { onSubmit, name } = this.props;
-    const { getState } = this.context.store;
-    const formValues = getFormValues(getState(), { formName: name });
-
-    const errors = await this.runValidations(formValues);
+  runSumbit = async (errors, formValues) => {
+    const { onSubmit } = this.props;
     if (!this.handleErrorsIfAny(errors)) {
       const submitErrors = await onSubmit(formValues);
       this.handleErrorsIfAny(submitErrors);
     }
+  };
+
+  handleSubmit = async () => {
+    const { name } = this.props;
+    const { getState } = this.context.store;
+    const formValues = getFormValues(getState(), { formName: name });
+
+    const errors = await this.runValidations(formValues);
+    await this.runSubmit(errors, formValues);
   };
 
   render() {
