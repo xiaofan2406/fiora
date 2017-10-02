@@ -1,7 +1,12 @@
 import { combineReducers } from 'redux';
 
 import actionTypes from './actions';
-import { getFormFieldKey, DEFAULT_FIELD_VALUE, DEFAULT_ERROR } from './helpers';
+import {
+  getFormFieldKey,
+  DEFAULT_FIELD_VALUE,
+  DEFAULT_ERROR,
+  FORM_AS_FIELD_NAME
+} from './helpers';
 
 // const initialFormMeta = {
 //   // dirty: false,
@@ -9,12 +14,12 @@ import { getFormFieldKey, DEFAULT_FIELD_VALUE, DEFAULT_ERROR } from './helpers';
 //   submitted: 0
 // };
 
-// function formMetaRecuder(state = {}, { type, payload }) {
-//   switch (type) {
+// function formMetaRecuder(state = {}, action) {
+//   switch (action.type) {
 //     case actionTypes.CREATE_FORM:
 //       return {
 //         ...state,
-//         [payload.formName]: initialFormMeta
+//         [action.formName]: initialFormMeta
 //       };
 //     default:
 //       return state;
@@ -25,89 +30,91 @@ import { getFormFieldKey, DEFAULT_FIELD_VALUE, DEFAULT_ERROR } from './helpers';
 //   touched: false
 // };
 
-// function fieldMetaRecuder(state = {}, { type, payload }) {
-//   switch (type) {
+// function fieldMetaRecuder(state = {}, action) {
+//   switch (action.type) {
 //     case actionTypes.CREATE_FIELD:
 //       return {
 //         ...state,
-//         [getFormFieldKey(payload.formName, payload.fieldName)]: initialFieldMeta
+//         [getFormFieldKey(action.formName, action.fieldName)]: initialFieldMeta
 //       };
 //     default:
 //       return state;
 //   }
 // }
 
-function formFieldsRecuder(state = {}, { type, payload }) {
-  switch (type) {
-    case actionTypes.CREATE_FORM: {
-      if (Object.keys(state).includes(payload.formName)) {
-        return state;
-      }
-      return {
-        ...state,
-        [payload.formName]: []
-      };
-    }
-    case actionTypes.CREATE_FIELD: {
-      if (Object.keys(state).includes(payload.formName)) {
-        return {
-          ...state,
-          [payload.formName]: [
-            ...new Set([...state[payload.formName], payload.fieldName])
-          ]
-        };
-      }
-      return state;
-    }
+function formFieldsRecuder(state = {}, action) {
+  switch (action.type) {
+    case actionTypes.CREATE_FORM:
+      return Object.keys(state).includes(action.formName)
+        ? state
+        : {
+            ...state,
+            [action.formName]: []
+          };
+    case actionTypes.CREATE_FIELD:
+      return Object.keys(state).includes(action.formName)
+        ? {
+            ...state,
+            [action.formName]: [
+              ...new Set([...state[action.formName], action.fieldName])
+            ]
+          }
+        : state;
     default:
       return state;
   }
 }
 
-function fieldValueRecuder(state = {}, { type, payload }) {
-  switch (type) {
+function fieldValueRecuder(state = {}, action) {
+  const fieldKeyName = getFormFieldKey(action.formName, action.fieldName);
+  switch (action.type) {
     case actionTypes.CREATE_FIELD:
-      return {
-        ...state,
-        [getFormFieldKey(
-          payload.formName,
-          payload.fieldName
-        )]: DEFAULT_FIELD_VALUE
-      };
-    case actionTypes.UPDATE_FIELD_VALUE: {
-      // This does NOT protect it if the form does not exist
-      const fieldKeyName = getFormFieldKey(payload.formName, payload.fieldName);
-      if (Object.keys(state).includes(fieldKeyName)) {
-        return {
-          ...state,
-          [fieldKeyName]: payload.value
-        };
-      }
-      return state;
-    }
-    default:
-      return state;
-  }
-}
-
-function errorsReducer(state = {}, { type, payload }) {
-  switch (type) {
-    case actionTypes.CREATE_FIELD:
+      return Object.keys(state).includes(fieldKeyName)
+        ? state
+        : {
+            ...state,
+            [fieldKeyName]: DEFAULT_FIELD_VALUE
+          };
     case actionTypes.UPDATE_FIELD_VALUE:
-      return {
-        ...state,
-        [getFormFieldKey(payload.formName, payload.fieldName)]: DEFAULT_ERROR
-      };
-    case actionTypes.UPDATE_ERROR: {
-      const fieldKeyName = getFormFieldKey(payload.formName, payload.fieldName);
-      if (Object.keys(state).includes(fieldKeyName)) {
-        return {
-          ...state,
-          [fieldKeyName]: payload.error
-        };
-      }
+      return Object.keys(state).includes(fieldKeyName)
+        ? {
+            ...state,
+            [fieldKeyName]: action.value
+          }
+        : state;
+    default:
       return state;
-    }
+  }
+}
+
+function errorsReducer(state = {}, action) {
+  const fieldKeyName = getFormFieldKey(
+    action.formName,
+    action.fieldName || FORM_AS_FIELD_NAME // CREATE_FORM does not have action.fieldName
+  );
+  switch (action.type) {
+    case actionTypes.CREATE_FORM:
+    case actionTypes.CREATE_FIELD:
+      return Object.keys(state).includes(fieldKeyName)
+        ? state
+        : {
+            ...state,
+            [fieldKeyName]: DEFAULT_ERROR
+          };
+    case actionTypes.UPDATE_FIELD_VALUE:
+      return Object.keys(state).includes(fieldKeyName)
+        ? {
+            ...state,
+            [fieldKeyName]: DEFAULT_ERROR
+          }
+        : state;
+    case actionTypes.UPDATE_ERROR:
+      return Object.keys(state).includes(fieldKeyName)
+        ? {
+            ...state,
+            [fieldKeyName]: action.error
+          }
+        : state;
     default:
       return state;
   }

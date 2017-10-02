@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createField, updateFieldValue, updateError } from './actions';
 import { getFieldValue, getError } from './selectors';
-import { DEFAULT_FIELD_VALUE } from './helpers';
 import withFiora from './withFiora';
 
 function Field({
@@ -40,11 +39,15 @@ function Field({
 Field.propTypes = {
   name: PropTypes.any.isRequired,
   children: PropTypes.func.isRequired,
-  onValidate: PropTypes.func.isRequired,
+  onValidate: PropTypes.func,
   error: PropTypes.any,
   value: PropTypes.any.isRequired,
   formName: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired
+};
+
+Field.defaultProps = {
+  onValidate: async () => null
 };
 
 const mapStateToProps = (state, { formName, name }) => ({
@@ -54,12 +57,15 @@ const mapStateToProps = (state, { formName, name }) => ({
 
 const enhance = compose(
   withFiora({
-    componentWillMount: (
-      { name, initialValue = DEFAULT_FIELD_VALUE },
-      { fiora: { formName }, store: { dispatch } }
+    initialize: (
+      { name, onValidate, initialValue },
+      { fiora: { formName, setValidateFunc }, store: { dispatch } }
     ) => {
       dispatch(createField(formName, name));
-      dispatch(updateFieldValue(formName, name, initialValue));
+      if (initialValue) {
+        dispatch(updateFieldValue(formName, name, initialValue));
+      }
+      setValidateFunc(name, onValidate);
     }
   }),
   connect(mapStateToProps)

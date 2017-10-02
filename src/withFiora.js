@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { storeShape } from 'react-redux/lib/utils/PropTypes';
 
-const withFiora = (
-  { componentWillMount, formNameKey = 'formName' } = {}
-) => Component => {
+const withFiora = ({ initialize } = {}) => Component => {
   class C extends React.Component {
     static contextTypes = {
       fiora: PropTypes.object,
@@ -16,17 +14,15 @@ const withFiora = (
     };
 
     componentWillMount() {
-      if (typeof componentWillMount === 'function') {
-        componentWillMount(this.props, this.context);
+      if (typeof initialize === 'function') {
+        initialize(this.props, this.context);
       }
     }
 
     render() {
-      const aditionalProps = {
-        [formNameKey]: this.context.fiora.formName
-      };
-
-      return <Component {...this.props} {...aditionalProps} />;
+      return (
+        <Component {...this.props} formName={this.context.fiora.formName} />
+      );
     }
   }
 
