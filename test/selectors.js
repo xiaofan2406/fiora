@@ -34,7 +34,7 @@ test('getError returns the error for the field', () => {
   expect(result).toBe(error);
 });
 
-test('getFormFields returns the error for the field', () => {
+test('getFormFields returns the fields for the form', () => {
   const fields = ['username', 'password'];
   const state = mockState({ formFields: { [formName]: fields } });
 
@@ -42,7 +42,7 @@ test('getFormFields returns the error for the field', () => {
   expect(result).toEqual(fields);
 });
 
-test('getFormValues returns the error for the field', () => {
+test('getFormValues returns the field values for the form', () => {
   const fields = ['username', 'password'];
   const username = 'admin';
   const password = 'securepassword';

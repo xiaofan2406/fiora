@@ -45,42 +45,55 @@ class Fiora extends React.Component {
 
   fieldValidations = {};
 
-  // return true if there is error
-  handleErrorsIfAny = errors => {
+  handleErrorsIfAny = (errors = {}) => {
     const { name } = this.props;
     const { dispatch } = this.context.store;
-
     const errorFields = Object.keys(errors);
-    if (errorFields.length > 0) {
-      // TODO consider falsy value
-      errorFields.map(fieldName =>
-        dispatch(updateError(name, fieldName, errors[fieldName]))
-      );
-      return true;
-    }
-    return false;
+    errorFields.map(fieldName =>
+      dispatch(updateError(name, fieldName, errors[fieldName]))
+    );
+
+    // return true if there is error
+    return errorFields.some(fieldName => errors[fieldName]);
   };
 
-  handleSubmit = async () => {
-    const { onValidate, onSubmit, name } = this.props;
-    const { getState } = this.context.store;
-    const formValues = getFormValues(getState(), { formName: name });
+  runFieldValidataion = async (fieldName, value) =>
+    // const { dispatch } = this.context.store;
+    // dispatch(startValidating(fieldName))
+    this.fieldValidations[fieldName](value);
+  // dispatch(finishValidating(fieldName))
+
+  runValidations = async formValues => {
+    const { onValidate } = this.props;
     const fields = Object.keys(formValues);
+
     const [formErrors, ...fieldErrors] = await Promise.all([
       onValidate(formValues),
       ...fields.map(fieldName =>
-        this.fieldValidations[fieldName](formValues[fieldName])
+        this.runFieldValidataion(fieldName, formValues[fieldName])
       )
     ]);
-    let validationErrors = {};
-    fields.forEach((fieldName, index) => {
-      validationErrors[fieldName] = fieldErrors[index];
+
+    const errors = {};
+    [...fields, FORM_AS_FIELD_NAME].forEach((fieldName, index) => {
+      if (formErrors[fieldName]) {
+        errors[fieldName] = formErrors[fieldName];
+      } else if (fieldErrors[index]) {
+        errors[fieldName] = fieldErrors[index];
+      } else {
+        errors[fieldName] = DEFAULT_ERROR;
+      }
     });
-    if (!formErrors[FORM_AS_FIELD_NAME]) {
-      formErrors[FORM_AS_FIELD_NAME] = DEFAULT_ERROR;
-    }
-    validationErrors = { ...validationErrors, ...formErrors };
-    if (!this.handleErrorsIfAny(validationErrors)) {
+    return errors;
+  };
+
+  handleSubmit = async () => {
+    const { onSubmit, name } = this.props;
+    const { getState } = this.context.store;
+    const formValues = getFormValues(getState(), { formName: name });
+
+    const errors = await this.runValidations(formValues);
+    if (!this.handleErrorsIfAny(errors)) {
       const submitErrors = await onSubmit(formValues);
       this.handleErrorsIfAny(submitErrors);
     }
