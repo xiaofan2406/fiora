@@ -1,12 +1,14 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Fiora from '../src/Fiora';
-import * as actions from '../src/actions';
+import { createForm, updateError } from '../src/actions';
+import * as selectors from '../src/selectors';
 import { DEFAULT_ERROR, FORM_AS_FIELD_NAME } from '../src/helpers';
 
 const formName = 'login';
 const withStore = (component, store) =>
   mount(component, { context: { store } });
+
 let wrapper;
 let store;
 beforeEach(() => {
@@ -20,7 +22,7 @@ beforeEach(() => {
 
 it('triggers dispatch for creating the form', () => {
   expect(store.dispatch).toHaveBeenCalledTimes(1);
-  expect(store.dispatch).toHaveBeenCalledWith(actions.createForm(formName));
+  expect(store.dispatch).toHaveBeenCalledWith(createForm(formName));
 });
 
 it('sets the correct fiora formName context', () => {
@@ -36,8 +38,8 @@ it('sets the correct fiora setValidateFunc context', () => {
   expect(wrapper.instance().fieldValidations).toHaveProperty('username');
 });
 
-describe('handleErrorsIfAny(errors)', () => {
-  it('dispatch all the errors', () => {
+describe('handleErrorsIfAny', () => {
+  it('dispatches all the errors', () => {
     const errors = {
       username: 'Invalid',
       email: undefined,
@@ -48,22 +50,22 @@ describe('handleErrorsIfAny(errors)', () => {
     handleErrorsIfAny(errors);
     expect(context.store.dispatch).toHaveBeenCalledTimes(3);
     expect(context.store.dispatch).toHaveBeenCalledWith(
-      actions.updateError(formName, 'username', 'Invalid')
+      updateError(formName, 'username', 'Invalid')
     );
     expect(context.store.dispatch).toHaveBeenCalledWith(
-      actions.updateError(formName, 'email', undefined)
+      updateError(formName, 'email', undefined)
     );
     expect(context.store.dispatch).toHaveBeenCalledWith(
-      actions.updateError(formName, 'password', ['Invalid'])
+      updateError(formName, 'password', ['Invalid'])
     );
   });
 
-  it('return true if errors is not empty', () => {
+  it('returns true if errors is not empty', () => {
     const errors = { username: 'Invalid' };
     expect(wrapper.instance().handleErrorsIfAny(errors)).toBe(true);
   });
 
-  it('return false if errors is empty', () => {
+  it('returns false if errors is empty', () => {
     const errors = {};
     expect(wrapper.instance().handleErrorsIfAny(errors)).toBe(false);
     expect(wrapper.instance().handleErrorsIfAny()).toBe(false);
@@ -183,10 +185,11 @@ describe('runValidations', () => {
 
   it('runs all the field validations with its values', async () => {
     const formValues = { username: 'admin', password: '12345' };
-    const { runFormValidation, runValidations } = wrapper.instance();
+    const { runFieldValidation, runValidations } = wrapper.instance();
     await runValidations(formValues);
-    expect(runFormValidation).toHaveBeenCalledTimes(1);
-    expect(runFormValidation).toHaveBeenCalledWith(formValues);
+    expect(runFieldValidation).toHaveBeenCalledTimes(2);
+    expect(runFieldValidation).toHaveBeenCalledWith('username', 'admin');
+    expect(runFieldValidation).toHaveBeenCalledWith('password', '12345');
   });
 
   it('returns all the errors from form and fields validtions', async () => {
@@ -210,13 +213,75 @@ describe('runValidations', () => {
   });
 });
 
-describe('handleSubmit()', () => {
-  it('triggers onValidate and handles its errors');
-  it('triggers onSubmit if onValidate returns no error');
-  it('handles submit error');
+describe('runSumbit', () => {
+  let onSubmit;
+  const errors = {};
+  const formValues = { username: 'admin', password: '12345' };
+  const submitErrors = { username: 'invalid' };
+  beforeEach(() => {
+    onSubmit = jest.fn(async () => submitErrors);
+    wrapper = withStore(
+      <Fiora name={formName} onSubmit={onSubmit}>
+        {() => ''}
+      </Fiora>,
+      store
+    );
+  });
+  it('does not trigger onSubmit if handleErrorsIfAny return true', async () => {
+    wrapper.instance().handleErrorsIfAny = jest.fn(() => true);
+    await wrapper.instance().runSumbit(errors, formValues);
+    const { handleErrorsIfAny } = wrapper.instance();
+    expect(wrapper.prop('onSubmit')).toHaveBeenCalledTimes(0);
+    expect(handleErrorsIfAny).toHaveBeenCalledTimes(1);
+    expect(handleErrorsIfAny).toHaveBeenCalledWith(errors);
+  });
+  it('triggers onSubmit and handle its error again if handleErrorsIfAny return false', async () => {
+    wrapper.instance().handleErrorsIfAny = jest.fn(() => false);
+    await wrapper.instance().runSumbit(errors, formValues);
+    const { handleErrorsIfAny } = wrapper.instance();
+    expect(wrapper.prop('onSubmit')).toHaveBeenCalledTimes(1);
+    expect(handleErrorsIfAny).toHaveBeenCalledTimes(2);
+    expect(handleErrorsIfAny).toHaveBeenCalledWith(errors);
+    expect(handleErrorsIfAny).toHaveBeenCalledWith(submitErrors);
+  });
 });
 
-describe('render()', () => {
+describe('handleSubmit', () => {
+  const errors = { username: 'invalid' };
+  const state = { fields: [] };
+  const formValues = { username: 'admi', password: 'admi' };
+
+  beforeEach(() => {
+    wrapper.instance().runValidations = jest.fn(async () => errors);
+    wrapper.instance().runSubmit = jest.fn();
+    wrapper.instance().context.store.getState = jest.fn(() => state);
+    selectors.getFormValues = jest.fn(() => formValues);
+  });
+
+  it('gets all the values form the store', async () => {
+    await wrapper.instance().handleSubmit();
+    expect(selectors.getFormValues).toHaveBeenCalledTimes(1);
+    expect(selectors.getFormValues).toHaveBeenCalledWith(state, { formName });
+    expect(wrapper.instance().context.store.getState).toHaveBeenCalledTimes(1);
+  });
+
+  it('triggers runValidations', async () => {
+    const { handleSubmit, runValidations } = wrapper.instance();
+    await handleSubmit();
+
+    expect(runValidations).toHaveBeenCalledTimes(1);
+    expect(runValidations).toHaveBeenCalledWith(formValues);
+  });
+
+  it('triggers runSubmitruns', async () => {
+    const { handleSubmit, runSubmit } = wrapper.instance();
+    await handleSubmit();
+    expect(runSubmit).toHaveBeenCalledTimes(1);
+    expect(runSubmit).toHaveBeenCalledWith(errors, formValues);
+  });
+});
+
+describe('render', () => {
   it('returns children with handleSubmit', () => {
     const children = jest.fn(() => '');
     wrapper = withStore(<Fiora name={formName}>{children}</Fiora>, store);
