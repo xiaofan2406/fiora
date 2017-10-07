@@ -22,7 +22,8 @@
     "build": "NODE_ENV=production babel src --out-dir lib",
     "test": "NODE_ENV=test jest --watch --env=jsdom",
     "coverage": "NODE_ENV=test jest --env=jsdom --coverage",
-    "prepublishOnly": "NODE_ENV=production yarn build"
+    "prepublishOnly": "NODE_ENV=production yarn build",
+    "postpublish": "git push && git push --tags"
   },
   "lint-staged": {
     "*.{js,json,css}": ["./node_modules/.bin/prettier --write", "git add"]
