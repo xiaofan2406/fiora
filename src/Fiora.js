@@ -99,7 +99,7 @@ class Fiora extends React.Component {
     return errors;
   };
 
-  runSumbit = async (errors, formValues) => {
+  runSubmit = async (errors, formValues) => {
     const { onSubmit } = this.props;
     if (!this.handleErrorsIfAny(errors)) {
       const submitErrors = await onSubmit(formValues);

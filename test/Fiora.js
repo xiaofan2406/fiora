@@ -235,7 +235,7 @@ describe('runValidations', () => {
   });
 });
 
-describe('runSumbit', () => {
+describe('runSubmit', () => {
   const errors = {};
   const formValues = { username: 'admin', password: '12345' };
   const submitErrors = { username: 'invalid' };
@@ -247,7 +247,7 @@ describe('runSumbit', () => {
     const { handleErrorsIfAny } = wrapper.instance();
     expect(handleErrorsIfAny).toHaveBeenCalledTimes(0);
 
-    await wrapper.instance().runSumbit(errors, formValues);
+    await wrapper.instance().runSubmit(errors, formValues);
     expect(wrapper.prop('onSubmit')).toHaveBeenCalledTimes(0);
     expect(handleErrorsIfAny).toHaveBeenCalledTimes(1);
     expect(handleErrorsIfAny).toHaveBeenCalledWith(errors);
@@ -258,7 +258,7 @@ describe('runSumbit', () => {
     expect(handleErrorsIfAny).toHaveBeenCalledTimes(0);
     expect(wrapper.prop('onSubmit')).toHaveBeenCalledTimes(0);
 
-    await wrapper.instance().runSumbit(errors, formValues);
+    await wrapper.instance().runSubmit(errors, formValues);
     expect(wrapper.prop('onSubmit')).toHaveBeenCalledTimes(1);
     expect(handleErrorsIfAny).toHaveBeenCalledTimes(2);
     expect(handleErrorsIfAny).toHaveBeenCalledWith(errors);
