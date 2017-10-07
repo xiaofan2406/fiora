@@ -6,18 +6,19 @@ import { getFieldValue, getError } from './selectors';
 import withFiora from './withFiora';
 
 function Field({
+  name,
+  children,
   onValidate,
   value,
-  formName,
-  name,
-  dispatch,
   error,
-  children
+  formName,
+  dispatch
 }) {
-  // return true if there IS error
+  // return true if there is error
   const handleValidate = async () => {
+    // dispatch(startValidatingField(formName, name))
     const validationError = await onValidate(value);
-
+    // dispatch(finishValidatingField(formName, name))
     if (validationError) {
       dispatch(updateError(formName, name, validationError));
       return true;
@@ -40,8 +41,9 @@ Field.propTypes = {
   name: PropTypes.any.isRequired,
   children: PropTypes.func.isRequired,
   onValidate: PropTypes.func,
-  error: PropTypes.any,
+  initialValue: PropTypes.any,
   value: PropTypes.any.isRequired,
+  error: PropTypes.any,
   formName: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired
 };
@@ -50,25 +52,24 @@ Field.defaultProps = {
   onValidate: async () => null
 };
 
-const mapStateToProps = (state, { formName, name }) => ({
+export const mapStateToProps = (state, { formName, name }) => ({
   value: getFieldValue(state, { formName, fieldName: name }),
   error: getError(state, { formName, fieldName: name })
 });
 
-const enhance = compose(
-  withFiora({
-    initialize: (
-      { name, onValidate, initialValue },
-      { fiora: { formName, setValidateFunc }, store: { dispatch } }
-    ) => {
-      dispatch(createField(formName, name));
-      if (initialValue) {
-        dispatch(updateFieldValue(formName, name, initialValue));
-      }
-      setValidateFunc(name, onValidate);
-    }
-  }),
-  connect(mapStateToProps)
-);
+export const initialize = (
+  { name, onValidate, initialValue },
+  { fiora: { formName, setValidateFunc }, store: { dispatch } }
+) => {
+  dispatch(createField(formName, name));
+  if (initialValue) {
+    dispatch(updateFieldValue(formName, name, initialValue));
+  }
+  setValidateFunc(name, onValidate);
+};
+
+const enhance = compose(withFiora({ initialize }), connect(mapStateToProps));
+
+export { Field as Component };
 
 export default enhance(Field);
