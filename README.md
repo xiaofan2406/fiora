@@ -13,3 +13,8 @@
 [prettier]: https://github.com/prettier/prettier
 
 Forms, with react + redux
+
+### Get Started
+```
+yarn add fiora
+```
