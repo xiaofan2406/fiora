@@ -32,7 +32,7 @@ describe('default react hooks and methods', () => {
 
   it('sets the correct default onValidate prop', async () => {
     const result = await wrapper.prop('onValidate')();
-    expect(result).toEqual({});
+    expect(result).toEqual(null);
   });
 
   it('sets the correct fiora formName context', () => {

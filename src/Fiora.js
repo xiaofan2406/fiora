@@ -18,7 +18,7 @@ class Fiora extends React.Component {
   };
 
   static defaultProps = {
-    onValidate: async () => ({})
+    onValidate: async () => null
   };
 
   static childContextTypes = {
