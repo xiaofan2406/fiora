@@ -9,10 +9,6 @@ const withFiora = ({ initialize } = {}) => Component => {
       store: storeShape
     };
 
-    static propTypes = {
-      children: PropTypes.func.isRequired
-    };
-
     componentWillMount() {
       if (typeof initialize === 'function') {
         initialize(this.props, this.context);
@@ -27,7 +23,6 @@ const withFiora = ({ initialize } = {}) => Component => {
   }
 
   C.displayName = `withFiora(${Component.displayName || Component.name})`;
-  C.WrappedComponent = Component;
 
   return C;
 };
