@@ -18,10 +18,13 @@ FormError.defaultProps = {
   error: DEFAULT_ERROR
 };
 
-const mapStateToProps = (state, { formName }) => ({
+// props.formName is injected by `withFiora`
+export const mapStateToProps = (state, { formName }) => ({
   error: getError(state, { formName, fieldName: FORM_AS_FIELD_NAME })
 });
 
 const enhance = compose(withFiora(), connect(mapStateToProps));
 
 export default enhance(FormError);
+
+export { FormError as Component };

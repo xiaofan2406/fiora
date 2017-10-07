@@ -70,6 +70,6 @@ export const initialize = (
 
 const enhance = compose(withFiora({ initialize }), connect(mapStateToProps));
 
-export { Field as Component };
-
 export default enhance(Field);
+
+export { Field as Component };
