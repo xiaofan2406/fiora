@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   root: true,
   env: {
@@ -5,6 +7,13 @@ module.exports = {
     es6: true,
     node: true,
     jest: true
+  },
+  settings: {
+    'import/resolver': {
+      webpack: {
+        config: path.join(__dirname, './docs/config/webpack.dev.js')
+      }
+    }
   },
   parser: 'babel-eslint',
   parserOptions: {
@@ -19,6 +28,7 @@ module.exports = {
   plugins: ['react'],
   extends: ['airbnb', 'prettier'],
   rules: {
+    'global-require': 0,
     'import/no-extraneous-dependencies': 0, // allow import devDependencies
     'react/forbid-prop-types': 0, // allow all types of PropTypes
     'react/require-default-props': 0,
