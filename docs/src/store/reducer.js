@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
-
-import greetReducer from './greet';
+import { reducer as fioraReducer } from 'fiora';
 
 export default combineReducers({
-  greet: greetReducer
+  fiora: fioraReducer
 });

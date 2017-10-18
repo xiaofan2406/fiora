@@ -7,6 +7,7 @@ module.exports = {
       assets: `${paths.srcPath}/assets`,
       components: `${paths.srcPath}/components`,
       configs: `${paths.srcPath}/configs`,
+      fiora: `${paths.projectPath}/../lib`,
       hocs: `${paths.srcPath}/hocs`,
       store: `${paths.srcPath}/store`,
       styles: `${paths.srcPath}/styles`,

@@ -14,6 +14,7 @@ module.exports = {
     polyfill: require.resolve('./polyfills'),
     main: `${paths.srcPath}/index.js`,
     vendor: [
+      'fiora',
       'emotion',
       'react',
       'react-dom',
@@ -85,8 +86,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       inject: true,
-      template: `${paths.srcPath}/assets/index.html`,
-      favicon: `${paths.srcPath}/assets/favicon.ico`,
+      template: `${paths.projectPath}/index.html`,
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -112,14 +112,16 @@ module.exports = {
       sourceMap: true
     }),
     new ExtractTextPlugin('css/[name].[contenthash:8].css'),
-    // For surge.sh
-    // https://surge.sh/help/adding-a-200-page-for-client-side-routing
     new FileManagerPlugin({
       onEnd: {
         copy: [
           {
             source: `${paths.distPath}/index.html`,
             destination: `${paths.distPath}/200.html`
+          },
+          {
+            source: `${paths.distPath}/index.html`,
+            destination: `${paths.distPath}/404.html`
           }
         ]
       }

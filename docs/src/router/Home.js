@@ -1,8 +1,8 @@
 import React from 'react';
-import { Greet } from 'components';
+import { Login } from 'components';
 
 function Home() {
-  return <Greet />;
+  return <Login />;
 }
 
 export default Home;
