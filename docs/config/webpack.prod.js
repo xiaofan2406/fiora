@@ -30,7 +30,7 @@ module.exports = {
     path: paths.distPath,
     filename: 'js/[name].[chunkhash:8].js',
     chunkFilename: 'js/[name].[chunkhash:8].chunk.js',
-    publicPath: '/',
+    publicPath: 'https://xiaofan2406.github.io/fiora/',
     // Point sourcemap entries to original disk location
     devtoolModuleFilenameTemplate: info =>
       path
