@@ -19,7 +19,7 @@
     "lint:prettier": "prettier-check src/**/*.js",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "clean-docs-dist":
-      "rm -rf ./docs/js ./docs/css ./docs/media ./docs/200.html ./docs/404.html",
+      "rm -rf ./docs/js ./docs/css ./docs/media ./docs/200.html ./docs/404.html ./docs/index.html",
     "prebuild": "npm run lint && rm -rf ./lib && npm run clean-docs-dist",
     "build:docs":
       "NODE_ENV=production webpack --config ./docs/config/webpack.prod.js",

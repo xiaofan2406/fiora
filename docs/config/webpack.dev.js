@@ -51,7 +51,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       inject: true,
-      template: `${paths.projectPath}/index.html`
+      template: `${paths.srcPath}/assets/index.html`
     }),
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"development"' }),
     new webpack.HotModuleReplacementPlugin(),
