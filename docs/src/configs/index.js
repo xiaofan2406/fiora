@@ -1,19 +1,17 @@
 export const APP_TITLE = 'Fiora';
 
-const baseUrl = 'https://xiaofan2406.github.io/fiora';
-
 export const ROUTES = {
   HOME: {
-    path: baseUrl,
+    path: '/',
     name: 'Home',
     exact: true
   },
   ABOUT: {
-    path: `${baseUrl}/about`,
+    path: '/about',
     name: 'About'
   },
   CONTACT: {
-    path: `${baseUrl}/contact`,
+    path: '/contact',
     name: 'Contact'
   }
 };

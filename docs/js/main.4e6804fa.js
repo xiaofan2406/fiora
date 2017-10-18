@@ -510,12 +510,12 @@ webpackJsonp(
     './docs/src/configs/index.js': function(e, t, n) {
       'use strict';
       Object.defineProperty(t, '__esModule', { value: !0 });
-      var r = ((t.APP_TITLE = 'Fiora'), 'https://xiaofan2406.github.io/fiora');
-      t.ROUTES = {
-        HOME: { path: r, name: 'Home', exact: !0 },
-        ABOUT: { path: r + '/about', name: 'About' },
-        CONTACT: { path: r + '/contact', name: 'Contact' }
-      };
+      (t.APP_TITLE = 'Fiora'),
+        (t.ROUTES = {
+          HOME: { path: '/', name: 'Home', exact: !0 },
+          ABOUT: { path: '/about', name: 'About' },
+          CONTACT: { path: '/contact', name: 'Contact' }
+        });
     },
     './docs/src/index.js': function(e, t, n) {
       'use strict';
@@ -588,7 +588,7 @@ webpackJsonp(
       function o() {
         return u.default.createElement(
           a.BrowserRouter,
-          null,
+          { basename: 'https://xiaofan2406.github.io/fiora' },
           u.default.createElement(
             c.Layout,
             null,
@@ -861,4 +861,4 @@ webpackJsonp(
   },
   ['./docs/src/index.js']
 );
-//# sourceMappingURL=main.9dd59c40.js.map
+//# sourceMappingURL=main.4e6804fa.js.map
