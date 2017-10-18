@@ -99,18 +99,18 @@ webpackJsonp(
         })(),
         c = n('./node_modules/react/index.js'),
         d = r(c),
-        l = n('./node_modules/emotion/dist/index.es.js'),
-        i = n('./docs/src/styles/index.js'),
+        i = n('./node_modules/emotion/dist/index.es.js'),
+        l = n('./docs/src/styles/index.js'),
         f = n('./docs/src/configs/index.js'),
         m = n('./docs/src/assets/logo.svg'),
         p = r(m),
-        v = (0, l.css)(
+        v = (0, i.css)(
           'display:flex;align-items:center;& img{animation:spin infinite 10s linear;height:',
-          i.variables.Brand.logoHeight,
+          l.variables.Brand.logoHeight,
           'px;}& span{animation:fadeIn 2s ease;font-size:',
-          i.fontSizes.large,
+          l.fontSizes.large,
           'px;color:',
-          i.theme.inverseColor,
+          l.theme.inverseColor,
           ';}'
         ),
         y = (function(e) {
@@ -165,7 +165,7 @@ webpackJsonp(
           u.default.createElement(
             'div',
             { className: p },
-            u.default.createElement(l.default, null),
+            u.default.createElement(i.default, null),
             u.default.createElement(f.default, { height: 100 })
           ),
           t
@@ -179,9 +179,9 @@ webpackJsonp(
         c = n('./docs/src/styles/index.js');
       n('./docs/src/styles/reset.css'), n('./docs/src/styles/animation.css');
       var d = n('./docs/src/components/Layout/Brand.js'),
-        l = r(d),
-        i = n('./docs/src/components/Layout/Navigation.js'),
-        f = r(i),
+        i = r(d),
+        l = n('./docs/src/components/Layout/Navigation.js'),
+        f = r(l),
         m = (0, a.css)(
           'font-family:',
           c.theme.fontFamily,
@@ -208,8 +208,8 @@ webpackJsonp(
             return s.default.createElement(
               a.NavLink,
               {
-                className: l,
-                activeClassName: i,
+                className: i,
+                activeClassName: l,
                 key: e.path,
                 exact: e.exact,
                 to: e.path
@@ -229,7 +229,7 @@ webpackJsonp(
         a = n('./node_modules/react-router-dom/es/index.js'),
         c = n('./docs/src/configs/index.js'),
         d = n('./docs/src/styles/index.js'),
-        l = (0, u.css)(
+        i = (0, u.css)(
           'color:',
           d.theme.inverseColor,
           ';text-decoration:none;padding:0 0.5em;display:inline-block;line-height:',
@@ -240,7 +240,7 @@ webpackJsonp(
           d.theme.bgAccentColor,
           ';}'
         ),
-        i = (0, u.css)('border-bottom:2px solid ', d.theme.primaryColor, ';');
+        l = (0, u.css)('border-bottom:2px solid ', d.theme.primaryColor, ';');
       (t.Component = r), (t.default = r);
     },
     './docs/src/components/Layout/index.js': function(e, t, n) {
@@ -287,7 +287,7 @@ webpackJsonp(
       function s() {
         var e = this;
         return d.default.createElement(
-          i.default,
+          l.default,
           {
             name: 'Login',
             onValidate: (function() {
@@ -363,7 +363,7 @@ webpackJsonp(
             return d.default.createElement(
               p.default,
               null,
-              d.default.createElement(l.FormError, null, function(e) {
+              d.default.createElement(i.FormError, null, function(e) {
                 var t = e.formError;
                 return d.default.createElement(
                   'div',
@@ -372,7 +372,7 @@ webpackJsonp(
                 );
               }),
               d.default.createElement(
-                l.Field,
+                i.Field,
                 {
                   name: 'username',
                   onValidate: (function() {
@@ -424,7 +424,7 @@ webpackJsonp(
                 }
               ),
               d.default.createElement(
-                l.Field,
+                i.Field,
                 {
                   name: 'email',
                   onValidate: (function() {
@@ -485,8 +485,8 @@ webpackJsonp(
         a = r(u),
         c = n('./node_modules/react/index.js'),
         d = r(c),
-        l = n('./lib/index.js'),
-        i = r(l),
+        i = n('./lib/index.js'),
+        l = r(i),
         f = n('./docs/src/utils/api.js'),
         m = n('./docs/src/components/Aux.js'),
         p = r(m),
@@ -510,12 +510,12 @@ webpackJsonp(
     './docs/src/configs/index.js': function(e, t, n) {
       'use strict';
       Object.defineProperty(t, '__esModule', { value: !0 });
-      (t.APP_TITLE = 'Fiora'),
-        (t.ROUTES = {
-          HOME: { path: '/', name: 'Home', exact: !0 },
-          ABOUT: { path: '/about', name: 'About' },
-          CONTACT: { path: '/contact', name: 'Contact' }
-        });
+      var r = ((t.APP_TITLE = 'Fiora'), 'https://xiaofan2406.github.io/fiora');
+      t.ROUTES = {
+        HOME: { path: r, name: 'Home', exact: !0 },
+        ABOUT: { path: r + '/about', name: 'About' },
+        CONTACT: { path: r + '/contact', name: 'Contact' }
+      };
     },
     './docs/src/index.js': function(e, t, n) {
       'use strict';
@@ -528,16 +528,16 @@ webpackJsonp(
         a = r(u),
         c = n('./node_modules/react-redux/es/index.js'),
         d = n('./docs/src/router/index.js'),
-        l = r(d),
-        i = n('./docs/src/store/index.js'),
-        f = r(i),
+        i = r(d),
+        l = n('./docs/src/store/index.js'),
+        f = r(l),
         m = (0, f.default)(),
         p = document.getElementById('root');
       a.default.render(
         s.default.createElement(
           c.Provider,
           { store: m },
-          s.default.createElement(l.default, null)
+          s.default.createElement(i.default, null)
         ),
         p
       );
@@ -598,7 +598,7 @@ webpackJsonp(
               u.default.createElement(a.Route, {
                 path: d.ROUTES.HOME.path,
                 exact: d.ROUTES.HOME.exact,
-                component: i.default
+                component: l.default
               }),
               u.default.createElement(a.Route, {
                 path: d.ROUTES.ABOUT.path,
@@ -620,8 +620,8 @@ webpackJsonp(
         a = n('./node_modules/react-router-dom/es/index.js'),
         c = n('./docs/src/components/index.js'),
         d = n('./docs/src/configs/index.js'),
-        l = n('./docs/src/router/Home.js'),
-        i = r(l),
+        i = n('./docs/src/router/Home.js'),
+        l = r(i),
         f = n('./docs/src/router/About.js'),
         m = r(f),
         p = n('./docs/src/router/Contact.js'),
@@ -638,7 +638,7 @@ webpackJsonp(
             arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
           t = [c.default],
           n = (0, u.createStore)(
-            l.default,
+            i.default,
             e,
             (0, u.compose)(
               u.applyMiddleware.apply(void 0, t),
@@ -671,7 +671,7 @@ webpackJsonp(
         a = n('./node_modules/redux-thunk/lib/index.js'),
         c = r(a),
         d = n('./docs/src/store/reducer.js'),
-        l = r(d);
+        i = r(d);
       t.default = o;
     },
     './docs/src/store/reducer.js': function(e, t, n) {
@@ -861,4 +861,4 @@ webpackJsonp(
   },
   ['./docs/src/index.js']
 );
-//# sourceMappingURL=main.289ff440.js.map
+//# sourceMappingURL=main.9dd59c40.js.map

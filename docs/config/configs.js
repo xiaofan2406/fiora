@@ -25,6 +25,7 @@ module.exports = {
   devServerPort,
   devServerIp: process.env.HOST || getLocalIp(),
   testProdPort,
+  baseUrl: 'https://xiaofan2406.github.io/fiora/',
   paths: {
     projectPath,
     srcPath,
