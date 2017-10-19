@@ -26,11 +26,9 @@
     "postpublish": "git push && git push --tags",
     "dev":
       "NODE_ENV=development webpack-dev-server --config ./docs/config/webpack.dev.js",
-    "clean-docs-dist":
-      "rm -rf ./docs/js ./docs/css ./docs/media ./docs/200.html ./docs/index.html",
     "predocs":
-      "npm run clean-docs-dist && NODE_ENV=production webpack --config ./docs/config/webpack.prod.js",
-    "docs": "surge -p ./docs -d fiora.surge.sh"
+      "rm -rf ./docs/dist && NODE_ENV=production webpack --config ./docs/config/webpack.prod.js",
+    "docs": "surge -p ./docs/dist -d fiora.surge.sh"
   },
   "lint-staged": {
     "*.{js,json,css}": ["./node_modules/.bin/prettier --write", "git add"]

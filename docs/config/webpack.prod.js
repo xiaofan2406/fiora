@@ -87,6 +87,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: `${paths.srcPath}/assets/index.html`,
+      favicon: `${paths.srcPath}/assets/favicon.ico`,
       minify: {
         removeComments: true,
         collapseWhitespace: true,

@@ -16,7 +16,7 @@ function getLocalIp() {
 
 const projectPath = path.join(__dirname, '..');
 const srcPath = path.join(projectPath, 'src');
-const distPath = path.join(projectPath);
+const distPath = path.join(projectPath, 'dist');
 
 const devServerPort = process.env.PORT || 8080;
 const testProdPort = process.env.PORT || 9000;

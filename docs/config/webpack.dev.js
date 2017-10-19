@@ -51,7 +51,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       inject: true,
-      template: `${paths.srcPath}/assets/index.html`
+      template: `${paths.srcPath}/assets/index.html`,
+      favicon: `${paths.srcPath}/assets/favicon.ico`
     }),
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"development"' }),
     new webpack.HotModuleReplacementPlugin(),
