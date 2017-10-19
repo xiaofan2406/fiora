@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 const common = require('./webpack.common');
-const { paths, baseUrl } = require('./configs');
+const { paths } = require('./configs');
 const babelConfig = require('../.babelrc');
 
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
     path: paths.distPath,
     filename: 'js/[name].[chunkhash:8].js',
     chunkFilename: 'js/[name].[chunkhash:8].chunk.js',
-    publicPath: baseUrl,
+    publicPath: '/',
     // Point sourcemap entries to original disk location
     devtoolModuleFilenameTemplate: info =>
       path
