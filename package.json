@@ -31,7 +31,7 @@
     "docs": "surge -p ./docs/dist -d fiora.surge.sh"
   },
   "lint-staged": {
-    "*.{js,json,css}": ["./node_modules/.bin/prettier --write", "git add"]
+    "*.{js,json}": ["./node_modules/.bin/prettier --write", "git add"]
   },
   "prettier": {
     "singleQuote": true
