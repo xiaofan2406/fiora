@@ -9,7 +9,7 @@ import Contact from './Contact';
 
 function Router() {
   return (
-    <BrowserRouter basename="https://xiaofan2406.github.io/fiora">
+    <BrowserRouter basename="/fiora/">
       <Layout>
         <Switch>
           <Route

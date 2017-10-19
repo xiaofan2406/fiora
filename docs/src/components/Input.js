@@ -23,7 +23,6 @@ const helperStyle = css`
 `;
 
 function Input({ error, feedback, ...rest }) {
-  console.log('render Input');
   return (
     <div className={wrapperStyle}>
       <input {...rest} />

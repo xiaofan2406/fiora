@@ -16,7 +16,6 @@ function Login() {
       }}
       onSubmit={async values => {
         const res = await login(values);
-        console.log(res.error);
         if (res.error && res.error.match('username')) {
           return { username: res.error };
         }
@@ -35,40 +34,34 @@ function Login() {
             onValidate={async username =>
               username.length < 5 ? 'hum...need more than 5 characters' : null}
           >
-            {({ value, error, handleChange, handleValidate }) => {
-              console.log('render username Field');
-              return (
-                <Input
-                  type="text"
-                  value={value}
-                  error={error}
-                  onBlur={handleValidate}
-                  onChange={event => {
-                    handleChange(event.target.value);
-                  }}
-                />
-              );
-            }}
+            {({ value, error, handleChange, handleValidate }) => (
+              <Input
+                type="text"
+                value={value}
+                error={error}
+                onBlur={handleValidate}
+                onChange={event => {
+                  handleChange(event.target.value);
+                }}
+              />
+            )}
           </Field>
           <Field
             name="email"
             onValidate={async email =>
               email.indexOf('@') === -1 ? 'hum...need a valid email' : null}
           >
-            {({ value, error, handleChange, handleValidate }) => {
-              console.log('render email Field');
-              return (
-                <Input
-                  type="email"
-                  value={value}
-                  error={error}
-                  onBlur={handleValidate}
-                  onChange={event => {
-                    handleChange(event.target.value);
-                  }}
-                />
-              );
-            }}
+            {({ value, error, handleChange, handleValidate }) => (
+              <Input
+                type="email"
+                value={value}
+                error={error}
+                onBlur={handleValidate}
+                onChange={event => {
+                  handleChange(event.target.value);
+                }}
+              />
+            )}
           </Field>
           <button onClick={handleSubmit}>Submit</button>
         </Aux>

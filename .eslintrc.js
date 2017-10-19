@@ -28,6 +28,7 @@ module.exports = {
   plugins: ['react'],
   extends: ['airbnb', 'prettier'],
   rules: {
+    'no-console': 0,
     'global-require': 0,
     'import/no-extraneous-dependencies': 0, // allow import devDependencies
     'react/forbid-prop-types': 0, // allow all types of PropTypes

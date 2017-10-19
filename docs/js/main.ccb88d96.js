@@ -25,14 +25,11 @@ webpackJsonp(
         var t = e.error,
           n = e.feedback,
           o = r(e, ['error', 'feedback']);
-        return (
-          console.log('render Input'),
-          u.default.createElement(
-            'div',
-            { className: a },
-            u.default.createElement('input', o),
-            u.default.createElement('div', { className: c }, t || n)
-          )
+        return u.default.createElement(
+          'div',
+          { className: a },
+          u.default.createElement('input', o),
+          u.default.createElement('div', { className: c }, t || n)
         );
       }
       Object.defineProperty(t, '__esModule', { value: !0 }),
@@ -334,16 +331,15 @@ webpackJsonp(
                           case 2:
                             if (
                               ((r = e.sent),
-                              console.log(r.error),
                               !r.error || !r.error.match('username'))
                             ) {
-                              e.next = 6;
+                              e.next = 5;
                               break;
                             }
                             return e.abrupt('return', { username: r.error });
-                          case 6:
+                          case 5:
                             return e.abrupt('return', {});
-                          case 7:
+                          case 6:
                           case 'end':
                             return e.stop();
                         }
@@ -409,18 +405,15 @@ webpackJsonp(
                     n = e.error,
                     r = e.handleChange,
                     o = e.handleValidate;
-                  return (
-                    console.log('render username Field'),
-                    d.default.createElement(y.default, {
-                      type: 'text',
-                      value: t,
-                      error: n,
-                      onBlur: o,
-                      onChange: function(e) {
-                        r(e.target.value);
-                      }
-                    })
-                  );
+                  return d.default.createElement(y.default, {
+                    type: 'text',
+                    value: t,
+                    error: n,
+                    onBlur: o,
+                    onChange: function(e) {
+                      r(e.target.value);
+                    }
+                  });
                 }
               ),
               d.default.createElement(
@@ -461,18 +454,15 @@ webpackJsonp(
                     n = e.error,
                     r = e.handleChange,
                     o = e.handleValidate;
-                  return (
-                    console.log('render email Field'),
-                    d.default.createElement(y.default, {
-                      type: 'email',
-                      value: t,
-                      error: n,
-                      onBlur: o,
-                      onChange: function(e) {
-                        r(e.target.value);
-                      }
-                    })
-                  );
+                  return d.default.createElement(y.default, {
+                    type: 'email',
+                    value: t,
+                    error: n,
+                    onBlur: o,
+                    onChange: function(e) {
+                      r(e.target.value);
+                    }
+                  });
                 }
               ),
               d.default.createElement('button', { onClick: n }, 'Submit')
@@ -588,7 +578,7 @@ webpackJsonp(
       function o() {
         return u.default.createElement(
           a.BrowserRouter,
-          { basename: 'https://xiaofan2406.github.io/fiora' },
+          { basename: '/fiora/' },
           u.default.createElement(
             c.Layout,
             null,
@@ -861,4 +851,4 @@ webpackJsonp(
   },
   ['./docs/src/index.js']
 );
-//# sourceMappingURL=main.4e6804fa.js.map
+//# sourceMappingURL=main.ccb88d96.js.map
