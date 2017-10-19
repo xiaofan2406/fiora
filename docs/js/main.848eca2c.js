@@ -578,7 +578,7 @@ webpackJsonp(
       function o() {
         return u.default.createElement(
           a.BrowserRouter,
-          { basename: '/fiora/' },
+          null,
           u.default.createElement(
             c.Layout,
             null,
@@ -851,4 +851,4 @@ webpackJsonp(
   },
   ['./docs/src/index.js']
 );
-//# sourceMappingURL=main.ccb88d96.js.map
+//# sourceMappingURL=main.848eca2c.js.map

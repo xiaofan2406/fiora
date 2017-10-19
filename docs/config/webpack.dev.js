@@ -69,7 +69,7 @@ module.exports = {
     https: process.env.HTTPS === 'true',
     host: devServerIp,
     port: devServerPort,
-    setup(app) {
+    before(app) {
       app.use((req, res, next) => {
         if (req.url === '/service-worker.js') {
           res.setHeader('Content-Type', 'text/javascript');

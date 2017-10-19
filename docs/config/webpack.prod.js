@@ -118,10 +118,6 @@ module.exports = {
           {
             source: `${paths.distPath}/index.html`,
             destination: `${paths.distPath}/200.html`
-          },
-          {
-            source: `${paths.distPath}/index.html`,
-            destination: `${paths.distPath}/404.html`
           }
         ]
       }
