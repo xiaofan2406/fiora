@@ -2,45 +2,53 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import withFiora from '../src/withFiora';
 
-const Wrapped = () => <div>wrapped</div>;
-const context = {
-  store: {
-    dispatch: () => {},
-    subscribe: () => {},
-    getState: () => {}
-  },
-  fiora: { formName: 'login' }
-};
+const formName = 'login';
+let Wrapped;
+let context;
 
-it('triggers additional initialize function when given', () => {
+beforeEach(() => {
+  Wrapped = () => <div>wrapped</div>;
+  context = {
+    store: {
+      dispatch: () => {},
+      subscribe: () => {},
+      getState: () => {}
+    },
+    fiora: { formName, handleSubmit: () => {} }
+  };
+});
+
+it('triggers the initialize function when given', () => {
+  const props = {};
   const options = { initialize: jest.fn() };
   const Component = withFiora(options)(Wrapped);
-  const props = { isPassed: true };
   shallow(<Component {...props} />, { context });
   expect(options.initialize).toHaveBeenCalledTimes(1);
   expect(options.initialize).toHaveBeenCalledWith(props, context);
 });
 
 it('sets the correct displayName', () => {
-  let Component = withFiora()(Wrapped);
-  expect(Component.displayName).toBe('withFiora(Wrapped)');
+  expect(withFiora()(Wrapped).displayName).toBe('withFiora(Wrapped)');
 
   Wrapped.displayName = 'BetterWrapped';
-  Component = withFiora()(Wrapped);
-  expect(Component.displayName).toBe('withFiora(BetterWrapped)');
+  expect(withFiora()(Wrapped).displayName).toBe('withFiora(BetterWrapped)');
 });
 
 it('injects formName prop by default', () => {
   const Component = withFiora()(Wrapped);
   const wrapper = shallow(<Component />, { context });
-  expect(wrapper.prop('formName')).toBe('login');
+  expect(wrapper.props().formName).toBe(formName);
+});
+
+it('injects handleSubmit prop if withHandleSubmit is true', () => {
+  const Component = withFiora({ withHandleSubmit: true })(Wrapped);
+  const wrapper = shallow(<Component />, { context });
+  expect(wrapper.props().handleSubmit).toEqual(context.fiora.handleSubmit);
 });
 
 it('passes along all props to the wrapped component', () => {
   const Component = withFiora()(Wrapped);
-  const props = { isPassed: true, name: 'username' };
-
-  const wrapper = shallow(<Component {...props} />, { context });
-  expect(wrapper.find(Wrapped).prop('isPassed')).toBe(true);
+  const wrapper = shallow(<Component name="username" isValid />, { context });
+  expect(wrapper.find(Wrapped).prop('isValid')).toBe(true);
   expect(wrapper.find(Wrapped).prop('name')).toBe('username');
 });
