@@ -1,11 +1,6 @@
 import { combineReducers } from 'redux';
 import actionTypes from './actions';
-import {
-  getFormFieldKey,
-  DEFAULT_FIELD_VALUE,
-  DEFAULT_ERROR,
-  FORM_AS_FIELD_NAME
-} from './helpers';
+import { getFormFieldKey, DEFAULT_FIELD_VALUE, DEFAULT_ERROR } from './helpers';
 
 // const initialFormMeta = {
 //   // dirty: false,
@@ -87,19 +82,8 @@ export function fieldValueRecuder(state = {}, action) {
 }
 
 export function errorsReducer(state = {}, action) {
-  const fieldKeyName = getFormFieldKey(
-    action.formName,
-    action.fieldName || FORM_AS_FIELD_NAME // CREATE_FORM does not have action.fieldName
-  );
+  const fieldKeyName = getFormFieldKey(action.formName, action.fieldName);
   switch (action.type) {
-    case actionTypes.CREATE_FORM:
-    case actionTypes.CREATE_FIELD:
-      return Object.keys(state).includes(fieldKeyName)
-        ? state
-        : {
-            ...state,
-            [fieldKeyName]: DEFAULT_ERROR
-          };
     case actionTypes.UPDATE_FIELD_VALUE:
       return Object.keys(state).includes(fieldKeyName)
         ? {
@@ -108,12 +92,10 @@ export function errorsReducer(state = {}, action) {
           }
         : state;
     case actionTypes.UPDATE_ERROR:
-      return Object.keys(state).includes(fieldKeyName)
-        ? {
-            ...state,
-            [fieldKeyName]: action.error
-          }
-        : state;
+      return {
+        ...state,
+        [fieldKeyName]: action.error
+      };
     default:
       return state;
   }
