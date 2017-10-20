@@ -8,7 +8,7 @@ import { DEFAULT_ERROR, FORM_AS_FIELD_NAME } from '../src/helpers';
 const formName = 'login';
 let wrapper;
 beforeEach(() => {
-  wrapper = mount(<Fiora name={formName}>{() => ''}</Fiora>, {
+  wrapper = mount(<Fiora name={formName}>fiora</Fiora>, {
     context: {
       store: {
         dispatch: jest.fn(),
@@ -16,45 +16,6 @@ beforeEach(() => {
         getState: jest.fn()
       }
     }
-  });
-});
-
-describe('default react hooks and methods', () => {
-  it('triggers dispatch for creating the form during componentWillMount', () => {
-    wrapper.instance().context.store.dispatch = jest.fn();
-    const { dispatch } = wrapper.instance().context.store;
-    expect(dispatch).toHaveBeenCalledTimes(0);
-
-    wrapper.instance().componentWillMount();
-    expect(dispatch).toHaveBeenCalledTimes(1);
-    expect(dispatch).toHaveBeenCalledWith(createForm(formName));
-  });
-
-  it('sets the correct default onValidate prop', async () => {
-    const result = await wrapper.prop('onValidate')();
-    expect(result).toEqual(null);
-  });
-
-  it('sets the correct fiora formName context', () => {
-    const { fiora } = wrapper.instance().getChildContext();
-    expect(fiora).toHaveProperty('formName', formName);
-  });
-
-  it('sets the correct fiora setValidateFunc context', () => {
-    const childContext = wrapper.instance().getChildContext();
-    expect(wrapper.instance().fieldValidations).toEqual({});
-
-    childContext.fiora.setValidateFunc('username', () => {});
-    const { username } = wrapper.instance().fieldValidations;
-    expect(typeof username).toBe('function');
-  });
-
-  it('returns children with handleSubmit on render', () => {
-    wrapper.setProps({ children: jest.fn(() => '') });
-    expect(wrapper.prop('children')).toHaveBeenCalledWith({
-      handleSubmit: wrapper.instance().handleSubmit
-    });
-    expect(wrapper.text()).toEqual('');
   });
 });
 
@@ -297,12 +258,57 @@ describe('handleSubmit', () => {
     expect(runValidations).toHaveBeenCalledWith(formValues);
   });
 
-  it('triggers runSubmitruns', async () => {
+  it('triggers runSubmit', async () => {
     const { handleSubmit, runSubmit } = wrapper.instance();
     expect(runSubmit).toHaveBeenCalledTimes(0);
 
     await handleSubmit();
     expect(runSubmit).toHaveBeenCalledTimes(1);
     expect(runSubmit).toHaveBeenCalledWith(errors, formValues);
+  });
+});
+
+describe('default react hooks and methods', () => {
+  it('triggers dispatch for creating the form during componentWillMount', () => {
+    wrapper.instance().context.store.dispatch = jest.fn();
+    const { dispatch } = wrapper.instance().context.store;
+    expect(dispatch).toHaveBeenCalledTimes(0);
+
+    wrapper.instance().componentWillMount();
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(dispatch).toHaveBeenCalledWith(createForm(formName));
+  });
+
+  it('sets the correct default onValidate prop', async () => {
+    const result = await wrapper.prop('onValidate')();
+    expect(result).toEqual(null);
+  });
+
+  it('sets the correct fiora formName context', () => {
+    const { fiora } = wrapper.instance().getChildContext();
+    expect(fiora).toHaveProperty('formName', formName);
+  });
+
+  it('sets the correct fiora setValidateFunc context', () => {
+    const childContext = wrapper.instance().getChildContext();
+    expect(wrapper.instance().fieldValidations).toEqual({});
+
+    childContext.fiora.setValidateFunc('username', () => {});
+    const { username } = wrapper.instance().fieldValidations;
+    expect(typeof username).toBe('function');
+  });
+
+  it('sets the correct fiora handleSubmit context', () => {
+    const childContext = wrapper.instance().getChildContext();
+    expect(childContext.fiora.handleSubmit).toEqual(
+      wrapper.instance().handleSubmit
+    );
+  });
+
+  it('renders children', () => {
+    expect(wrapper.text()).toEqual('fiora');
+
+    wrapper.setProps({ children: <div>react</div> });
+    expect(wrapper.text()).toEqual('react');
   });
 });

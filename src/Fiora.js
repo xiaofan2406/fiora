@@ -14,7 +14,7 @@ class Fiora extends React.Component {
     name: PropTypes.string.isRequired,
     onValidate: PropTypes.func,
     onSubmit: PropTypes.func.isRequired,
-    children: PropTypes.func.isRequired
+    children: PropTypes.node.isRequired
   };
 
   static defaultProps = {
@@ -29,7 +29,8 @@ class Fiora extends React.Component {
     return {
       fiora: {
         formName: this.props.name,
-        setValidateFunc: this.setValidateFunc
+        setValidateFunc: this.setValidateFunc,
+        handleSubmit: this.handleSubmit
       }
     };
   }
@@ -117,7 +118,7 @@ class Fiora extends React.Component {
   };
 
   render() {
-    return this.props.children({ handleSubmit: this.handleSubmit });
+    return this.props.children;
   }
 }
 
