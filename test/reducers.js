@@ -12,219 +12,243 @@ import {
 } from '../src/helpers';
 
 const formName = 'login';
-const fieldName = 'password';
 
 describe('formFieldsRecuder', () => {
-  const mockState = () => ({ [formName]: [fieldName] });
+  const fields = ['username', 'password'];
+  const mockState = () => ({ [formName]: fields });
 
-  it('initializes the form fields if form does not exist for CREATE_FORM', () => {
-    const newForm = 'register';
-    const action = { type: actionTypes.CREATE_FORM, formName: newForm };
+  describe('for CREATE_FORM', () => {
+    it('initializes the form fields if form does not exist', () => {
+      const newForm = 'register';
+      const action = { type: actionTypes.CREATE_FORM, formName: newForm };
 
-    const state = mockState();
-    expect(state).not.toHaveProperty(newForm);
+      const state = mockState();
+      expect(state).not.toHaveProperty(newForm);
 
-    const newState = formFieldsRecuder(state, action);
-    expect(newState).toHaveProperty(newForm, []);
+      const newState = formFieldsRecuder(state, action);
+      expect(newState).toHaveProperty(newForm, []);
+    });
+
+    it('returns current state if form exists', () => {
+      const action = { type: actionTypes.CREATE_FORM, formName };
+
+      const state = mockState();
+      expect(state).toHaveProperty(formName);
+
+      const newState = formFieldsRecuder(state, action);
+      expect(newState).toEqual(state);
+    });
   });
 
-  it('returns current state if form exists for CREATE_FORM', () => {
-    const action = { type: actionTypes.CREATE_FORM, formName };
+  describe('for CREATE_FIELD', () => {
+    it('updates the form fields if form exists', () => {
+      const newField = 'email';
+      const action = {
+        type: actionTypes.CREATE_FIELD,
+        formName,
+        fieldName: newField
+      };
 
-    const state = mockState();
-    expect(state).toHaveProperty(formName);
+      const state = mockState();
+      expect(state).toHaveProperty(formName);
+      expect(state[formName]).not.toContain(newField);
 
-    const newState = formFieldsRecuder(state, action);
-    expect(newState).toEqual(state);
-  });
+      const newState = formFieldsRecuder(state, action);
+      expect(newState).toHaveProperty(formName, [...fields, newField]);
+    });
 
-  it('updates the form fields if form exists for CREATE_FIELD', () => {
-    const newField = 'username';
-    const action = {
-      type: actionTypes.CREATE_FIELD,
-      formName,
-      fieldName: newField
-    };
+    it('returns current state if form does not exist', () => {
+      const newForm = 'register';
+      const action = {
+        type: actionTypes.CREATE_FIELD,
+        formName: newForm,
+        fieldName: 'email'
+      };
 
-    const state = mockState();
-    expect(state).toHaveProperty(formName);
-    expect(state[formName]).not.toContain(newField);
+      const state = mockState();
+      expect(state).not.toHaveProperty(newForm);
 
-    const newState = formFieldsRecuder(state, action);
-    expect(newState).toHaveProperty(formName, [fieldName, newField]);
-  });
+      const newState = formFieldsRecuder(state, action);
+      expect(newState).toEqual(state);
+    });
 
-  it('returns current state if form does not exist for CREATE_FIELD', () => {
-    const newField = 'username';
-    const newForm = 'register';
-    const action = {
-      type: actionTypes.CREATE_FIELD,
-      formName: newForm,
-      fieldName: newField
-    };
+    it('does not duplicate the field if field exists', () => {
+      const newField = 'username';
+      const action = {
+        type: actionTypes.CREATE_FIELD,
+        formName,
+        fieldName: newField
+      };
 
-    const state = mockState();
-    expect(state).not.toHaveProperty(newForm);
+      const state = mockState();
+      expect(state).toHaveProperty(formName);
+      expect(state[formName]).toContain(newField);
 
-    const newState = formFieldsRecuder(state, action);
-    expect(newState).toEqual(state);
-  });
-
-  it('does not duplicate the field if field exists for CREATE_FIELD', () => {
-    const action = { type: actionTypes.CREATE_FIELD, formName, fieldName };
-
-    const state = mockState();
-    expect(state).toHaveProperty(formName, [fieldName]);
-
-    const newState = formFieldsRecuder(state, action);
-    expect(newState).toHaveProperty(formName, [fieldName]);
+      const usernameFields = formFieldsRecuder(state, action)[formName].filter(
+        field => field === newField
+      );
+      expect(usernameFields.length).toBe(1);
+    });
   });
 
   it('returns current state for other actions', () => {
     const action = { type: 'Unknown' };
     const state = mockState();
-    const newState = formFieldsRecuder(state, action);
-    expect(newState).toEqual(state);
+    expect(formFieldsRecuder(state, action)).toEqual(state);
   });
 });
 
 describe('fieldValueRecuder', () => {
-  const mockState = override => ({
-    [getFormFieldKey(formName, fieldName)]: override || DEFAULT_FIELD_VALUE
+  const existingField = 'username';
+  const mockState = () => ({
+    [getFormFieldKey(formName, existingField)]: 'admin'
   });
 
-  it('initializes the default value if form field does not exist for CREATE_FIELD', () => {
-    const newField = 'username';
-    const action = {
-      type: actionTypes.CREATE_FIELD,
-      formName,
-      fieldName: newField
-    };
-    const fieldKeyName = getFormFieldKey(formName, newField);
+  describe('for CREATE_FIELD', () => {
+    it('initializes the default value if form field does not exist', () => {
+      const newField = 'email';
+      const action = {
+        type: actionTypes.CREATE_FIELD,
+        formName,
+        fieldName: newField
+      };
+      const formFieldKey = getFormFieldKey(formName, newField);
 
-    const state = mockState();
-    expect(state).not.toHaveProperty(fieldKeyName);
+      const state = mockState();
+      expect(state).not.toHaveProperty(formFieldKey);
 
-    const newState = fieldValueRecuder(state, action);
-    expect(newState).toHaveProperty(fieldKeyName, DEFAULT_FIELD_VALUE);
+      const newState = fieldValueRecuder(state, action);
+      expect(newState).toHaveProperty(formFieldKey, DEFAULT_FIELD_VALUE);
+    });
+
+    it('returns current state if form field exists', () => {
+      const action = {
+        type: actionTypes.CREATE_FIELD,
+        formName,
+        fieldName: existingField
+      };
+      const formFieldKey = getFormFieldKey(formName, existingField);
+
+      const state = mockState();
+      expect(state).toHaveProperty(formFieldKey);
+
+      const newState = fieldValueRecuder(state, action);
+      expect(newState).toEqual(state);
+    });
   });
 
-  it('returns current state if form field exists for CREATE_FIELD', () => {
-    const existingValue = 'admin';
-    const action = { type: actionTypes.CREATE_FIELD, formName, fieldName };
-    const fieldKeyName = getFormFieldKey(formName, fieldName);
+  describe('for UPDATE_FIELD_VALUE', () => {
+    it('updates the value if form field exits', () => {
+      const newValue = 'super user';
+      const action = {
+        type: actionTypes.UPDATE_FIELD_VALUE,
+        formName,
+        fieldName: existingField,
+        value: newValue
+      };
+      const formFieldKey = getFormFieldKey(formName, existingField);
 
-    const state = mockState(existingValue);
-    expect(state).toHaveProperty(fieldKeyName, existingValue);
+      const state = mockState();
+      expect(state).toHaveProperty(formFieldKey);
 
-    const newState = fieldValueRecuder(state, action);
-    expect(newState).toEqual(state);
-  });
+      const newState = fieldValueRecuder(state, action);
+      expect(newState).toHaveProperty(formFieldKey, newValue);
+    });
 
-  it('updates the value if form field exits for UPDATE_FIELD_VALUE', () => {
-    const existingValue = 'admin';
-    const newValue = 'super user';
-    const action = {
-      type: actionTypes.UPDATE_FIELD_VALUE,
-      formName,
-      fieldName,
-      value: newValue
-    };
-    const fieldKeyName = getFormFieldKey(formName, fieldName);
+    it('returns current state if form field does not exist', () => {
+      const newField = 'email';
+      const newValue = 'super user';
+      const action = {
+        type: actionTypes.UPDATE_FIELD_VALUE,
+        formName,
+        fieldName: newField,
+        value: newValue
+      };
+      const formFieldKey = getFormFieldKey(formName, newField);
 
-    const state = mockState(existingValue);
-    expect(state).toHaveProperty(fieldKeyName, existingValue);
+      const state = mockState();
+      expect(state).not.toHaveProperty(formFieldKey);
 
-    const newState = fieldValueRecuder(state, action);
-    expect(newState).toHaveProperty(fieldKeyName, newValue);
-  });
-
-  it('returns current state if form field does not exist for UPDATE_FIELD_VALUE', () => {
-    const newField = 'username';
-    const newValue = 'super user';
-    const action = {
-      type: actionTypes.UPDATE_FIELD_VALUE,
-      formName,
-      fieldName: newField,
-      value: newValue
-    };
-
-    const fieldKeyName = getFormFieldKey(formName, newField);
-
-    const state = mockState();
-    expect(state).not.toHaveProperty(fieldKeyName);
-
-    const newState = fieldValueRecuder(state, action);
-    expect(newState).toEqual(state);
+      const newState = fieldValueRecuder(state, action);
+      expect(newState).toEqual(state);
+    });
   });
 
   it('returns current state for other actions', () => {
     const action = { type: 'Unknown' };
     const state = mockState();
-    const newState = fieldValueRecuder(state, action);
-    expect(newState).toEqual(state);
+    expect(fieldValueRecuder(state, action)).toEqual(state);
   });
 });
 
+// TODO remove default error
 describe('errorsReducer', () => {
+  const existingField = 'username';
   const mockState = override => ({
-    [getFormFieldKey(formName, fieldName)]: DEFAULT_ERROR,
+    [getFormFieldKey(formName, existingField)]: DEFAULT_ERROR,
     ...override
   });
 
-  it('initializes the defaul form error if form does not exist for CREATE_FORM', () => {
-    const action = { type: actionTypes.CREATE_FORM, formName };
+  describe('for CREATE_FORM', () => {
+    it('initializes the defaul form error if form does not exist ', () => {
+      const action = { type: actionTypes.CREATE_FORM, formName };
+      const formFieldKey = getFormFieldKey(formName, FORM_AS_FIELD_NAME);
 
-    const fieldKeyName = getFormFieldKey(formName, FORM_AS_FIELD_NAME);
+      const state = mockState();
+      expect(state).not.toHaveProperty(formFieldKey);
 
-    const state = mockState();
-    expect(state).not.toHaveProperty(fieldKeyName);
+      const newState = errorsReducer(state, action);
+      expect(newState).toHaveProperty(formFieldKey, DEFAULT_ERROR);
+    });
 
-    const newState = errorsReducer(state, action);
-    expect(newState).toHaveProperty(fieldKeyName, DEFAULT_ERROR);
+    it('returns current state if form error exists', () => {
+      const existingError = 'Invalid';
+      const action = { type: actionTypes.CREATE_FORM, formName };
+
+      const formFieldKey = getFormFieldKey(formName, FORM_AS_FIELD_NAME);
+
+      const state = mockState({ [formFieldKey]: existingError });
+      expect(state).toHaveProperty(formFieldKey, existingError);
+
+      const newState = errorsReducer(state, action);
+      expect(newState).toEqual(state);
+    });
   });
 
-  it('initializes the defaul field error if form field does not exist for CREATE_FIELD', () => {
-    const newField = 'username';
-    const action = {
-      type: actionTypes.CREATE_FIELD,
-      formName,
-      fieldName: newField
-    };
+  describe('for CREATE_FIELD', () => {
+    it('initializes the defaul field error if form field does not exist', () => {
+      const newField = 'email';
+      const action = {
+        type: actionTypes.CREATE_FIELD,
+        formName,
+        fieldName: newField
+      };
 
-    const fieldKeyName = getFormFieldKey(formName, newField);
+      const formFieldKey = getFormFieldKey(formName, newField);
 
-    const state = mockState();
-    expect(state).not.toHaveProperty(fieldKeyName);
+      const state = mockState();
+      expect(state).not.toHaveProperty(formFieldKey);
 
-    const newState = errorsReducer(state, action);
-    expect(newState).toHaveProperty(fieldKeyName, DEFAULT_ERROR);
-  });
+      const newState = errorsReducer(state, action);
+      expect(newState).toHaveProperty(formFieldKey, DEFAULT_ERROR);
+    });
 
-  it('returns current state if form error exists for CREATE_FORM', () => {
-    const existingError = 'Invalid';
-    const action = { type: actionTypes.CREATE_FORM, formName };
+    it('returns current state if field error exists', () => {
+      const existingError = 'Invalid';
+      const action = {
+        type: actionTypes.CREATE_FIELD,
+        formName,
+        fieldName: existingField
+      };
 
-    const fieldKeyName = getFormFieldKey(formName, FORM_AS_FIELD_NAME);
+      const formFieldKey = getFormFieldKey(formName, existingField);
 
-    const state = mockState({ [fieldKeyName]: existingError });
-    expect(state).toHaveProperty(fieldKeyName, existingError);
+      const state = mockState({ [formFieldKey]: existingError });
+      expect(state).toHaveProperty(formFieldKey, existingError);
 
-    const newState = errorsReducer(state, action);
-    expect(newState).toEqual(state);
-  });
-
-  it('returns current state if field error exists for CREATE_FIELD', () => {
-    const existingError = 'Invalid';
-    const action = { type: actionTypes.CREATE_FIELD, formName, fieldName };
-
-    const fieldKeyName = getFormFieldKey(formName, fieldName);
-
-    const state = mockState({ [fieldKeyName]: existingError });
-    expect(state).toHaveProperty(fieldKeyName, existingError);
-
-    const newState = errorsReducer(state, action);
-    expect(newState).toEqual(state);
+      const newState = errorsReducer(state, action);
+      expect(newState).toEqual(state);
+    });
   });
 
   it('resets the defaul error if form field exists for UPDATE_FIELD_VALUE', () => {
@@ -232,21 +256,21 @@ describe('errorsReducer', () => {
     const action = {
       type: actionTypes.UPDATE_FIELD_VALUE,
       formName,
-      fieldName,
+      fieldName: existingField,
       value: 'super user'
     };
 
-    const fieldKeyName = getFormFieldKey(formName, fieldName);
+    const formFieldKey = getFormFieldKey(formName, existingField);
 
-    const state = mockState({ [fieldKeyName]: existingError });
-    expect(state).toHaveProperty(fieldKeyName, existingError);
+    const state = mockState({ [formFieldKey]: existingError });
+    expect(state).toHaveProperty(formFieldKey, existingError);
 
     const newState = errorsReducer(state, action);
-    expect(newState).toHaveProperty(fieldKeyName, DEFAULT_ERROR);
+    expect(newState).toHaveProperty(formFieldKey, DEFAULT_ERROR);
   });
 
   it('returns current state if field error does not exist for UPDATE_FIELD_VALUE', () => {
-    const newField = 'username';
+    const newField = 'email';
     const action = {
       type: actionTypes.UPDATE_FIELD_VALUE,
       formName,
@@ -254,10 +278,10 @@ describe('errorsReducer', () => {
       value: 'super user'
     };
 
-    const fieldKeyName = getFormFieldKey(formName, newField);
+    const formFieldKey = getFormFieldKey(formName, newField);
 
     const state = mockState();
-    expect(state).not.toHaveProperty(fieldKeyName);
+    expect(state).not.toHaveProperty(formFieldKey);
 
     const newState = errorsReducer(state, action);
     expect(newState).toEqual(state);
@@ -268,21 +292,21 @@ describe('errorsReducer', () => {
     const action = {
       type: actionTypes.UPDATE_ERROR,
       formName,
-      fieldName,
+      fieldName: existingField,
       error: newError
     };
 
-    const fieldKeyName = getFormFieldKey(formName, fieldName);
+    const formFieldKey = getFormFieldKey(formName, existingField);
 
     const state = mockState();
-    expect(state).toHaveProperty(fieldKeyName);
+    expect(state).toHaveProperty(formFieldKey);
 
     const newState = errorsReducer(state, action);
-    expect(newState).toHaveProperty(fieldKeyName, newError);
+    expect(newState).toHaveProperty(formFieldKey, newError);
   });
 
   it('returns current state if form field does not exist for UPDATE_ERROR', () => {
-    const newField = 'username';
+    const newField = 'email';
     const action = {
       type: actionTypes.UPDATE_ERROR,
       formName,
@@ -290,10 +314,10 @@ describe('errorsReducer', () => {
       error: 'Invalid'
     };
 
-    const fieldKeyName = getFormFieldKey(formName, newField);
+    const formFieldKey = getFormFieldKey(formName, newField);
 
     const state = mockState();
-    expect(state).not.toHaveProperty(fieldKeyName);
+    expect(state).not.toHaveProperty(formFieldKey);
 
     const newState = errorsReducer(state, action);
     expect(newState).toEqual(state);
@@ -302,7 +326,6 @@ describe('errorsReducer', () => {
   it('returns current state for other actions', () => {
     const action = { type: 'Unknown' };
     const state = mockState();
-    const newState = errorsReducer(state, action);
-    expect(newState).toEqual(state);
+    expect(errorsReducer(state, action)).toEqual(state);
   });
 });

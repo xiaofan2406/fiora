@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-
 import actionTypes from './actions';
 import {
   getFormFieldKey,
@@ -42,7 +41,7 @@ import {
 //   }
 // }
 
-function formFieldsRecuder(state = {}, action) {
+export function formFieldsRecuder(state = {}, action) {
   switch (action.type) {
     case actionTypes.CREATE_FORM:
       return Object.keys(state).includes(action.formName)
@@ -65,7 +64,7 @@ function formFieldsRecuder(state = {}, action) {
   }
 }
 
-function fieldValueRecuder(state = {}, action) {
+export function fieldValueRecuder(state = {}, action) {
   const fieldKeyName = getFormFieldKey(action.formName, action.fieldName);
   switch (action.type) {
     case actionTypes.CREATE_FIELD:
@@ -87,7 +86,7 @@ function fieldValueRecuder(state = {}, action) {
   }
 }
 
-function errorsReducer(state = {}, action) {
+export function errorsReducer(state = {}, action) {
   const fieldKeyName = getFormFieldKey(
     action.formName,
     action.fieldName || FORM_AS_FIELD_NAME // CREATE_FORM does not have action.fieldName
@@ -127,5 +126,3 @@ export default combineReducers({
   fieldValue: fieldValueRecuder,
   errors: errorsReducer
 });
-
-export { formFieldsRecuder, fieldValueRecuder, errorsReducer };

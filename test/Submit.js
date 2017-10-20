@@ -5,6 +5,7 @@ import Submit, { Component } from '../src/Submit';
 test('Component renders children function with handleSubmit', () => {
   const props = { handleSubmit: () => {}, children: jest.fn(() => '') };
   expect(props.children).toHaveBeenCalledTimes(0);
+
   shallow(<Component {...props} />);
   expect(props.children).toHaveBeenCalledTimes(1);
   expect(props.children).toHaveBeenCalledWith({

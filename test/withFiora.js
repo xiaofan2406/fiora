@@ -3,9 +3,9 @@ import { shallow } from 'enzyme';
 import withFiora from '../src/withFiora';
 
 const formName = 'login';
+
 let Wrapped;
 let context;
-
 beforeEach(() => {
   Wrapped = () => <div>wrapped</div>;
   context = {

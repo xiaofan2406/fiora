@@ -1,6 +1,8 @@
 import * as selectors from '../src/selectors';
 import { getFormFieldKey } from '../src/helpers';
 
+const formName = 'login';
+
 const mockState = override => ({
   fiora: {
     fieldValue: {},
@@ -10,17 +12,13 @@ const mockState = override => ({
   }
 });
 
-const formName = 'login';
-
 test('getFieldValue returns the value for the field', () => {
   const fieldName = 'username';
   const value = 'admin';
   const state = mockState({
     fieldValue: { [getFormFieldKey(formName, fieldName)]: value }
   });
-
-  const result = selectors.getFieldValue(state, { formName, fieldName });
-  expect(result).toBe(value);
+  expect(selectors.getFieldValue(state, { formName, fieldName })).toBe(value);
 });
 
 test('getError returns the error for the field', () => {
@@ -29,17 +27,13 @@ test('getError returns the error for the field', () => {
   const state = mockState({
     errors: { [getFormFieldKey(formName, fieldName)]: error }
   });
-
-  const result = selectors.getError(state, { formName, fieldName });
-  expect(result).toBe(error);
+  expect(selectors.getError(state, { formName, fieldName })).toBe(error);
 });
 
 test('getFormFields returns the fields for the form', () => {
   const fields = ['username', 'password'];
   const state = mockState({ formFields: { [formName]: fields } });
-
-  const result = selectors.getFormFields(state, { formName });
-  expect(result).toEqual(fields);
+  expect(selectors.getFormFields(state, { formName })).toEqual(fields);
 });
 
 test('getFormValues returns the field values for the form', () => {
@@ -53,8 +47,6 @@ test('getFormValues returns the field values for the form', () => {
       [getFormFieldKey(formName, 'password')]: password
     }
   });
-
   const result = selectors.getFormValues(state, { formName });
-  expect(result).toHaveProperty('username', username);
-  expect(result).toHaveProperty('password', password);
+  expect(result).toEqual({ username, password });
 });
