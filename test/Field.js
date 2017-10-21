@@ -1,16 +1,16 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { Component, initialize, mapStateToProps } from '../src/Field';
-import { createField, updateFieldValue, updateError } from '../src/actions';
+import {
+  createField,
+  updateFieldValue,
+  startValidatingField,
+  finishValidatingField,
+  updateError
+} from '../src/actions';
 import * as selectors from '../src/selectors';
 
-let props = {
-  name: 'username',
-  value: 'admin',
-  error: 'Invalid',
-  formName: 'login'
-};
-
+let props;
 beforeEach(() => {
   props = {
     name: 'username',
@@ -18,26 +18,22 @@ beforeEach(() => {
     value: 'admin',
     error: 'Invalid',
     formName: 'login',
-    dispatch: jest.fn()
+    dispatch: jest.fn(),
+    children: jest.fn(() => '')
   };
 });
 
 describe('Presentational Field', () => {
-  let children;
-
-  beforeEach(() => {
-    children = jest.fn(() => '');
-  });
-
   test('default onValidate prop resolve null', async () => {
     props.onValidate = undefined;
-    const wrapper = mount(<Component {...props}>{children}</Component>);
-    const result = await wrapper.prop('onValidate')();
+    const wrapper = mount(<Component {...props} />);
+    const result = await wrapper.props().onValidate();
     expect(result).toEqual(null);
   });
 
   test('value and error are passed to children render function', () => {
-    mount(<Component {...props}>{children}</Component>);
+    const wrapper = mount(<Component {...props} />);
+    const { children } = wrapper.props();
     expect(children).toHaveBeenCalledTimes(1);
     const params = children.mock.calls[0][0];
     expect(params.value).toEqual(props.value);
@@ -46,56 +42,75 @@ describe('Presentational Field', () => {
 
   test('handleChange updates field value', () => {
     const newValue = 'superuser';
-    mount(<Component {...props}>{children}</Component>);
+    const wrapper = mount(<Component {...props} />);
+    const { dispatch, children } = wrapper.props();
     const { handleChange } = children.mock.calls[0][0];
-    expect(props.dispatch).toHaveBeenCalledTimes(0);
+    expect(dispatch).toHaveBeenCalledTimes(0);
 
     handleChange(newValue);
-    expect(props.dispatch).toHaveBeenCalledTimes(1);
-    expect(props.dispatch).toHaveBeenCalledWith(
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(dispatch).toHaveBeenCalledWith(
       updateFieldValue(props.formName, props.name, newValue)
     );
   });
 
   test('handleValidate triggers onValidate prop', async () => {
-    mount(<Component {...props}>{children}</Component>);
+    const wrapper = mount(<Component {...props} />);
+    const { onValidate, children } = wrapper.props();
     const { handleValidate } = children.mock.calls[0][0];
-    expect(props.onValidate).toHaveBeenCalledTimes(0);
+    expect(onValidate).toHaveBeenCalledTimes(0);
 
     await handleValidate();
-    expect(props.onValidate).toHaveBeenCalledTimes(1);
-    expect(props.onValidate).toHaveBeenCalledWith(props.value);
+    expect(onValidate).toHaveBeenCalledTimes(1);
+    expect(onValidate).toHaveBeenCalledWith(props.value);
+  });
+
+  test('handleValidate dispatch actions for validation meta', async () => {
+    const wrapper = mount(<Component {...props} />);
+    const { dispatch, children, formName, name } = wrapper.props();
+    const { handleValidate } = children.mock.calls[0][0];
+    expect(dispatch).toHaveBeenCalledTimes(0);
+
+    await handleValidate();
+    expect(dispatch).toHaveBeenCalledWith(startValidatingField(formName, name));
+    expect(dispatch).toHaveBeenCalledWith(
+      finishValidatingField(formName, name)
+    );
   });
 
   test('handleValidate returns true and updates error if any', async () => {
     const error = 'Invalid';
     props.onValidate = jest.fn(async () => error);
-    mount(<Component {...props}>{children}</Component>);
+    const wrapper = mount(<Component {...props} />);
+    const {
+      dispatch,
+      onValidate,
+      children,
+      formName,
+      name,
+      value
+    } = wrapper.props();
     const { handleValidate } = children.mock.calls[0][0];
-    expect(props.onValidate).toHaveBeenCalledTimes(0);
-    expect(props.dispatch).toHaveBeenCalledTimes(0);
+    expect(onValidate).toHaveBeenCalledTimes(0);
+    expect(dispatch).toHaveBeenCalledTimes(0);
 
     const result = await handleValidate();
-    expect(props.onValidate).toHaveBeenCalledTimes(1);
-    expect(props.onValidate).toHaveBeenCalledWith(props.value);
-    expect(props.dispatch).toHaveBeenCalledTimes(1);
-    expect(props.dispatch).toHaveBeenCalledWith(
-      updateError(props.formName, props.name, error)
-    );
+    expect(onValidate).toHaveBeenCalledTimes(1);
+    expect(onValidate).toHaveBeenCalledWith(value);
+    expect(dispatch).toHaveBeenCalledWith(updateError(formName, name, error));
     expect(result).toBe(true);
   });
 
   test('handleValidate returns false and does not update error if no error', async () => {
     props.onValidate = jest.fn(async () => null);
-    mount(<Component {...props}>{children}</Component>);
+    const wrapper = mount(<Component {...props} />);
+    const { onValidate, children, value } = wrapper.props();
     const { handleValidate } = children.mock.calls[0][0];
-    expect(props.onValidate).toHaveBeenCalledTimes(0);
-    expect(props.dispatch).toHaveBeenCalledTimes(0);
+    expect(onValidate).toHaveBeenCalledTimes(0);
 
     const result = await handleValidate();
-    expect(props.onValidate).toHaveBeenCalledTimes(1);
-    expect(props.onValidate).toHaveBeenCalledWith(props.value);
-    expect(props.dispatch).toHaveBeenCalledTimes(0);
+    expect(onValidate).toHaveBeenCalledTimes(1);
+    expect(onValidate).toHaveBeenCalledWith(value);
     expect(result).toBe(false);
   });
 });

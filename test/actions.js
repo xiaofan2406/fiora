@@ -26,6 +26,20 @@ test('updateFieldValue returns the correct action', () => {
   expect(action).toHaveProperty('value', value);
 });
 
+test('startValidatingField returns the correct action', () => {
+  const action = actions.startValidatingField(formName, fieldName);
+  expect(action).toHaveProperty('type', actionTypes.START_VALIDATING_FIELD);
+  expect(action).toHaveProperty('formName', formName);
+  expect(action).toHaveProperty('fieldName', fieldName);
+});
+
+test('finishValidatingField returns the correct action', () => {
+  const action = actions.finishValidatingField(formName, fieldName);
+  expect(action).toHaveProperty('type', actionTypes.FINISH_VALIDATING_FIELD);
+  expect(action).toHaveProperty('formName', formName);
+  expect(action).toHaveProperty('fieldName', fieldName);
+});
+
 test('updateError returns the correct action', () => {
   const action = actions.updateError(formName, fieldName, error);
   expect(action).toHaveProperty('type', actionTypes.UPDATE_ERROR);

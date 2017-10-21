@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { storeShape } from 'react-redux/lib/utils/PropTypes';
-import { createForm, updateError } from './actions';
+import {
+  createForm,
+  startValidatingField,
+  finishValidatingField,
+  updateError
+} from './actions';
 import { getFormValues } from './selectors';
 import { FORM_AS_FIELD_NAME, DEFAULT_ERROR } from './helpers';
 
@@ -73,10 +78,11 @@ class Fiora extends React.Component {
   };
 
   runFieldValidation = async (fieldName, value) => {
-    // const { dispatch } = this.context.store;
-    // dispatch(startValidatingField(fieldName))
+    const { dispatch } = this.context.store;
+    const { name } = this.props;
+    dispatch(startValidatingField(name, fieldName));
     const result = await this.fieldValidations[fieldName](value);
-    // dispatch(finishValidatingField(fieldName))
+    dispatch(finishValidatingField(name, fieldName));
     return result || DEFAULT_ERROR;
   };
 

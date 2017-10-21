@@ -20,22 +20,6 @@ import { getFormFieldKey, DEFAULT_FIELD_VALUE, DEFAULT_ERROR } from './helpers';
 //   }
 // }
 
-// const initialFieldMeta = {
-//   touched: false
-// };
-
-// function fieldMetaRecuder(state = {}, action) {
-//   switch (action.type) {
-//     case actionTypes.CREATE_FIELD:
-//       return {
-//         ...state,
-//         [getFormFieldKey(action.formName, action.fieldName)]: initialFieldMeta
-//       };
-//     default:
-//       return state;
-//   }
-// }
-
 export function formFieldsRecuder(state = {}, action) {
   switch (action.type) {
     case actionTypes.CREATE_FORM:
@@ -81,6 +65,56 @@ export function fieldValueRecuder(state = {}, action) {
   }
 }
 
+export const initialFieldMeta = () => ({
+  isTouched: false,
+  isValidating: false
+});
+
+export function fieldMetaRecuder(state = {}, action) {
+  const fieldKeyName = getFormFieldKey(action.formName, action.fieldName);
+  switch (action.type) {
+    case actionTypes.CREATE_FIELD:
+      return Object.keys(state).includes(fieldKeyName)
+        ? state
+        : {
+            ...state,
+            [fieldKeyName]: initialFieldMeta()
+          };
+    case actionTypes.UPDATE_FIELD_VALUE:
+      return Object.keys(state).includes(fieldKeyName)
+        ? {
+            ...state,
+            [fieldKeyName]: {
+              ...state[fieldKeyName],
+              isTouched: true
+            }
+          }
+        : state;
+    case actionTypes.START_VALIDATING_FIELD:
+      return Object.keys(state).includes(fieldKeyName)
+        ? {
+            ...state,
+            [fieldKeyName]: {
+              ...state[fieldKeyName],
+              isValidating: true
+            }
+          }
+        : state;
+    case actionTypes.FINISH_VALIDATING_FIELD:
+      return Object.keys(state).includes(fieldKeyName)
+        ? {
+            ...state,
+            [fieldKeyName]: {
+              ...state[fieldKeyName],
+              isValidating: false
+            }
+          }
+        : state;
+    default:
+      return state;
+  }
+}
+
 export function errorsReducer(state = {}, action) {
   const fieldKeyName = getFormFieldKey(action.formName, action.fieldName);
   switch (action.type) {
@@ -103,8 +137,8 @@ export function errorsReducer(state = {}, action) {
 
 export default combineReducers({
   // formMeta: formMetaRecuder,
-  // fieldMeta: fieldMetaRecuder,
   formFields: formFieldsRecuder,
   fieldValue: fieldValueRecuder,
+  fieldMeta: fieldMetaRecuder,
   errors: errorsReducer
 });

@@ -1,7 +1,13 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { createField, updateFieldValue, updateError } from './actions';
+import {
+  createField,
+  updateFieldValue,
+  startValidatingField,
+  finishValidatingField,
+  updateError
+} from './actions';
 import { getFieldValue, getError } from './selectors';
 import withFiora from './withFiora';
 
@@ -16,9 +22,9 @@ function Field({
 }) {
   // return true if there is error
   const handleValidate = async () => {
-    // dispatch(startValidatingField(formName, name))
+    dispatch(startValidatingField(formName, name));
     const validationError = await onValidate(value);
-    // dispatch(finishValidatingField(formName, name))
+    dispatch(finishValidatingField(formName, name));
     if (validationError) {
       dispatch(updateError(formName, name, validationError));
       return true;

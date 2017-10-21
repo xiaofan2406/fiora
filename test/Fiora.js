@@ -1,7 +1,12 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Fiora from '../src/Fiora';
-import { createForm, updateError } from '../src/actions';
+import {
+  createForm,
+  startValidatingField,
+  finishValidatingField,
+  updateError
+} from '../src/actions';
 import * as selectors from '../src/selectors';
 import { DEFAULT_ERROR, FORM_AS_FIELD_NAME } from '../src/helpers';
 
@@ -116,6 +121,26 @@ describe('runFieldValidation', () => {
     expect(result).toEqual(error);
     expect(validationFunc).toHaveBeenCalledTimes(1);
     expect(validationFunc).toHaveBeenCalledWith(value);
+  });
+
+  it('dispatches validation actions for the field', async () => {
+    const fieldName = 'username';
+    wrapper
+      .instance()
+      .getChildContext()
+      .fiora.setValidateFunc(fieldName, async () => 'Invalid');
+    wrapper.instance().context.store.dispatch = jest.fn();
+    const { dispatch } = wrapper.instance().context.store;
+    expect(dispatch).toHaveBeenCalledTimes(0);
+
+    await wrapper.instance().runFieldValidation(fieldName, 'admin');
+    expect(dispatch).toHaveBeenCalledTimes(2);
+    expect(dispatch).toHaveBeenCalledWith(
+      startValidatingField(formName, fieldName)
+    );
+    expect(dispatch).toHaveBeenCalledWith(
+      finishValidatingField(formName, fieldName)
+    );
   });
 
   it('returns the default error if the field validation return falsy value', async () => {
