@@ -1,6 +1,6 @@
 export default from './Fiora';
 
-export reducer from './reducers';
+export reducer from './reducer';
 
 export Field from './Field';
 
