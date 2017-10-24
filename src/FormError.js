@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { getError } from './selectors';
-import { FORM_AS_FIELD_NAME, DEFAULT_ERROR } from './helpers';
+import { getFormError } from './selectors';
+import { DEFAULT_ERROR } from './helpers';
 import withFiora from './withFiora';
 
 function FormError({ children, error }) {
@@ -20,7 +20,7 @@ FormError.defaultProps = {
 
 // props.formName is injected by `withFiora`
 export const mapStateToProps = (state, { formName }) => ({
-  error: getError(state, { formName, fieldName: FORM_AS_FIELD_NAME })
+  error: getFormError(state, { formName })
 });
 
 const enhance = compose(withFiora(), connect(mapStateToProps));

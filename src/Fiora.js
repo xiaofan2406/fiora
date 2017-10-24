@@ -3,12 +3,17 @@ import PropTypes from 'prop-types';
 import { storeShape } from 'react-redux/lib/utils/PropTypes';
 import {
   createForm,
+  updateFormError,
+  startValidatingForm,
+  finishValidatingForm,
+  startSubmitting,
+  finishSubmitting,
+  updateFieldError,
   startValidatingField,
-  finishValidatingField,
-  updateError
+  finishValidatingField
 } from './actions';
 import { getFormValues } from './selectors';
-import { FORM_AS_FIELD_NAME, DEFAULT_ERROR } from './helpers';
+import { zip, FORM_AS_FIELD_NAME, DEFAULT_ERROR } from './helpers';
 
 class Fiora extends React.Component {
   static contextTypes = {
@@ -45,73 +50,87 @@ class Fiora extends React.Component {
   }
 
   setValidateFunc = (fieldName, validateFunc) => {
-    this.fieldValidations[fieldName] = validateFunc;
+    this.fieldValidations[fieldName] = this.makeHandleFieldValidate(
+      fieldName,
+      validateFunc
+    );
   };
 
   fieldValidations = {};
 
-  handleErrorsIfAny = (errors = {}) => {
-    const { name } = this.props;
+  makeHandleFieldValidate = (fieldName, fieldValidationFunc) => async value => {
+    const { name: formName } = this.props;
     const { dispatch } = this.context.store;
-    const errorFields = Object.keys(errors);
-    errorFields.map(fieldName =>
-      dispatch(updateError(name, fieldName, errors[fieldName]))
-    );
 
-    // return true if there is error
-    return errorFields.some(fieldName => errors[fieldName]);
+    dispatch(startValidatingField(formName, fieldName));
+    const error = await fieldValidationFunc(value);
+    dispatch(finishValidatingField(formName, fieldName));
+
+    return error;
   };
 
-  // NOTE Consider include redux-thunks as a dep to refactor these run* funcs?
-  runFieldValidation = async (fieldName, value) => {
+  // return true if there is error
+  // error can be undefined due to onSubmit may return nothing
+  // This function also sets/clears form error
+  handleErrorsIfAny = (errors = {}, fields) => {
+    const { name: formName } = this.props;
     const { dispatch } = this.context.store;
-    const { name } = this.props;
-    dispatch(startValidatingField(name, fieldName));
-    const result = await this.fieldValidations[fieldName](value);
-    dispatch(finishValidatingField(name, fieldName));
-    return result;
-  };
 
-  runValidations = async formValues => {
-    // const { name } = this.props;
-    const fields = Object.keys(formValues);
-    // dispatch(startValidatingForm(name))
-    const [formErrors, ...fieldErrors] = await Promise.all([
-      this.props.onValidate(formValues),
-      ...fields.map(fieldName =>
-        this.runFieldValidation(fieldName, formValues[fieldName])
+    fields.map(fieldName =>
+      dispatch(
+        updateFieldError(
+          formName,
+          fieldName,
+          errors[fieldName] || DEFAULT_ERROR
+        )
       )
-    ]);
-    // dispatch(finishValidatingForm(name))
-    console.log('formErrors', formErrors);
-    console.log('fieldErrors', fieldErrors);
+    );
+    if (Object.hasOwnProperty.call(errors, FORM_AS_FIELD_NAME)) {
+      dispatch(
+        updateFormError(formName, errors[FORM_AS_FIELD_NAME] || DEFAULT_ERROR)
+      );
+    }
 
-    const errors = {};
-    [...fields, FORM_AS_FIELD_NAME].forEach((fieldName, index) => {
-      // error returned from Fiora.onValidate overwrites Field.onValidate
-      // also reset all errors if no errors
-      if (Object.prototype.hasOwnProperty.call(formErrors, fieldName)) {
-        errors[fieldName] = formErrors[fieldName] || DEFAULT_ERROR;
-      } else {
-        errors[fieldName] = fieldErrors[index] || DEFAULT_ERROR;
-      }
-    });
+    return Object.values(errors).some(error => error);
+  };
 
-    console.log(errors);
+  // return true if there is error
+  runValidations = async formValues => {
+    const { onValidate } = this.props;
+    const fields = Object.keys(formValues);
 
-    return errors;
+    // step 1: run each individual `onValidate` specified on each Field
+    // if any error found, terminate and return true
+    const fieldErrorsArray = await Promise.all(
+      fields.map(fieldName =>
+        this.fieldValidations[fieldName](formValues[fieldName])
+      )
+    );
+    const fieldErrors = zip(fields, fieldErrorsArray);
+    if (fields.some(fieldName => fieldErrors[fieldName])) {
+      return this.handleErrorsIfAny(fieldErrors, fields);
+    }
+
+    // step 2: run `onValidate` specified on the Fiora form
+    const errors = await onValidate(formValues);
+    return this.handleErrorsIfAny(errors, fields);
   };
 
   handleSubmit = async () => {
-    const { name, onSubmit } = this.props;
-    const { getState } = this.context.store;
-    const formValues = getFormValues(getState(), { formName: name });
-    const errors = await this.runValidations(formValues);
-    if (!this.handleErrorsIfAny(errors)) {
-      // dispatch(startSubmitting(name))
+    const { name: formName, onSubmit } = this.props;
+    const { getState, dispatch } = this.context.store;
+
+    const formValues = getFormValues(getState(), { formName });
+    dispatch(startValidatingForm(formName));
+    const hasError = await this.runValidations(formValues);
+    dispatch(finishValidatingForm(formName));
+
+    if (!hasError) {
+      dispatch(startSubmitting(formName));
       const submitErrors = await onSubmit(formValues);
-      // dispatch(finishSubmitting(name))
-      this.handleErrorsIfAny(submitErrors);
+      dispatch(finishSubmitting(formName));
+
+      this.handleErrorsIfAny(submitErrors, Object.keys(formValues));
     }
   };
 
