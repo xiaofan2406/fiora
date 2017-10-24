@@ -1,49 +1,103 @@
 import actionTypes, * as actions from '../src/actions';
 
-const formName = 'login';
-const fieldName = 'username';
-const value = 'admin';
-const error = 'something went wrong';
-
 test('createForm returns the correct action', () => {
-  const action = actions.createForm(formName);
-  expect(action).toHaveProperty('type', actionTypes.CREATE_FORM);
-  expect(action).toHaveProperty('formName', formName);
+  const action = actions.createForm('login');
+  expect(action).toEqual({
+    type: actionTypes.CREATE_FORM,
+    formName: 'login'
+  });
+});
+
+test('updateFormError returns the correct action', () => {
+  const action = actions.updateFormError('login', 'invalid');
+  expect(action).toEqual({
+    type: actionTypes.UPDATE_FORM_ERROR,
+    formName: 'login',
+    error: 'invalid'
+  });
+});
+
+test('startValidatingForm returns the correct action', () => {
+  const action = actions.startValidatingForm('login');
+  expect(action).toEqual({
+    type: actionTypes.UPDATE_FORM_IS_VALIDATING,
+    formName: 'login',
+    isValidating: true
+  });
+});
+
+test('finishValidatingForm returns the correct action', () => {
+  const action = actions.finishValidatingForm('login');
+  expect(action).toEqual({
+    type: actionTypes.UPDATE_FORM_IS_VALIDATING,
+    formName: 'login',
+    isValidating: false
+  });
+});
+
+test('startSubmitting returns the correct action', () => {
+  const action = actions.startSubmitting('login');
+  expect(action).toEqual({
+    type: actionTypes.UPDATE_FORM_IS_SUBMITTING,
+    formName: 'login',
+    isSubmitting: true
+  });
+});
+
+test('finishSubmitting returns the correct action', () => {
+  const action = actions.finishSubmitting('login');
+  expect(action).toEqual({
+    type: actionTypes.UPDATE_FORM_IS_SUBMITTING,
+    formName: 'login',
+    isSubmitting: false
+  });
 });
 
 test('createField returns the correct action', () => {
-  const action = actions.createField(formName, fieldName);
-  expect(action).toHaveProperty('type', actionTypes.CREATE_FIELD);
-  expect(action).toHaveProperty('formName', formName);
-  expect(action).toHaveProperty('fieldName', fieldName);
+  const action = actions.createField('login', 'username');
+  expect(action).toEqual({
+    type: actionTypes.CREATE_FIELD,
+    formName: 'login',
+    fieldName: 'username'
+  });
 });
 
 test('updateFieldValue returns the correct action', () => {
-  const action = actions.updateFieldValue(formName, fieldName, value);
-  expect(action).toHaveProperty('type', actionTypes.UPDATE_FIELD_VALUE);
-  expect(action).toHaveProperty('formName', formName);
-  expect(action).toHaveProperty('fieldName', fieldName);
-  expect(action).toHaveProperty('value', value);
+  const action = actions.updateFieldValue('login', 'username', 'admin');
+  expect(action).toEqual({
+    type: actionTypes.UPDATE_FIELD_VALUE,
+    formName: 'login',
+    fieldName: 'username',
+    value: 'admin'
+  });
+});
+
+test('updateFieldError returns the correct action', () => {
+  const action = actions.updateFieldError('login', 'username', 'invalid');
+  expect(action).toEqual({
+    type: actionTypes.UPDATE_FIELD_ERROR,
+    formName: 'login',
+    fieldName: 'username',
+    error: 'invalid'
+  });
 });
 
 test('startValidatingField returns the correct action', () => {
-  const action = actions.startValidatingField(formName, fieldName);
-  expect(action).toHaveProperty('type', actionTypes.START_VALIDATING_FIELD);
-  expect(action).toHaveProperty('formName', formName);
-  expect(action).toHaveProperty('fieldName', fieldName);
+  const action = actions.startValidatingField('login', 'username');
+  expect(action).toEqual({
+    type: actionTypes.UPDATE_FIELD_IS_VALIDATING,
+    formName: 'login',
+    fieldName: 'username',
+    isValidating: true
+  });
 });
 
 test('finishValidatingField returns the correct action', () => {
-  const action = actions.finishValidatingField(formName, fieldName);
-  expect(action).toHaveProperty('type', actionTypes.FINISH_VALIDATING_FIELD);
-  expect(action).toHaveProperty('formName', formName);
-  expect(action).toHaveProperty('fieldName', fieldName);
-});
-
-test('updateError returns the correct action', () => {
-  const action = actions.updateError(formName, fieldName, error);
-  expect(action).toHaveProperty('type', actionTypes.UPDATE_ERROR);
-  expect(action).toHaveProperty('formName', formName);
-  expect(action).toHaveProperty('fieldName', fieldName);
-  expect(action).toHaveProperty('error', error);
+  const action = actions.finishValidatingField('login', 'username');
+  expect(action).toEqual({
+    type: actionTypes.UPDATE_FIELD_IS_VALIDATING,
+    formName: 'login',
+    fieldName: 'username',
+    isValidating: false
+  });
 });
