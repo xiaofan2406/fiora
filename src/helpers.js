@@ -10,7 +10,7 @@ export const DEFAULT_VALUE = '';
 // Its boolean equivalant must be false
 export const DEFAULT_ERROR = null;
 
-export const FORM_AS_FIELD_NAME = 'form';
+export const FORM_ERROR_KEY = 'form';
 
 export const makeFieldMetaReducer = (meta, override = {}) => (
   state,

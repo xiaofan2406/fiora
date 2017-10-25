@@ -13,7 +13,7 @@ import {
   finishValidatingField
 } from './actions';
 import { getFormValues } from './selectors';
-import { zip, FORM_AS_FIELD_NAME, DEFAULT_ERROR } from './helpers';
+import { zip, FORM_ERROR_KEY, DEFAULT_ERROR } from './helpers';
 
 class Fiora extends React.Component {
   static contextTypes = {
@@ -85,9 +85,9 @@ class Fiora extends React.Component {
         )
       )
     );
-    if (Object.hasOwnProperty.call(errors, FORM_AS_FIELD_NAME)) {
+    if (Object.hasOwnProperty.call(errors, FORM_ERROR_KEY)) {
       dispatch(
-        updateFormError(formName, errors[FORM_AS_FIELD_NAME] || DEFAULT_ERROR)
+        updateFormError(formName, errors[FORM_ERROR_KEY] || DEFAULT_ERROR)
       );
     }
 

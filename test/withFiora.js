@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 import withFiora from '../src/withFiora';
 
 const formName = 'login';
-
 let Wrapped;
 let context;
 beforeEach(() => {
@@ -18,7 +17,7 @@ beforeEach(() => {
   };
 });
 
-it('triggers the initialize function when given', () => {
+it('triggers the initialize function if given', () => {
   const props = {};
   const options = { initialize: jest.fn() };
   const Component = withFiora(options)(Wrapped);
@@ -27,26 +26,26 @@ it('triggers the initialize function when given', () => {
   expect(options.initialize).toHaveBeenCalledWith(props, context);
 });
 
-it('sets the correct displayName', () => {
+it('sets the correct displayName for the wrapped component', () => {
   expect(withFiora()(Wrapped).displayName).toBe('withFiora(Wrapped)');
 
   Wrapped.displayName = 'BetterWrapped';
   expect(withFiora()(Wrapped).displayName).toBe('withFiora(BetterWrapped)');
 });
 
-it('injects formName prop by default', () => {
+it('injects formName to the wrapped component', () => {
   const Component = withFiora()(Wrapped);
   const wrapper = shallow(<Component />, { context });
   expect(wrapper.props().formName).toBe(formName);
 });
 
-it('injects handleSubmit prop if withHandleSubmit is true', () => {
+it('injects handleSubmit if set to the wrapped component', () => {
   const Component = withFiora({ withHandleSubmit: true })(Wrapped);
   const wrapper = shallow(<Component />, { context });
   expect(wrapper.props().handleSubmit).toEqual(context.fiora.handleSubmit);
 });
 
-it('passes along all props to the wrapped component', () => {
+it('passes all props to the wrapped component', () => {
   const Component = withFiora()(Wrapped);
   const wrapper = shallow(<Component name="username" isValid />, { context });
   expect(wrapper.find(Wrapped).prop('isValid')).toBe(true);

@@ -8,7 +8,7 @@ import {
   updateError
 } from '../src/actions';
 import * as selectors from '../src/selectors';
-import { DEFAULT_ERROR, FORM_AS_FIELD_NAME } from '../src/helpers';
+import { DEFAULT_ERROR, FORM_ERROR_KEY } from '../src/helpers';
 
 const formName = 'login';
 let wrapper;
@@ -82,7 +82,7 @@ describe('runFormValidation', () => {
     expect(wrapper.prop('onValidate')).toHaveBeenCalledTimes(0);
 
     const result = await wrapper.instance().runFormValidation(values);
-    expect(result).toEqual({ [FORM_AS_FIELD_NAME]: DEFAULT_ERROR });
+    expect(result).toEqual({ [FORM_ERROR_KEY]: DEFAULT_ERROR });
     expect(wrapper.prop('onValidate')).toHaveBeenCalledTimes(1);
     expect(wrapper.prop('onValidate')).toHaveBeenCalledWith(values);
   });
@@ -96,7 +96,7 @@ describe('runFormValidation', () => {
     const result = await wrapper.instance().runFormValidation(values);
     expect(result).toEqual({
       username: 'Invalid',
-      [FORM_AS_FIELD_NAME]: DEFAULT_ERROR
+      [FORM_ERROR_KEY]: DEFAULT_ERROR
     });
     expect(wrapper.prop('onValidate')).toHaveBeenCalledTimes(1);
     expect(wrapper.prop('onValidate')).toHaveBeenCalledWith(values);
