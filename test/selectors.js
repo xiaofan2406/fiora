@@ -1,52 +1,92 @@
 import * as selectors from '../src/selectors';
-import { getFormFieldKey } from '../src/helpers';
+import { getFormFieldKey, DEFAULT_ERROR, DEFAULT_VALUE } from '../src/helpers';
 
 const formName = 'login';
-
-const mockState = override => ({
+const state = {
   fiora: {
-    fieldValue: {},
-    errors: {},
-    formFields: {},
-    ...override
+    forms: {
+      [formName]: {
+        fields: ['username', 'password'],
+        error: DEFAULT_ERROR,
+        isValidating: false,
+        isSubmitting: true
+      }
+    },
+    fields: {
+      [getFormFieldKey(formName, 'username')]: {
+        value: 'admin',
+        error: 'invalid',
+        isTouched: true,
+        isValidating: false
+      },
+      [getFormFieldKey(formName, 'password')]: {
+        value: DEFAULT_VALUE,
+        error: DEFAULT_ERROR,
+        isTouched: false,
+        isValidating: true
+      }
+    }
   }
+};
+
+test('getFormFields returns the fields for the form', () => {
+  expect(selectors.getFormFields(state, { formName })).toEqual([
+    'username',
+    'password'
+  ]);
+});
+
+test('getFormError returns the error for the form', () => {
+  expect(selectors.getFormError(state, { formName })).toEqual(DEFAULT_ERROR);
+});
+
+test('getIsFormValidating returns the isValidating status for the form', () => {
+  expect(selectors.getIsFormValidating(state, { formName })).toBe(false);
+});
+
+test('getIsFormSubmitting returns the isSubmitting status for the form', () => {
+  expect(selectors.getIsFormSubmitting(state, { formName })).toBe(true);
 });
 
 test('getFieldValue returns the value for the field', () => {
-  const fieldName = 'username';
-  const value = 'admin';
-  const state = mockState({
-    fieldValue: { [getFormFieldKey(formName, fieldName)]: value }
-  });
-  expect(selectors.getFieldValue(state, { formName, fieldName })).toBe(value);
+  expect(
+    selectors.getFieldValue(state, { formName, fieldName: 'username' })
+  ).toEqual('admin');
+  expect(
+    selectors.getFieldValue(state, { formName, fieldName: 'password' })
+  ).toEqual(DEFAULT_VALUE);
 });
 
-test('getError returns the error for the field', () => {
-  const fieldName = 'username';
-  const error = '404 error';
-  const state = mockState({
-    errors: { [getFormFieldKey(formName, fieldName)]: error }
-  });
-  expect(selectors.getError(state, { formName, fieldName })).toBe(error);
+test('getFieldError returns the error for the field', () => {
+  expect(
+    selectors.getFieldError(state, { formName, fieldName: 'username' })
+  ).toEqual('invalid');
+  expect(
+    selectors.getFieldError(state, { formName, fieldName: 'password' })
+  ).toEqual(DEFAULT_ERROR);
 });
 
-test('getFormFields returns the fields for the form', () => {
-  const fields = ['username', 'password'];
-  const state = mockState({ formFields: { [formName]: fields } });
-  expect(selectors.getFormFields(state, { formName })).toEqual(fields);
+test('getIsFieldTouched returns the isTouched status for the field', () => {
+  expect(
+    selectors.getIsFieldTouched(state, { formName, fieldName: 'username' })
+  ).toBe(true);
+  expect(
+    selectors.getIsFieldTouched(state, { formName, fieldName: 'password' })
+  ).toBe(false);
 });
 
-test('getFormValues returns the field values for the form', () => {
-  const fields = ['username', 'password'];
-  const username = 'admin';
-  const password = 'securepassword';
-  const state = mockState({
-    formFields: { [formName]: fields },
-    fieldValue: {
-      [getFormFieldKey(formName, 'username')]: username,
-      [getFormFieldKey(formName, 'password')]: password
-    }
+test('getIsFieldValidating returns the isValidating status for the field', () => {
+  expect(
+    selectors.getIsFieldValidating(state, { formName, fieldName: 'username' })
+  ).toBe(false);
+  expect(
+    selectors.getIsFieldValidating(state, { formName, fieldName: 'password' })
+  ).toBe(true);
+});
+
+test('getFormValues returns an object of all fields value', () => {
+  expect(selectors.getFormValues(state, { formName })).toEqual({
+    username: 'admin',
+    password: DEFAULT_VALUE
   });
-  const result = selectors.getFormValues(state, { formName });
-  expect(result).toEqual({ username, password });
 });

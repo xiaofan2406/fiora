@@ -13,8 +13,8 @@ const makeGetFieldMeta = meta => (state, { formName, fieldName }) =>
 
 export const getFieldValue = makeGetFieldMeta('value');
 export const getFieldError = makeGetFieldMeta('error');
-export const getIsFieldValidating = makeGetFieldMeta('isValidating');
 export const getIsFieldTouched = makeGetFieldMeta('isTouched');
+export const getIsFieldValidating = makeGetFieldMeta('isValidating');
 
 export const getFormValues = (state, { formName }) => {
   const formValues = {};
