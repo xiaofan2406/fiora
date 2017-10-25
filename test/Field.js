@@ -6,7 +6,7 @@ import {
   updateFieldValue,
   startValidatingField,
   finishValidatingField,
-  updateError
+  updateFieldError
 } from '../src/actions';
 import * as selectors from '../src/selectors';
 
@@ -23,49 +23,48 @@ beforeEach(() => {
   };
 });
 
-describe('Presentational Field', () => {
-  test('default onValidate prop resolve null', async () => {
-    props.onValidate = undefined;
-    const wrapper = mount(<Component {...props} />);
-    const result = await wrapper.props().onValidate();
-    expect(result).toEqual(null);
-  });
+test('Component has default onValidate prop resolve null', async () => {
+  props.onValidate = undefined;
+  const wrapper = mount(<Component {...props} />);
+  const result = await wrapper.props().onValidate();
+  expect(result).toEqual(null);
+});
 
-  test('value and error are passed to children render function', () => {
+describe('children render function', () => {
+  test('value and error are passed', () => {
     const wrapper = mount(<Component {...props} />);
-    const { children } = wrapper.props();
-    expect(children).toHaveBeenCalledTimes(1);
+    const { children, value, error } = wrapper.props();
     const params = children.mock.calls[0][0];
-    expect(params.value).toEqual(props.value);
-    expect(params.error).toEqual(props.error);
+    expect(children).toHaveBeenCalledTimes(1);
+    expect(params.value).toEqual(value);
+    expect(params.error).toEqual(error);
   });
 
-  test('handleChange updates field value', () => {
-    const newValue = 'superuser';
+  test('handleChange updates the value', () => {
     const wrapper = mount(<Component {...props} />);
-    const { dispatch, children } = wrapper.props();
+    const { dispatch, children, formName, name } = wrapper.props();
     const { handleChange } = children.mock.calls[0][0];
     expect(dispatch).toHaveBeenCalledTimes(0);
 
-    handleChange(newValue);
+    handleChange('superuser');
     expect(dispatch).toHaveBeenCalledTimes(1);
     expect(dispatch).toHaveBeenCalledWith(
-      updateFieldValue(props.formName, props.name, newValue)
+      updateFieldValue(formName, name, 'superuser')
     );
   });
 
   test('handleValidate triggers onValidate prop', async () => {
     const wrapper = mount(<Component {...props} />);
-    const { onValidate, children } = wrapper.props();
+    const { onValidate, children, value } = wrapper.props();
     const { handleValidate } = children.mock.calls[0][0];
     expect(onValidate).toHaveBeenCalledTimes(0);
 
     await handleValidate();
     expect(onValidate).toHaveBeenCalledTimes(1);
-    expect(onValidate).toHaveBeenCalledWith(props.value);
+    expect(onValidate).toHaveBeenCalledWith(value);
   });
 
-  test('handleValidate dispatch actions for validation meta', async () => {
+  test('handleValidate updates validations states', async () => {
     const wrapper = mount(<Component {...props} />);
     const { dispatch, children, formName, name } = wrapper.props();
     const { handleValidate } = children.mock.calls[0][0];
@@ -78,9 +77,8 @@ describe('Presentational Field', () => {
     );
   });
 
-  test('handleValidate returns true and updates error if any', async () => {
-    const error = 'Invalid';
-    props.onValidate = jest.fn(async () => error);
+  test('handleValidate returns true and updates error if there is error', async () => {
+    props.onValidate = jest.fn(async () => 'invalid');
     const wrapper = mount(<Component {...props} />);
     const {
       dispatch,
@@ -97,25 +95,30 @@ describe('Presentational Field', () => {
     const result = await handleValidate();
     expect(onValidate).toHaveBeenCalledTimes(1);
     expect(onValidate).toHaveBeenCalledWith(value);
-    expect(dispatch).toHaveBeenCalledWith(updateError(formName, name, error));
+    expect(dispatch).toHaveBeenCalledTimes(3);
+    expect(dispatch).toHaveBeenCalledWith(
+      updateFieldError(formName, name, 'invalid')
+    );
     expect(result).toBe(true);
   });
 
   test('handleValidate returns false and does not update error if no error', async () => {
     props.onValidate = jest.fn(async () => null);
     const wrapper = mount(<Component {...props} />);
-    const { onValidate, children, value } = wrapper.props();
+    const { dispatch, onValidate, children, value } = wrapper.props();
     const { handleValidate } = children.mock.calls[0][0];
     expect(onValidate).toHaveBeenCalledTimes(0);
+    expect(dispatch).toHaveBeenCalledTimes(0);
 
     const result = await handleValidate();
     expect(onValidate).toHaveBeenCalledTimes(1);
     expect(onValidate).toHaveBeenCalledWith(value);
+    expect(dispatch).toHaveBeenCalledTimes(2);
     expect(result).toBe(false);
   });
 });
 
-describe('initialize', () => {
+describe('withFiora initialize function', () => {
   const context = {
     store: {
       subscribe: () => {},
@@ -128,7 +131,7 @@ describe('initialize', () => {
     context.fiora.setValidateFunc = jest.fn();
   });
 
-  test('createField is triggered', () => {
+  it('triggers createField', () => {
     expect(context.store.dispatch).toHaveBeenCalledTimes(0);
 
     initialize(props, context);
@@ -138,7 +141,7 @@ describe('initialize', () => {
     );
   });
 
-  test('value is initialized when given', () => {
+  it('updates the initialValue if given', () => {
     props.initialValue = 'useradmin';
     expect(context.store.dispatch).toHaveBeenCalledTimes(0);
 
@@ -149,7 +152,7 @@ describe('initialize', () => {
     );
   });
 
-  test('validation function is set correctly', () => {
+  it('sets validation function', () => {
     props.onValidate = jest.fn();
     expect(context.fiora.setValidateFunc).toHaveBeenCalledTimes(0);
 
@@ -162,16 +165,21 @@ describe('initialize', () => {
     onValidate();
     expect(props.onValidate).toHaveBeenCalledTimes(1);
   });
+});
 
-  test('redux connect with correct mapStateToProps', () => {
-    const valueSelectorSpy = jest.spyOn(selectors, 'getFieldValue');
-    const errorSelectorSpy = jest.spyOn(selectors, 'getError');
-    const state = { fiora: { fieldValue: {}, errors: {} } };
-    expect(valueSelectorSpy).toHaveBeenCalledTimes(0);
-    expect(errorSelectorSpy).toHaveBeenCalledTimes(0);
+test('mapStateToProps returns correct result using selectors', () => {
+  selectors.getFieldValue = jest.fn();
+  selectors.getFieldError = jest.fn();
+  selectors.getIsFieldValidating = jest.fn();
+  selectors.getIsFieldTouched = jest.fn();
+  expect(selectors.getFieldValue).toHaveBeenCalledTimes(0);
+  expect(selectors.getFieldError).toHaveBeenCalledTimes(0);
+  expect(selectors.getIsFieldValidating).toHaveBeenCalledTimes(0);
+  expect(selectors.getIsFieldTouched).toHaveBeenCalledTimes(0);
 
-    mapStateToProps(state, props);
-    expect(valueSelectorSpy).toHaveBeenCalledTimes(1);
-    expect(errorSelectorSpy).toHaveBeenCalledTimes(1);
-  });
+  mapStateToProps({}, props);
+  expect(selectors.getFieldValue).toHaveBeenCalledTimes(1);
+  expect(selectors.getFieldError).toHaveBeenCalledTimes(1);
+  expect(selectors.getIsFieldValidating).toHaveBeenCalledTimes(1);
+  expect(selectors.getIsFieldTouched).toHaveBeenCalledTimes(1);
 });
