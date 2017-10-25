@@ -1,10 +1,10 @@
 import React from 'react';
-import { css } from 'emotion';
+import styled from 'react-emotion';
 import { NavLink } from 'react-router-dom';
 import { ROUTES } from 'configs';
 import { theme, variables } from 'styles';
 
-const navLink = css`
+const StyledNavLink = styled(NavLink)`
   color: ${theme.inverseColor};
   text-decoration: none;
   padding: 0 0.5em;
@@ -14,25 +14,23 @@ const navLink = css`
   &:hover {
     background-color: ${theme.bgAccentColor};
   }
-`;
-
-const navLinkActive = css`
-  border-bottom: 2px solid ${theme.primaryColor};
+  &.active {
+    border-bottom: 2px solid ${theme.primaryColor};
+  }
 `;
 
 function Navigation() {
   return (
     <div>
       {Object.values(ROUTES).map(route => (
-        <NavLink
-          className={navLink}
-          activeClassName={navLinkActive}
+        <StyledNavLink
+          activeClassName="active"
           key={route.path}
           exact={route.exact}
           to={route.path}
         >
           {route.name}
-        </NavLink>
+        </StyledNavLink>
       ))}
     </div>
   );

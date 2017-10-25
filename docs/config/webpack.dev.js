@@ -3,15 +3,12 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const common = require('./webpack.common');
 const { devServerPort, devServerIp, paths } = require('./configs');
-const babelConfig = require('../.babelrc');
 
 module.exports = {
   devtool: 'cheap-module-source-map',
   entry: [
     require.resolve('./polyfills'),
     'react-hot-loader/patch',
-    `webpack-dev-server/client?http://${devServerIp}:${devServerPort}`,
-    'webpack/hot/only-dev-server',
     `${paths.srcPath}/index.js`
   ],
   resolve: common.resolve,
@@ -33,12 +30,9 @@ module.exports = {
       ...common.rules,
       {
         test: /\.js$/,
-        include: paths.srcPath,
+        include: [paths.srcPath, path.join(paths.docPath, '../src')],
         loader: 'babel-loader',
-        options: {
-          presets: [babelConfig],
-          cacheDirectory: true
-        }
+        options: { cacheDirectory: true }
       },
       {
         test: /\.css$/,
@@ -69,16 +63,6 @@ module.exports = {
     },
     https: process.env.HTTPS === 'true',
     host: devServerIp,
-    port: devServerPort,
-    before(app) {
-      app.use((req, res, next) => {
-        if (req.url === '/service-worker.js') {
-          res.setHeader('Content-Type', 'text/javascript');
-          res.send();
-        } else {
-          next();
-        }
-      });
-    }
+    port: devServerPort
   }
 };

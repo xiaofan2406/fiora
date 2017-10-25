@@ -12,21 +12,23 @@ const rootElement = document.getElementById('root');
 if (process.env.NODE_ENV === 'development') {
   const { AppContainer } = require('react-hot-loader');
 
-  const render = () => {
+  const render = Component => {
     ReactDOM.render(
       <AppContainer>
         <Provider store={store}>
-          <Router />
+          <Component />
         </Provider>
       </AppContainer>,
       rootElement
     );
   };
 
-  render();
+  render(Router);
 
   if (module.hot) {
-    module.hot.accept('./router', render);
+    module.hot.accept('./router', () => {
+      render(Router);
+    });
   }
 } else {
   ReactDOM.render(

@@ -5,7 +5,6 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 const common = require('./webpack.common');
 const { paths } = require('./configs');
-const babelConfig = require('../.babelrc');
 
 module.exports = {
   bail: true,
@@ -43,12 +42,9 @@ module.exports = {
       ...common.rules,
       {
         test: /\.js$/,
-        include: paths.srcPath,
+        include: [paths.srcPath, path.join(paths.docPath, '../src')],
         loader: 'babel-loader',
-        options: {
-          compact: true,
-          presets: [babelConfig]
-        }
+        options: { compact: true }
       },
       {
         test: /\.css$/,
@@ -57,10 +53,7 @@ module.exports = {
           use: [
             {
               loader: 'css-loader',
-              options: {
-                minimize: true,
-                sourceMap: true
-              }
+              options: { minimize: true, sourceMap: true }
             }
           ]
         })

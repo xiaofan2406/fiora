@@ -1,10 +1,10 @@
 import React from 'react';
-import { css } from 'emotion';
+import styled from 'react-emotion';
 import { variables, fontSizes, theme } from 'styles';
 import { APP_TITLE } from 'configs';
 import logo from 'assets/logo.svg';
 
-const brand = css`
+const Container = styled('div')`
   display: flex;
   align-items: center;
   & img {
@@ -25,10 +25,10 @@ class Brand extends React.Component {
 
   render() {
     return (
-      <div className={brand}>
+      <Container>
         <img src={logo} alt="logo" />
         <span>{APP_TITLE}</span>
-      </div>
+      </Container>
     );
   }
 }

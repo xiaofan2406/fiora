@@ -1,1 +1,2 @@
-export api from './api';
+export * as api from './api';
+export delay from './delay';

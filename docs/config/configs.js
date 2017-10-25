@@ -14,9 +14,9 @@ function getLocalIp() {
   return detail && detail.address;
 }
 
-const projectPath = path.join(__dirname, '..');
-const srcPath = path.join(projectPath, 'src');
-const distPath = path.join(projectPath, 'dist');
+const docPath = path.join(__dirname, '..');
+const srcPath = path.join(docPath, 'src');
+const distPath = path.join(docPath, 'dist');
 
 const devServerPort = process.env.PORT || 8080;
 const testProdPort = process.env.PORT || 9000;
@@ -26,7 +26,7 @@ module.exports = {
   devServerIp: process.env.HOST || getLocalIp(),
   testProdPort,
   paths: {
-    projectPath,
+    docPath,
     srcPath,
     distPath
   }

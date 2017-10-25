@@ -1,5 +1,4 @@
 let plugins = [
-  ['babel-plugin-emotion', { extractStatic: true }],
   'babel-plugin-transform-class-properties',
   ['babel-plugin-transform-object-rest-spread', { useBuiltIns: true }],
   ['babel-plugin-transform-react-jsx', { useBuiltIns: true }],
