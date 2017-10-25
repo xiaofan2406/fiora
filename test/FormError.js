@@ -19,12 +19,10 @@ test('Component has default error prop', () => {
 });
 
 test('mapStateToProps returns correct result using selectors', () => {
-  const props = { formName: 'login' };
-  const error = 'Invalid';
-  selectors.getError = jest.fn(() => error);
-  expect(selectors.getError).toHaveBeenCalledTimes(0);
+  selectors.getFormError = jest.fn(() => 'invalid');
+  expect(selectors.getFormError).toHaveBeenCalledTimes(0);
 
-  const result = mapStateToProps({}, props);
-  expect(selectors.getError).toHaveBeenCalledTimes(1);
-  expect(result).toEqual({ error });
+  const result = mapStateToProps({}, { formName: 'login' });
+  expect(selectors.getFormError).toHaveBeenCalledTimes(1);
+  expect(result).toEqual({ error: 'invalid' });
 });
