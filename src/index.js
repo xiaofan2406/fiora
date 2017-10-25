@@ -4,6 +4,6 @@ export reducer from './reducer';
 
 export Field from './Field';
 
-export FormError from './FormError';
+export FormMeta from './FormMeta';
 
 export Submit from './Submit';
