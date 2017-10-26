@@ -6,7 +6,6 @@ import {
   getIsFormValidating,
   getIsFormSubmitting
 } from './selectors';
-import { DEFAULT_ERROR } from './helpers';
 import withFiora from './withFiora';
 
 // the props passed in are flags to indicate whether to subscribe to the meta
@@ -20,12 +19,6 @@ FormMeta.propTypes = {
   error: PropTypes.any,
   isValidating: PropTypes.bool,
   isSubmitting: PropTypes.bool
-};
-
-FormMeta.defaultProps = {
-  error: DEFAULT_ERROR,
-  isValidating: false,
-  isSubmitting: false
 };
 
 // props.formName is injected by `withFiora`
