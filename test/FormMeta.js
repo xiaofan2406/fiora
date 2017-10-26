@@ -1,7 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import FormMeta, { Component, mapStateToProps } from '../src/FormMeta';
-import * as selectors from '../src/selectors';
+import FormMeta, { Component } from '../src/FormMeta';
+
+const formName = 'login';
 
 test('Component renders children function with meta', () => {
   const props = {
@@ -20,11 +21,6 @@ test('Component renders children function with meta', () => {
   });
 });
 
-// test('Component has default error prop', () => {
-//   const wrapper = mount(<Component>{() => ''}</Component>);
-//   expect(wrapper.props().error).toEqual(DEFAULT_ERROR);
-// });
-const formName = 'login';
 describe('enhanced FormMeta Component', () => {
   const mountWithState = (props, storeState = {}) =>
     mount(<FormMeta {...props} />, {
@@ -79,12 +75,3 @@ describe('enhanced FormMeta Component', () => {
     expect(wrapper.props()).not.toHaveProperty('isValidating');
   });
 });
-
-// test('mapStateToProps returns isValidating statue if isValidating is true', () => {
-//   selectors.getFormMeta = jest.fn(() => 'invalid');
-//   expect(selectors.getFormMeta).toHaveBeenCalledTimes(0);
-
-//   const result = mapStateToProps({}, { formName: 'login' });
-//   expect(selectors.getFormMeta).toHaveBeenCalledTimes(1);
-//   expect(result).toEqual({ error: 'invalid' });
-// });
