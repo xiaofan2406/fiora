@@ -1,8 +1,8 @@
 import React from 'react';
-import { Login } from 'components';
+import { SimpleLogin } from 'components';
 
 function Home() {
-  return <Login />;
+  return <SimpleLogin />;
 }
 
 export default Home;

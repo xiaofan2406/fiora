@@ -15,6 +15,33 @@
 Forms, with react + redux
 
 ### Get Started
+
+#### Install
+
+Use either `yarn` or `npm`
+
 ```
 yarn add fiora
 ```
+
+Ensure `peerDependencies`: `react`, `redux` and `react-redux` are also installed.
+
+#### Connect with redux
+
+Add fiora `reducer` to root `combineReducers` under the key name `fiora`.
+
+For example, in your **root** reducer file:
+
+```js
+import { reducer as fioraReducer } from 'fiora';
+import todoReducer from './todoReducer';
+
+export default combineReducers({
+  todo: todoReducer,
+  fiora: fioraReducer
+})
+```
+
+The key name must be `fiora`.
+
+Done. Next step, walk through the tutorial.
