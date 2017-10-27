@@ -18,15 +18,20 @@ import { DEFAULT_ERROR, FORM_ERROR_KEY } from '../src/helpers';
 const formName = 'login';
 let wrapper;
 beforeEach(() => {
-  wrapper = mount(<Fiora name={formName}>fiora</Fiora>, {
-    context: {
-      store: {
-        dispatch: jest.fn(),
-        subscribe: jest.fn(),
-        getState: jest.fn()
+  wrapper = mount(
+    <Fiora name={formName} onSubmit={() => {}}>
+      fiora
+    </Fiora>,
+    {
+      context: {
+        store: {
+          dispatch: jest.fn(),
+          subscribe: jest.fn(),
+          getState: jest.fn()
+        }
       }
     }
-  });
+  );
 });
 
 describe('handleErrorsIfAny', () => {
@@ -80,6 +85,12 @@ describe('handleErrorsIfAny', () => {
     expect(context.store.dispatch).toHaveBeenCalledWith(
       updateFormError(formName, DEFAULT_ERROR)
     );
+  });
+
+  it('runs without error if errors param is falsy', () => {
+    const { handleErrorsIfAny } = wrapper.instance();
+    expect(() => handleErrorsIfAny(undefined, [])).not.toThrow();
+    expect(() => handleErrorsIfAny(null, [])).not.toThrow();
   });
 
   it('returns true if errors is not empty', () => {

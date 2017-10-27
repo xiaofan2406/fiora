@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Component, initialize, mapStateToProps } from '../src/Field';
+import Field, { Component, initialize, mapState } from '../src/Field';
 import {
   createField,
   updateFieldValue,
@@ -23,9 +23,19 @@ beforeEach(() => {
   };
 });
 
-test('Component has default onValidate prop resolve null', async () => {
-  props.onValidate = undefined;
-  const wrapper = mount(<Component {...props} />);
+test('Field (enhanced component) has default onValidate prop resolve null', async () => {
+  const wrapper = mount(<Field name="username">{() => ''}</Field>, {
+    context: {
+      fiora: { formName: 'login', setValidateFunc: () => {} },
+      store: {
+        subscribe: () => {},
+        dispatch: () => {},
+        getState: () => ({
+          fiora: { forms: {}, fields: { 'username@login': { value: '' } } }
+        })
+      }
+    }
+  });
   const result = await wrapper.props().onValidate();
   expect(result).toEqual(null);
 });
@@ -167,7 +177,7 @@ describe('withFiora initialize function', () => {
   });
 });
 
-test('mapStateToProps returns correct result using selectors', () => {
+test('mapState returns correct result using selectors', () => {
   selectors.getFieldValue = jest.fn();
   selectors.getFieldError = jest.fn();
   selectors.getIsFieldValidating = jest.fn();
@@ -177,7 +187,7 @@ test('mapStateToProps returns correct result using selectors', () => {
   expect(selectors.getIsFieldValidating).toHaveBeenCalledTimes(0);
   expect(selectors.getIsFieldTouched).toHaveBeenCalledTimes(0);
 
-  mapStateToProps({}, props);
+  mapState({}, props);
   expect(selectors.getFieldValue).toHaveBeenCalledTimes(1);
   expect(selectors.getFieldError).toHaveBeenCalledTimes(1);
   expect(selectors.getIsFieldValidating).toHaveBeenCalledTimes(1);

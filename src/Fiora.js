@@ -72,7 +72,9 @@ class Fiora extends React.Component {
   // return true if there is error
   // error can be undefined due to onSubmit may return nothing
   // This function also sets/clears form error
-  handleErrorsIfAny = (errors = {}, fields) => {
+  // fields is always an array
+  handleErrorsIfAny = (errorObj, fields) => {
+    const errors = errorObj || {};
     const { name: formName } = this.props;
     const { dispatch } = this.context.store;
 

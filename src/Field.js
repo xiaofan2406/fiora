@@ -68,11 +68,7 @@ Field.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-Field.defaultProps = {
-  onValidate: async () => null
-};
-
-export const mapStateToProps = (state, { formName, name: fieldName }) => ({
+export const mapState = (state, { formName, name: fieldName }) => ({
   value: getFieldValue(state, { formName, fieldName }),
   error: getFieldError(state, { formName, fieldName }),
   isValidating: getIsFieldValidating(state, { formName, fieldName }),
@@ -94,8 +90,12 @@ export const initialize = (
   setValidateFunc(fieldName, onValidate);
 };
 
-const enhance = compose(withFiora({ initialize }), connect(mapStateToProps));
+const enhanced = compose(withFiora({ initialize }), connect(mapState))(Field);
 
-export default enhance(Field);
+enhanced.defaultProps = {
+  onValidate: async () => null
+};
+
+export default enhanced;
 
 export { Field as Component };

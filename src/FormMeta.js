@@ -22,7 +22,7 @@ FormMeta.propTypes = {
 };
 
 // props.formName is injected by `withFiora`
-export const mapStateToProps = (
+export const mapState = (
   state,
   { formName, error, isValidating, isSubmitting }
 ) => {
@@ -35,7 +35,7 @@ export const mapStateToProps = (
   return props;
 };
 
-const enhance = compose(withFiora(), connect(mapStateToProps));
+const enhance = compose(withFiora(), connect(mapState));
 
 export default enhance(FormMeta);
 
