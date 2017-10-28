@@ -44,4 +44,4 @@ export default combineReducers({
 
 The key name must be `fiora`.
 
-Done. Next step, walk through the tutorial.
+Done. Next step, walk through the [tutorial](https://github.com/xiaofan2406/fiora/blob/master/docs/turorial.md).

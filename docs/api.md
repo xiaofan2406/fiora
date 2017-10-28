@@ -85,16 +85,16 @@ A function returns an valid React node.
 ### `FormMeta`
 
 #### Props
-##### error (*boolean*):
+##### `error` (*boolean*):
 Indicating if the children function is subscribed to the form error.
 
-##### isValidating (*boolean*):
+##### `isValidating` (*boolean*):
 Indicating if the children function is subscribed to the form validation status.
 
-##### isSubmitting (*boolean*):
+##### `isSubmitting` (*boolean*):
 Indicating if the children function is subscribed to the form submission status.
 
-##### children (*function*) **required**: `(meta) => node`
+##### `children` (*function*) **required**: `(meta) => node`
 A function returns a valid React nod. `meta` will be decided by boolean flags set on `FormMeta`.
 
 For example:

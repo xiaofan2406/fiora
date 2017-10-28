@@ -132,4 +132,5 @@ const SimpleLogin = () => (
 export default SimpleLogin;
 ```
 
+Next step, read the [API documentaion](https://github.com/xiaofan2406/fiora/blob/master/docs/api.md)
 
