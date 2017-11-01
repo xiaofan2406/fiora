@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 const common = require('./webpack.common');
@@ -94,16 +95,22 @@ module.exports = {
         minifyURLs: true
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        comparisons: false
-      },
-      output: {
-        comments: false,
-        ascii_only: true
-      },
-      sourceMap: true
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        ecma: 8,
+        compress: {
+          warnings: false,
+          comparisons: false
+        },
+        mangle: {
+          safari10: true
+        },
+        output: {
+          comments: false,
+          ascii_only: true
+        },
+        sourceMap: true
+      }
     }),
     new ExtractTextPlugin('css/[name].[contenthash:8].css'),
     new FileManagerPlugin({

@@ -29,8 +29,7 @@ module.exports = {
             'iOS >= 10.3',
             'Firefox >= 54',
             'Edge >= 15'
-          ],
-          uglify: true
+          ]
         },
         modules: false
       }
