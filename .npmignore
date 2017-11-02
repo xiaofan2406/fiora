@@ -1,4 +1,6 @@
 config/
+docs/
+src/
 test/
 .babelrc
 .babelrc.js
