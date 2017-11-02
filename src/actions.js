@@ -47,10 +47,11 @@ export const finishSubmitting = formName => ({
   isSubmitting: false
 });
 
-export const createField = (formName, fieldName) => ({
+export const createField = (formName, fieldName, initialValue) => ({
   type: actionTypes.CREATE_FIELD,
   formName,
-  fieldName
+  fieldName,
+  initialValue
 });
 
 export const updateFieldValue = (formName, fieldName, value) => ({

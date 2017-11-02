@@ -5,9 +5,18 @@ import {
   initialFieldState,
   fieldsReducer
 } from '../src/reducer';
-import { getFormFieldKey, DEFAULT_ERROR } from '../src/helpers';
+import { getFormFieldKey, DEFAULT_VALUE, DEFAULT_ERROR } from '../src/helpers';
 
 const formName = 'login';
+
+test('initialFormState gives expected values', () => {
+  expect(initialFormState()).toEqual({
+    fields: [],
+    error: DEFAULT_ERROR,
+    isValidating: false,
+    isSubmitting: false
+  });
+});
 
 describe('formsReducer', () => {
   const mockState = override => ({
@@ -175,6 +184,22 @@ describe('formsReducer', () => {
   });
 });
 
+test('initialFieldState gives expected values', () => {
+  expect(initialFieldState()).toEqual({
+    value: DEFAULT_VALUE,
+    error: DEFAULT_ERROR,
+    isTouched: false,
+    isValidating: false
+  });
+
+  expect(initialFieldState('somevalue')).toEqual({
+    value: 'somevalue',
+    error: DEFAULT_ERROR,
+    isTouched: false,
+    isValidating: false
+  });
+});
+
 describe('fieldsReducer', () => {
   const mockState = override => ({
     [getFormFieldKey(formName, 'username')]: {
@@ -184,18 +209,34 @@ describe('fieldsReducer', () => {
   });
 
   describe('for CREATE_FIELD', () => {
-    it('initializes the field if it does not exist', () => {
-      const action = {
-        type: actionTypes.CREATE_FIELD,
-        formName,
-        fieldName: 'password'
-      };
+    describe('if field does not exist', () => {
       const fieldKey = getFormFieldKey(formName, 'password');
-      const state = mockState();
-      expect(state).not.toHaveProperty(fieldKey);
+      let state;
+      beforeEach(() => {
+        state = mockState();
+        expect(state).not.toHaveProperty(fieldKey);
+      });
 
-      const newState = fieldsReducer(state, action);
-      expect(newState[fieldKey]).toEqual(initialFieldState());
+      it('initializes the field with default value if initialValue is falsy', () => {
+        const action = {
+          type: actionTypes.CREATE_FIELD,
+          formName,
+          fieldName: 'password'
+        };
+        const newState = fieldsReducer(state, action);
+        expect(newState[fieldKey]).toEqual(initialFieldState());
+      });
+
+      it('initializes the field with given initialValue if truthy', () => {
+        const action = {
+          type: actionTypes.CREATE_FIELD,
+          formName,
+          fieldName: 'password',
+          initialValue: 'securepass'
+        };
+        const newState = fieldsReducer(state, action);
+        expect(newState[fieldKey]).toEqual(initialFieldState('securepass'));
+      });
     });
 
     it('returns current state if field exists', () => {
