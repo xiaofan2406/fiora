@@ -1,6 +1,6 @@
 {
   "name": "fiora",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "author": "Xiaofan Wu (https://github.com/xiaofan2406)",
   "description": "Forms, with react + redux",
   "keywords": ["react", "redux", "forms"],
