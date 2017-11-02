@@ -14,6 +14,7 @@ let props;
 beforeEach(() => {
   props = {
     name: 'username',
+    initialValue: 'superuser',
     onValidate: jest.fn(),
     value: 'admin',
     error: 'Invalid',
@@ -147,22 +148,11 @@ describe('withFiora initialize function', () => {
     initialize(props, context);
     expect(context.store.dispatch).toHaveBeenCalledTimes(1);
     expect(context.store.dispatch).toHaveBeenCalledWith(
-      createField(context.fiora.formName, props.name)
+      createField(context.fiora.formName, props.name, props.initialValue)
     );
   });
 
-  it('updates the initialValue if given', () => {
-    props.initialValue = 'useradmin';
-    expect(context.store.dispatch).toHaveBeenCalledTimes(0);
-
-    initialize(props, context);
-    expect(context.store.dispatch).toHaveBeenCalledTimes(2);
-    expect(context.store.dispatch).toHaveBeenCalledWith(
-      updateFieldValue(context.fiora.formName, props.name, props.initialValue)
-    );
-  });
-
-  it('sets validation function', () => {
+  it('sets validation function in context', () => {
     props.onValidate = jest.fn();
     expect(context.fiora.setValidateFunc).toHaveBeenCalledTimes(0);
 

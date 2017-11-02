@@ -54,11 +54,12 @@ test('finishSubmitting returns the correct action', () => {
 });
 
 test('createField returns the correct action', () => {
-  const action = actions.createField('login', 'username');
+  const action = actions.createField('login', 'username', 'superuser');
   expect(action).toEqual({
     type: actionTypes.CREATE_FIELD,
     formName: 'login',
-    fieldName: 'username'
+    fieldName: 'username',
+    initialValue: 'superuser'
   });
 });
 

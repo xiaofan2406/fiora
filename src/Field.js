@@ -56,7 +56,8 @@ function Field({
 Field.propTypes = {
   name: PropTypes.any.isRequired,
   initialValue: PropTypes.any,
-  onValidate: PropTypes.func,
+  // if not given, will be injected by enhanced.defaultProps
+  onValidate: PropTypes.func.isRequired,
   children: PropTypes.func.isRequired,
 
   // injected props
@@ -81,10 +82,7 @@ export const initialize = (
 ) => {
   // create the field before the field is rendered,
   // so that the value is initialized rather than `undefined`
-  dispatch(createField(formName, fieldName));
-  if (initialValue) {
-    dispatch(updateFieldValue(formName, fieldName, initialValue));
-  }
+  dispatch(createField(formName, fieldName, initialValue));
   // set the field's validation function in context
   // so that the form handleSubmit is aware of how to validate each field
   setValidateFunc(fieldName, onValidate);

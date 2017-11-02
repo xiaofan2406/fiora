@@ -47,8 +47,8 @@ export function formsReducer(state = {}, action) {
   }
 }
 
-export const initialFieldState = () => ({
-  value: DEFAULT_VALUE,
+export const initialFieldState = initialValue => ({
+  value: initialValue || DEFAULT_VALUE,
   error: DEFAULT_ERROR,
   isTouched: false,
   isValidating: false
@@ -62,7 +62,7 @@ export function fieldsReducer(state = {}, action) {
         ? state
         : {
             ...state,
-            [fieldKeyName]: initialFieldState()
+            [fieldKeyName]: initialFieldState(action.initialValue)
           };
     case actionTypes.UPDATE_FIELD_VALUE:
       return makeFieldMetaReducer('value', {
