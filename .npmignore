@@ -1,4 +1,5 @@
 config/
+coverage/
 docs/
 src/
 test/
@@ -7,4 +8,6 @@ test/
 .eslintrc.js
 .gitignore
 .travis.yml
+CODE_OF_CONDUCT.md
+yarn-error.log
 yarn.lock
