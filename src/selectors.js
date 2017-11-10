@@ -23,3 +23,14 @@ export const getFormValues = (state, { formName }) => {
   });
   return formValues;
 };
+
+export const getIsFormTouched = (state, { formName }) =>
+  getFormFields(state, { formName }).some(fieldName =>
+    getIsFieldTouched(state, { formName, fieldName })
+  );
+
+export const getFormHasError = (state, { formName }) =>
+  getFormFields(state, { formName })
+    .map(fieldName => getFieldError(state, { formName, fieldName }))
+    .concat([getFormError(state, { formName })])
+    .some(error => error);

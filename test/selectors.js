@@ -2,32 +2,36 @@ import * as selectors from '../src/selectors';
 import { getFormFieldKey, DEFAULT_ERROR, DEFAULT_VALUE } from '../src/helpers';
 
 const formName = 'login';
-const state = {
-  fiora: {
-    forms: {
-      [formName]: {
-        fields: ['username', 'password'],
-        error: DEFAULT_ERROR,
-        isValidating: false,
-        isSubmitting: true
-      }
-    },
-    fields: {
-      [getFormFieldKey(formName, 'username')]: {
-        value: 'admin',
-        error: 'invalid',
-        isTouched: true,
-        isValidating: false
+let state;
+
+beforeEach(() => {
+  state = {
+    fiora: {
+      forms: {
+        [formName]: {
+          fields: ['username', 'password'],
+          error: DEFAULT_ERROR,
+          isValidating: false,
+          isSubmitting: true
+        }
       },
-      [getFormFieldKey(formName, 'password')]: {
-        value: DEFAULT_VALUE,
-        error: DEFAULT_ERROR,
-        isTouched: false,
-        isValidating: true
+      fields: {
+        [getFormFieldKey(formName, 'username')]: {
+          value: 'admin',
+          error: 'invalid',
+          isTouched: true,
+          isValidating: false
+        },
+        [getFormFieldKey(formName, 'password')]: {
+          value: DEFAULT_VALUE,
+          error: DEFAULT_ERROR,
+          isTouched: false,
+          isValidating: true
+        }
       }
     }
-  }
-};
+  };
+});
 
 test('getFormFields returns the fields for the form', () => {
   expect(selectors.getFormFields(state, { formName })).toEqual([
@@ -89,4 +93,25 @@ test('getFormValues returns an object of all fields value', () => {
     username: 'admin',
     password: DEFAULT_VALUE
   });
+});
+
+test('getIsFormTouched returns isTouched status for the form', () => {
+  expect(selectors.getIsFormTouched(state, { formName })).toBe(true);
+
+  state.fiora.fields[getFormFieldKey(formName, 'username')].isTouched = false;
+  expect(selectors.getIsFormTouched(state, { formName })).toBe(false);
+
+  state.fiora.fields[getFormFieldKey(formName, 'username')].isTouched = true;
+  state.fiora.fields[getFormFieldKey(formName, 'password')].isTouched = true;
+  expect(selectors.getIsFormTouched(state, { formName })).toBe(true);
+});
+
+test('getFormHasError returns a boolean flag indicating if form contains any error', () => {
+  expect(selectors.getFormHasError(state, { formName })).toBe(true);
+
+  state.fiora.fields[getFormFieldKey(formName, 'username')].error = null;
+  expect(selectors.getFormHasError(state, { formName })).toBe(false);
+
+  state.fiora.forms[formName].error = 'invalid';
+  expect(selectors.getFormHasError(state, { formName })).toBe(true);
 });
