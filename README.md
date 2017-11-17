@@ -34,10 +34,8 @@ For example, in your **root** reducer file:
 
 ```js
 import { reducer as fioraReducer } from 'fiora';
-import todoReducer from './todoReducer';
 
 export default combineReducers({
-  todo: todoReducer,
   fiora: fioraReducer
 })
 ```
