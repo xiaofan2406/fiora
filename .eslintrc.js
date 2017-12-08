@@ -18,10 +18,10 @@ module.exports = {
   parser: 'babel-eslint',
   parserOptions: {
     sourceType: 'module',
-    ecmaVersion: 6,
+    ecmaVersion: 8,
     ecmaFeatures: {
+      impliedStrict: true,
       jsx: true,
-      generators: true,
       experimentalObjectRestSpread: true
     }
   },
