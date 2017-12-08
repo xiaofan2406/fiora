@@ -9,5 +9,6 @@ test/
 .gitignore
 .travis.yml
 CODE_OF_CONDUCT.md
+jest.config.js
 yarn-error.log
 yarn.lock
