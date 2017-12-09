@@ -6,13 +6,13 @@ import {
   updateFieldValue,
   updateFieldError,
   startValidatingField,
-  finishValidatingField
+  finishValidatingField,
 } from './actions';
 import {
   getFieldValue,
   getFieldError,
   getIsFieldValidating,
-  getIsFieldTouched
+  getIsFieldTouched,
 } from './selectors';
 import withFiora from './withFiora';
 
@@ -25,7 +25,7 @@ function Field({
   isValidating,
   isTouched,
   formName,
-  dispatch
+  dispatch,
 }) {
   // return true if there is error
   const handleValidate = async () => {
@@ -49,7 +49,7 @@ function Field({
     isValidating,
     isTouched,
     handleChange,
-    handleValidate
+    handleValidate,
   });
 }
 
@@ -66,14 +66,14 @@ Field.propTypes = {
   isValidating: PropTypes.bool,
   isTouched: PropTypes.bool,
   formName: PropTypes.string.isRequired,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 };
 
 export const mapState = (state, { formName, name: fieldName }) => ({
   value: getFieldValue(state, { formName, fieldName }),
   error: getFieldError(state, { formName, fieldName }),
   isValidating: getIsFieldValidating(state, { formName, fieldName }),
-  isTouched: getIsFieldTouched(state, { formName, fieldName })
+  isTouched: getIsFieldTouched(state, { formName, fieldName }),
 });
 
 export const initialize = (
@@ -91,7 +91,7 @@ export const initialize = (
 const enhanced = compose(withFiora({ initialize }), connect(mapState))(Field);
 
 enhanced.defaultProps = {
-  onValidate: async () => null
+  onValidate: async () => null,
 };
 
 export default enhanced;

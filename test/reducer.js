@@ -3,7 +3,7 @@ import {
   initialFormState,
   formsReducer,
   initialFieldState,
-  fieldsReducer
+  fieldsReducer,
 } from '../src/reducer';
 import { getFormFieldKey, DEFAULT_VALUE, DEFAULT_ERROR } from '../src/helpers';
 
@@ -14,7 +14,7 @@ test('initialFormState gives expected values', () => {
     fields: [],
     error: DEFAULT_ERROR,
     isValidating: false,
-    isSubmitting: false
+    isSubmitting: false,
   });
 });
 
@@ -22,8 +22,8 @@ describe('formsReducer', () => {
   const mockState = override => ({
     [formName]: {
       ...initialFormState(),
-      ...override
-    }
+      ...override,
+    },
   });
 
   describe('for CREATE_FORM', () => {
@@ -51,7 +51,7 @@ describe('formsReducer', () => {
       const action = {
         type: actionTypes.CREATE_FIELD,
         formName,
-        fieldName: 'email'
+        fieldName: 'email',
       };
       const state = mockState();
       expect(state).toHaveProperty(formName);
@@ -65,7 +65,7 @@ describe('formsReducer', () => {
       const action = {
         type: actionTypes.CREATE_FIELD,
         formName: 'register',
-        fieldName: 'email'
+        fieldName: 'email',
       };
       const state = mockState();
       expect(state).not.toHaveProperty('register');
@@ -78,7 +78,7 @@ describe('formsReducer', () => {
       const action = {
         type: actionTypes.CREATE_FIELD,
         formName,
-        fieldName: 'username'
+        fieldName: 'username',
       };
       const state = mockState({ fields: ['username'] });
       expect(state).toHaveProperty(formName);
@@ -96,7 +96,7 @@ describe('formsReducer', () => {
       const action = {
         type: actionTypes.UPDATE_FORM_ERROR,
         formName,
-        error: 'invalid'
+        error: 'invalid',
       };
       const state = mockState();
       expect(state).toHaveProperty(formName);
@@ -109,7 +109,7 @@ describe('formsReducer', () => {
       const action = {
         type: actionTypes.UPDATE_FORM_ERROR,
         formName: 'register',
-        error: 'invalid'
+        error: 'invalid',
       };
       const state = mockState();
       expect(state).not.toHaveProperty('register');
@@ -124,7 +124,7 @@ describe('formsReducer', () => {
       const action = {
         type: actionTypes.UPDATE_FORM_IS_VALIDATING,
         formName,
-        isValidating: true
+        isValidating: true,
       };
       const state = mockState();
       expect(state).toHaveProperty(formName);
@@ -137,7 +137,7 @@ describe('formsReducer', () => {
       const action = {
         type: actionTypes.UPDATE_FORM_IS_VALIDATING,
         formName: 'register',
-        isValidating: true
+        isValidating: true,
       };
       const state = mockState();
       expect(state).not.toHaveProperty('register');
@@ -152,7 +152,7 @@ describe('formsReducer', () => {
       const action = {
         type: actionTypes.UPDATE_FORM_IS_SUBMITTING,
         formName,
-        isSubmitting: true
+        isSubmitting: true,
       };
       const state = mockState();
       expect(state).toHaveProperty(formName);
@@ -165,7 +165,7 @@ describe('formsReducer', () => {
       const action = {
         type: actionTypes.UPDATE_FORM_IS_SUBMITTING,
         formName: 'register',
-        isSubmitting: true
+        isSubmitting: true,
       };
       const state = mockState();
       expect(state).not.toHaveProperty('register');
@@ -189,14 +189,14 @@ test('initialFieldState gives expected values', () => {
     value: DEFAULT_VALUE,
     error: DEFAULT_ERROR,
     isTouched: false,
-    isValidating: false
+    isValidating: false,
   });
 
   expect(initialFieldState('somevalue')).toEqual({
     value: 'somevalue',
     error: DEFAULT_ERROR,
     isTouched: false,
-    isValidating: false
+    isValidating: false,
   });
 });
 
@@ -204,8 +204,8 @@ describe('fieldsReducer', () => {
   const mockState = override => ({
     [getFormFieldKey(formName, 'username')]: {
       ...initialFieldState(),
-      ...override
-    }
+      ...override,
+    },
   });
 
   describe('for CREATE_FIELD', () => {
@@ -221,7 +221,7 @@ describe('fieldsReducer', () => {
         const action = {
           type: actionTypes.CREATE_FIELD,
           formName,
-          fieldName: 'password'
+          fieldName: 'password',
         };
         const newState = fieldsReducer(state, action);
         expect(newState[fieldKey]).toEqual(initialFieldState());
@@ -232,7 +232,7 @@ describe('fieldsReducer', () => {
           type: actionTypes.CREATE_FIELD,
           formName,
           fieldName: 'password',
-          initialValue: 'securepass'
+          initialValue: 'securepass',
         };
         const newState = fieldsReducer(state, action);
         expect(newState[fieldKey]).toEqual(initialFieldState('securepass'));
@@ -243,7 +243,7 @@ describe('fieldsReducer', () => {
       const action = {
         type: actionTypes.CREATE_FIELD,
         formName,
-        fieldName: 'username'
+        fieldName: 'username',
       };
       const fieldKey = getFormFieldKey(formName, 'username');
       const state = mockState();
@@ -260,7 +260,7 @@ describe('fieldsReducer', () => {
         type: actionTypes.UPDATE_FIELD_VALUE,
         formName,
         fieldName: 'username',
-        value: 'admin'
+        value: 'admin',
       };
       const fieldKey = getFormFieldKey(formName, 'username');
       const state = mockState();
@@ -285,7 +285,7 @@ describe('fieldsReducer', () => {
         type: actionTypes.UPDATE_FIELD_VALUE,
         formName,
         fieldName: 'email',
-        value: 'admin'
+        value: 'admin',
       };
       const fieldKey = getFormFieldKey(formName, 'email');
       const state = mockState();
@@ -302,7 +302,7 @@ describe('fieldsReducer', () => {
         type: actionTypes.UPDATE_FIELD_ERROR,
         formName,
         fieldName: 'username',
-        error: 'invalid'
+        error: 'invalid',
       };
       const fieldKey = getFormFieldKey(formName, 'username');
       const state = mockState();
@@ -317,7 +317,7 @@ describe('fieldsReducer', () => {
         type: actionTypes.UPDATE_FIELD_ERROR,
         formName,
         fieldName: 'email',
-        error: 'invalid'
+        error: 'invalid',
       };
       const fieldKey = getFormFieldKey(formName, 'email');
       const state = mockState();
@@ -334,7 +334,7 @@ describe('fieldsReducer', () => {
         type: actionTypes.UPDATE_FIELD_IS_VALIDATING,
         formName,
         fieldName: 'username',
-        isValidating: true
+        isValidating: true,
       };
       const fieldKey = getFormFieldKey(formName, 'username');
       const state = mockState();
@@ -349,7 +349,7 @@ describe('fieldsReducer', () => {
         type: actionTypes.UPDATE_FIELD_IS_VALIDATING,
         formName,
         fieldName: 'email',
-        isValidating: true
+        isValidating: true,
       };
       const fieldKey = getFormFieldKey(formName, 'email');
       const state = mockState();

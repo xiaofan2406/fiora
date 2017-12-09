@@ -4,14 +4,14 @@ export const ROUTES = {
   HOME: {
     path: '/',
     name: 'Home',
-    exact: true
+    exact: true,
   },
   ABOUT: {
     path: '/about',
-    name: 'About'
+    name: 'About',
   },
   CONTACT: {
     path: '/contact',
-    name: 'Contact'
-  }
+    name: 'Contact',
+  },
 };

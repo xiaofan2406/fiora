@@ -23,8 +23,8 @@ export const makeFieldMetaReducer = (meta, override = {}) => (
         [fieldKeyName]: {
           ...state[fieldKeyName],
           [meta]: action[meta],
-          ...override
-        }
+          ...override,
+        },
       }
     : state;
 };
@@ -35,8 +35,8 @@ export const makeFormMetaReducer = meta => (state, action) =>
         ...state,
         [action.formName]: {
           ...state[action.formName],
-          [meta]: action[meta]
-        }
+          [meta]: action[meta],
+        },
       }
     : state;
 

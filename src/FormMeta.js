@@ -6,7 +6,7 @@ import {
   getIsFormValidating,
   getIsFormSubmitting,
   getIsFormTouched,
-  getFormHasError
+  getFormHasError,
 } from './selectors';
 import withFiora from './withFiora';
 
@@ -18,7 +18,7 @@ function FormMeta({
   isValidating,
   isSubmitting,
   isTouched,
-  hasError
+  hasError,
 }) {
   return children({ error, isValidating, isSubmitting, isTouched, hasError });
 }
@@ -29,7 +29,7 @@ FormMeta.propTypes = {
   isValidating: PropTypes.bool,
   isSubmitting: PropTypes.bool,
   isTouched: PropTypes.bool,
-  hasError: PropTypes.bool
+  hasError: PropTypes.bool,
 };
 
 // props.formName is injected by `withFiora`

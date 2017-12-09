@@ -12,31 +12,31 @@ beforeEach(() => {
           fields: ['username', 'password'],
           error: DEFAULT_ERROR,
           isValidating: false,
-          isSubmitting: true
-        }
+          isSubmitting: true,
+        },
       },
       fields: {
         [getFormFieldKey(formName, 'username')]: {
           value: 'admin',
           error: 'invalid',
           isTouched: true,
-          isValidating: false
+          isValidating: false,
         },
         [getFormFieldKey(formName, 'password')]: {
           value: DEFAULT_VALUE,
           error: DEFAULT_ERROR,
           isTouched: false,
-          isValidating: true
-        }
-      }
-    }
+          isValidating: true,
+        },
+      },
+    },
   };
 });
 
 test('getFormFields returns the fields for the form', () => {
   expect(selectors.getFormFields(state, { formName })).toEqual([
     'username',
-    'password'
+    'password',
   ]);
 });
 
@@ -91,7 +91,7 @@ test('getIsFieldValidating returns the isValidating status for the field', () =>
 test('getFormValues returns an object of all fields value', () => {
   expect(selectors.getFormValues(state, { formName })).toEqual({
     username: 'admin',
-    password: DEFAULT_VALUE
+    password: DEFAULT_VALUE,
   });
 });
 

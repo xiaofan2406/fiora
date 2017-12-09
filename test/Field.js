@@ -6,7 +6,7 @@ import {
   updateFieldValue,
   startValidatingField,
   finishValidatingField,
-  updateFieldError
+  updateFieldError,
 } from '../src/actions';
 import * as selectors from '../src/selectors';
 
@@ -20,7 +20,7 @@ beforeEach(() => {
     error: 'Invalid',
     formName: 'login',
     dispatch: jest.fn(),
-    children: jest.fn(() => '')
+    children: jest.fn(() => ''),
   };
 });
 
@@ -32,10 +32,10 @@ test('Field (enhanced component) has default onValidate prop resolve null', asyn
         subscribe: () => {},
         dispatch: () => {},
         getState: () => ({
-          fiora: { forms: {}, fields: { 'username@login': { value: '' } } }
-        })
-      }
-    }
+          fiora: { forms: {}, fields: { 'username@login': { value: '' } } },
+        }),
+      },
+    },
   });
   const result = await wrapper.props().onValidate();
   expect(result).toEqual(null);
@@ -97,7 +97,7 @@ describe('children render function', () => {
       children,
       formName,
       name,
-      value
+      value,
     } = wrapper.props();
     const { handleValidate } = children.mock.calls[0][0];
     expect(onValidate).toHaveBeenCalledTimes(0);
@@ -133,9 +133,9 @@ describe('withFiora initialize function', () => {
   const context = {
     store: {
       subscribe: () => {},
-      getState: () => {}
+      getState: () => {},
     },
-    fiora: { formName: 'login' }
+    fiora: { formName: 'login' },
   };
   beforeEach(() => {
     context.store.dispatch = jest.fn();

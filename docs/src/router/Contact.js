@@ -1,8 +1,6 @@
 import React from 'react';
 import { Loader } from 'widgets';
 
-function Contact() {
-  return <Loader />;
-}
+const Contact = () => <Loader />;
 
 export default Contact;

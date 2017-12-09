@@ -2,27 +2,27 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const common = require('./webpack.common');
-const { devServerPort, devServerIp, paths } = require('./configs');
+const { devServerPort, localIp, paths } = require('./configs');
+
+// https://github.com/facebookincubator/create-react-app/blob/master/packages/react-dev-utils/ignoredFiles.js
+const ignoredFiles = new RegExp(
+  `^(?!${path
+    .normalize(`${paths.appSrc}/`)
+    .replace(/[\\]+/g, '/')}).+/node_modules/`,
+  'g'
+);
 
 module.exports = {
   devtool: 'cheap-module-source-map',
-  entry: [
-    require.resolve('./polyfills'),
-    'react-hot-loader/patch',
-    `${paths.srcPath}/index.js`
-  ],
+  entry: ['react-hot-loader/patch', `${paths.docSrc}/index.js`],
   resolve: common.resolve,
   output: {
-    // For dev, `path` and `filename` are not important because of using webpack-dev-server
-    path: paths.distPath,
     filename: 'bundle.js',
     chunkFilename: 'js/[name].chunk.js',
-    // Necessary for HMR to know where to load the hot update chunks
     publicPath: '/',
-    // Add /* filename */ comments to generated require()s in the output.
     pathinfo: true,
-    devtoolModuleFilenameTemplate: info =>
-      path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
+    devtoolModuleFilenameTemplate: ({ absoluteResourcePath }) =>
+      path.resolve(absoluteResourcePath),
   },
   module: {
     strictExportPresence: true,
@@ -30,39 +30,47 @@ module.exports = {
       ...common.rules,
       {
         test: /\.js$/,
-        include: [paths.srcPath, path.join(paths.docPath, '../src')],
+        include: [paths.docSrc, paths.libSrc],
         loader: 'babel-loader',
-        options: { cacheDirectory: true }
+        options: {
+          cacheDirectory: true,
+        },
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      }
-    ]
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
   },
-  node: common.node,
-  performance: { hints: false },
   plugins: [
     new HtmlWebpackPlugin({
       inject: true,
-      template: `${paths.srcPath}/assets/index.html`,
-      favicon: `${paths.srcPath}/assets/favicon.ico`
+      template: `${paths.docSrc}/assets/index.html`,
+      favicon: `${paths.docSrc}/assets/favicon.ico`,
     }),
-    new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"development"' }),
+    new webpack.NamedModulesPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"development"',
+    }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin()
   ],
+  node: common.node,
+  performance: {
+    hints: false,
+  },
   devServer: {
     compress: true,
-    historyApiFallback: { disableDotRule: true },
+    historyApiFallback: {
+      disableDotRule: true,
+    },
     hot: true,
     publicPath: '/',
     stats: 'errors-only',
     watchOptions: {
-      ignored: /node_modules/
+      ignored: ignoredFiles,
     },
     https: process.env.HTTPS === 'true',
-    host: devServerIp,
-    port: devServerPort
-  }
+    host: localIp,
+    port: devServerPort,
+  },
 };

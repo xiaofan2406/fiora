@@ -11,9 +11,9 @@ beforeEach(() => {
     store: {
       dispatch: () => {},
       subscribe: () => {},
-      getState: () => {}
+      getState: () => {},
     },
-    fiora: { formName, handleSubmit: () => {} }
+    fiora: { formName, handleSubmit: () => {} },
   };
 });
 

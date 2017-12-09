@@ -10,7 +10,7 @@ test('Component renders children function with meta', () => {
     error: 'Invalid',
     isValidating: true,
     isSubmitting: false,
-    children: jest.fn(() => '')
+    children: jest.fn(() => ''),
   };
   const wrapper = mount(<Component {...props} />);
   const { children } = wrapper.props();
@@ -18,7 +18,7 @@ test('Component renders children function with meta', () => {
   expect(children).toHaveBeenCalledWith({
     error: 'Invalid',
     isValidating: true,
-    isSubmitting: false
+    isSubmitting: false,
   });
 });
 
@@ -38,26 +38,26 @@ describe('enhanced FormMeta Component', () => {
                   isSubmitting: false,
                   isValidating: true,
                   error: 'invalid',
-                  ...storeState
-                }
+                  ...storeState,
+                },
               },
               fields: {
                 [getFormFieldKey(formName, 'username')]: {
                   value: null,
                   error: null,
                   isTouched: false,
-                  isValidating: false
-                }
-              }
-            }
-          })
-        }
-      }
+                  isValidating: false,
+                },
+              },
+            },
+          }),
+        },
+      },
     });
 
   beforeEach(() => {
     jest.mock('../src/withFiora', () => ({
-      default: C => C
+      default: C => C,
     }));
   });
 

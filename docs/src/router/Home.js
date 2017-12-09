@@ -1,8 +1,6 @@
 import React from 'react';
 import { SimpleLogin } from 'components';
 
-function Home() {
-  return <SimpleLogin />;
-}
+const Home = () => <SimpleLogin />;
 
 export default Home;

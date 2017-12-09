@@ -2,9 +2,9 @@
  * @see https://github.com/yuanyan/halogen/blob/master/src/RingLoader.js
  */
 import React from 'react';
-import styled from 'react-emotion';
+import { css } from 'emotion';
 
-const Container = styled('div')`
+const cssClass = css`
   display: inline-block;
   & > div {
     width: 60px;
@@ -33,16 +33,14 @@ const Container = styled('div')`
   }
 `;
 
-function Loader() {
-  return (
-    <Container>
-      <div>
-        <div />
-        <div />
-      </div>
-    </Container>
-  );
-}
+const Loader = () => (
+  <div className={cssClass}>
+    <div>
+      <div />
+      <div />
+    </div>
+  </div>
+);
 
 export { Loader as Component };
 

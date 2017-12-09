@@ -6,7 +6,7 @@ const withFiora = ({ initialize, withHandleSubmit } = {}) => Component => {
   class C extends React.Component {
     static contextTypes = {
       fiora: PropTypes.object,
-      store: storeShape
+      store: storeShape,
     };
 
     componentWillMount() {

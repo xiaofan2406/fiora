@@ -6,14 +6,14 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
-    jest: true
+    jest: true,
   },
   settings: {
     'import/resolver': {
       webpack: {
-        config: path.join(__dirname, './docs/config/webpack.dev.js')
-      }
-    }
+        config: path.join(__dirname, './docs/config/webpack.common.js'),
+      },
+    },
   },
   parser: 'babel-eslint',
   parserOptions: {
@@ -22,8 +22,8 @@ module.exports = {
     ecmaFeatures: {
       impliedStrict: true,
       jsx: true,
-      experimentalObjectRestSpread: true
-    }
+      experimentalObjectRestSpread: true,
+    },
   },
   plugins: ['react'],
   extends: ['airbnb', 'prettier'],
@@ -32,6 +32,6 @@ module.exports = {
     'global-require': 0,
     'import/no-extraneous-dependencies': 0, // allow import devDependencies
     'react/forbid-prop-types': 0, // allow all types of PropTypes
-    'react/jsx-filename-extension': 0 // enfore all .js extension
-  }
+    'react/jsx-filename-extension': 0, // enfore all .js extension
+  },
 };

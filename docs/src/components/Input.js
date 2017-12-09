@@ -45,39 +45,37 @@ const Container = styled('div')`
   }
 `;
 
-function Input({ label, value, error, isValidating, isTouched, ...rest }) {
-  return (
-    <Container>
-      <div className="input">
-        <span className="label">{label}: </span>
-        <input value={value} {...rest} />
-      </div>
-      <p className="meta">
-        value: <span className="metaValue">{value}</span>
-      </p>
-      <p className="meta">
-        error: <span className="metaValue">{error}</span>
-      </p>
-      <p className="meta">
-        isValidating: <span className="metaValue">{`${isValidating}`}</span>
-      </p>
-      <p className="meta">
-        isTouched: <span className="metaValue">{`${isTouched}`}</span>
-      </p>
-    </Container>
-  );
-}
+const Input = ({ label, value, error, isValidating, isTouched, ...rest }) => (
+  <Container>
+    <div className="input">
+      <span className="label">{label}: </span>
+      <input value={value} {...rest} />
+    </div>
+    <p className="meta">
+      value: <span className="metaValue">{value}</span>
+    </p>
+    <p className="meta">
+      error: <span className="metaValue">{error}</span>
+    </p>
+    <p className="meta">
+      isValidating: <span className="metaValue">{`${isValidating}`}</span>
+    </p>
+    <p className="meta">
+      isTouched: <span className="metaValue">{`${isTouched}`}</span>
+    </p>
+  </Container>
+);
 
 Input.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   error: PropTypes.string,
   isValidating: PropTypes.bool.isRequired,
-  isTouched: PropTypes.bool.isRequired
+  isTouched: PropTypes.bool.isRequired,
 };
 
 Input.defaultProps = {
-  error: ''
+  error: '',
 };
 
 export default Input;

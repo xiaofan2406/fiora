@@ -4,7 +4,7 @@ test('createForm returns the correct action', () => {
   const action = actions.createForm('login');
   expect(action).toEqual({
     type: actionTypes.CREATE_FORM,
-    formName: 'login'
+    formName: 'login',
   });
 });
 
@@ -13,7 +13,7 @@ test('updateFormError returns the correct action', () => {
   expect(action).toEqual({
     type: actionTypes.UPDATE_FORM_ERROR,
     formName: 'login',
-    error: 'invalid'
+    error: 'invalid',
   });
 });
 
@@ -22,7 +22,7 @@ test('startValidatingForm returns the correct action', () => {
   expect(action).toEqual({
     type: actionTypes.UPDATE_FORM_IS_VALIDATING,
     formName: 'login',
-    isValidating: true
+    isValidating: true,
   });
 });
 
@@ -31,7 +31,7 @@ test('finishValidatingForm returns the correct action', () => {
   expect(action).toEqual({
     type: actionTypes.UPDATE_FORM_IS_VALIDATING,
     formName: 'login',
-    isValidating: false
+    isValidating: false,
   });
 });
 
@@ -40,7 +40,7 @@ test('startSubmitting returns the correct action', () => {
   expect(action).toEqual({
     type: actionTypes.UPDATE_FORM_IS_SUBMITTING,
     formName: 'login',
-    isSubmitting: true
+    isSubmitting: true,
   });
 });
 
@@ -49,7 +49,7 @@ test('finishSubmitting returns the correct action', () => {
   expect(action).toEqual({
     type: actionTypes.UPDATE_FORM_IS_SUBMITTING,
     formName: 'login',
-    isSubmitting: false
+    isSubmitting: false,
   });
 });
 
@@ -59,7 +59,7 @@ test('createField returns the correct action', () => {
     type: actionTypes.CREATE_FIELD,
     formName: 'login',
     fieldName: 'username',
-    initialValue: 'superuser'
+    initialValue: 'superuser',
   });
 });
 
@@ -69,7 +69,7 @@ test('updateFieldValue returns the correct action', () => {
     type: actionTypes.UPDATE_FIELD_VALUE,
     formName: 'login',
     fieldName: 'username',
-    value: 'admin'
+    value: 'admin',
   });
 });
 
@@ -79,7 +79,7 @@ test('updateFieldError returns the correct action', () => {
     type: actionTypes.UPDATE_FIELD_ERROR,
     formName: 'login',
     fieldName: 'username',
-    error: 'invalid'
+    error: 'invalid',
   });
 });
 
@@ -89,7 +89,7 @@ test('startValidatingField returns the correct action', () => {
     type: actionTypes.UPDATE_FIELD_IS_VALIDATING,
     formName: 'login',
     fieldName: 'username',
-    isValidating: true
+    isValidating: true,
   });
 });
 
@@ -99,6 +99,6 @@ test('finishValidatingField returns the correct action', () => {
     type: actionTypes.UPDATE_FIELD_IS_VALIDATING,
     formName: 'login',
     fieldName: 'username',
-    isValidating: false
+    isValidating: false,
   });
 });

@@ -3,39 +3,33 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 const common = require('./webpack.common');
 const { paths } = require('./configs');
+
+const vendorEntries = {
+  'vendor-react': ['react', 'react-dom', 'prop-types'],
+  'vendor-redux': ['redux', 'react-redux', 'redux-thunk'],
+  'vendor-emotion': ['emotion', 'react-emotion'],
+  'vendor-other': ['react-router-dom', 'fiora'],
+};
 
 module.exports = {
   bail: true,
   devtool: 'source-map',
   entry: {
-    polyfill: require.resolve('./polyfills'),
-    main: `${paths.srcPath}/index.js`,
-    vendor: [
-      'fiora',
-      'emotion',
-      'react',
-      'react-dom',
-      'react-emotion',
-      'react-redux',
-      'react-router-dom',
-      'redux',
-      'redux-thunk'
-    ]
+    main: `${paths.docSrc}/index.js`,
+    ...vendorEntries,
   },
   resolve: common.resolve,
   output: {
-    path: paths.distPath,
+    path: paths.docDist,
     filename: 'js/[name].[chunkhash:8].js',
     chunkFilename: 'js/[name].[chunkhash:8].chunk.js',
     publicPath: '/',
-    // Point sourcemap entries to original disk location
-    devtoolModuleFilenameTemplate: info =>
-      path
-        .relative(paths.srcPath, info.absoluteResourcePath)
-        .replace(/\\/g, '/')
+    devtoolModuleFilenameTemplate: ({ absoluteResourcePath }) =>
+      path.relative(paths.docSrc, absoluteResourcePath),
   },
   module: {
     strictExportPresence: true,
@@ -43,9 +37,11 @@ module.exports = {
       ...common.rules,
       {
         test: /\.js$/,
-        include: [paths.srcPath, path.join(paths.docPath, '../src')],
+        include: [paths.docSrc, paths.libSrc],
         loader: 'babel-loader',
-        options: { compact: true }
+        options: {
+          compact: true,
+        },
       },
       {
         test: /\.css$/,
@@ -54,16 +50,20 @@ module.exports = {
           use: [
             {
               loader: 'css-loader',
-              options: { minimize: true, sourceMap: true }
-            }
-          ]
-        })
-      }
-    ]
+              options: {
+                minimize: true,
+                sourceMap: true,
+              },
+            },
+          ],
+        }),
+      },
+    ],
   },
-  node: common.node,
   plugins: [
-    new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"production"' }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"production"',
+    }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.NamedChunksPlugin(
@@ -72,16 +72,16 @@ module.exports = {
         chunk.mapModules(m => path.relative(m.context, m.request)).join('_')
     ),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity
+      name: Object.keys(vendorEntries),
+      minChunks: Infinity,
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'runtime'
+      name: 'runtime',
     }),
     new HtmlWebpackPlugin({
       inject: true,
-      template: `${paths.srcPath}/assets/index.html`,
-      favicon: `${paths.srcPath}/assets/favicon.ico`,
+      template: `${paths.docSrc}/assets/index.html`,
+      favicon: `${paths.docSrc}/assets/favicon.ico`,
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -92,36 +92,38 @@ module.exports = {
         keepClosingSlash: true,
         minifyJS: true,
         minifyCSS: true,
-        minifyURLs: true
-      }
+        minifyURLs: true,
+      },
     }),
     new UglifyJsPlugin({
+      sourceMap: true,
+      cache: true,
       uglifyOptions: {
-        ecma: 8,
+        ecma: 6,
         compress: {
-          warnings: false,
-          comparisons: false
-        },
-        mangle: {
-          safari10: true
+          comparisons: false,
         },
         output: {
-          comments: false,
-          ascii_only: true
+          ascii_only: true,
+          ecma: 6,
         },
-        sourceMap: true
-      }
+        mangle: {
+          safari10: true,
+        },
+      },
     }),
     new ExtractTextPlugin('css/[name].[contenthash:8].css'),
+    new ManifestPlugin({ fileName: 'asset-manifest.json' }),
     new FileManagerPlugin({
       onEnd: {
         copy: [
           {
-            source: `${paths.distPath}/index.html`,
-            destination: `${paths.distPath}/200.html`
-          }
-        ]
-      }
-    })
-  ]
+            source: `${paths.docDist}/index.html`,
+            destination: `${paths.docDist}/200.html`,
+          },
+        ],
+      },
+    }),
+  ],
+  node: common.node,
 };

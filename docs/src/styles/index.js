@@ -2,13 +2,13 @@ export const colors = {
   blue: '#00BCD4',
   black: '#242729',
   white: '#FFFFFF',
-  grey: '#3B4045'
+  grey: '#3B4045',
 };
 
 export const fontSizes = {
   small: 12,
   regular: 14,
-  large: 18
+  large: 18,
 };
 
 export const spacing = {
@@ -16,16 +16,11 @@ export const spacing = {
   internal: 6,
   internalBreak: 12,
   external: 8,
-  externalBreak: 24
+  externalBreak: 24,
 };
 
 export const variables = {
-  Layout: {
-    headerHeight: 42
-  },
-  Brand: {
-    logoHeight: 34
-  }
+  headerHeight: 48,
 };
 
 export const theme = {
@@ -34,5 +29,5 @@ export const theme = {
   inverseColor: colors.white,
   bgAccentColor: colors.grey,
   fontFamily: '"Segoe UI", Helvetica, Arial, sans-serif',
-  fontSize: fontSizes.regular
+  fontSize: fontSizes.regular,
 };

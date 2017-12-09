@@ -7,77 +7,77 @@ const actionTypes = {
   CREATE_FIELD: '@fiora/CREATE_FIELD',
   UPDATE_FIELD_VALUE: '@fiora/UPDATE_FIELD_VALUE',
   UPDATE_FIELD_ERROR: '@fiora/UPDATE_FIELD_ERROR',
-  UPDATE_FIELD_IS_VALIDATING: '@fiora/UPDATE_FIELD_IS_VALIDATING'
+  UPDATE_FIELD_IS_VALIDATING: '@fiora/UPDATE_FIELD_IS_VALIDATING',
 };
 
 export default actionTypes;
 
 export const createForm = formName => ({
   type: actionTypes.CREATE_FORM,
-  formName
+  formName,
 });
 
 export const updateFormError = (formName, error) => ({
   type: actionTypes.UPDATE_FORM_ERROR,
   formName,
-  error
+  error,
 });
 
 export const startValidatingForm = formName => ({
   type: actionTypes.UPDATE_FORM_IS_VALIDATING,
   formName,
-  isValidating: true
+  isValidating: true,
 });
 
 export const finishValidatingForm = formName => ({
   type: actionTypes.UPDATE_FORM_IS_VALIDATING,
   formName,
-  isValidating: false
+  isValidating: false,
 });
 
 export const startSubmitting = formName => ({
   type: actionTypes.UPDATE_FORM_IS_SUBMITTING,
   formName,
-  isSubmitting: true
+  isSubmitting: true,
 });
 
 export const finishSubmitting = formName => ({
   type: actionTypes.UPDATE_FORM_IS_SUBMITTING,
   formName,
-  isSubmitting: false
+  isSubmitting: false,
 });
 
 export const createField = (formName, fieldName, initialValue) => ({
   type: actionTypes.CREATE_FIELD,
   formName,
   fieldName,
-  initialValue
+  initialValue,
 });
 
 export const updateFieldValue = (formName, fieldName, value) => ({
   type: actionTypes.UPDATE_FIELD_VALUE,
   formName,
   fieldName,
-  value
+  value,
 });
 
 export const updateFieldError = (formName, fieldName, error) => ({
   type: actionTypes.UPDATE_FIELD_ERROR,
   formName,
   fieldName,
-  error
+  error,
 });
 
 export const startValidatingField = (formName, fieldName) => ({
   type: actionTypes.UPDATE_FIELD_IS_VALIDATING,
   formName,
   fieldName,
-  isValidating: true
+  isValidating: true,
 });
 
 export const finishValidatingField = (formName, fieldName) => ({
   type: actionTypes.UPDATE_FIELD_IS_VALIDATING,
   formName,
   fieldName,
-  isValidating: false
+  isValidating: false,
 });

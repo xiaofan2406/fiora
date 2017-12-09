@@ -5,14 +5,14 @@ import {
   DEFAULT_VALUE,
   DEFAULT_ERROR,
   makeFormMetaReducer,
-  makeFieldMetaReducer
+  makeFieldMetaReducer,
 } from './helpers';
 
 export const initialFormState = () => ({
   fields: [],
   error: DEFAULT_ERROR,
   isValidating: false,
-  isSubmitting: false
+  isSubmitting: false,
 });
 
 export function formsReducer(state = {}, action) {
@@ -22,7 +22,7 @@ export function formsReducer(state = {}, action) {
         ? state
         : {
             ...state,
-            [action.formName]: initialFormState()
+            [action.formName]: initialFormState(),
           };
     case actionTypes.CREATE_FIELD:
       return Object.keys(state).includes(action.formName)
@@ -31,9 +31,12 @@ export function formsReducer(state = {}, action) {
             [action.formName]: {
               ...state[action.formName],
               fields: [
-                ...new Set([...state[action.formName].fields, action.fieldName])
-              ]
-            }
+                ...new Set([
+                  ...state[action.formName].fields,
+                  action.fieldName,
+                ]),
+              ],
+            },
           }
         : state;
     case actionTypes.UPDATE_FORM_ERROR:
@@ -51,7 +54,7 @@ export const initialFieldState = initialValue => ({
   value: initialValue || DEFAULT_VALUE,
   error: DEFAULT_ERROR,
   isTouched: false,
-  isValidating: false
+  isValidating: false,
 });
 
 export function fieldsReducer(state = {}, action) {
@@ -62,12 +65,12 @@ export function fieldsReducer(state = {}, action) {
         ? state
         : {
             ...state,
-            [fieldKeyName]: initialFieldState(action.initialValue)
+            [fieldKeyName]: initialFieldState(action.initialValue),
           };
     case actionTypes.UPDATE_FIELD_VALUE:
       return makeFieldMetaReducer('value', {
         isTouched: true,
-        error: DEFAULT_ERROR
+        error: DEFAULT_ERROR,
       })(state, action);
     case actionTypes.UPDATE_FIELD_ERROR:
       return makeFieldMetaReducer('error')(state, action);
@@ -80,5 +83,5 @@ export function fieldsReducer(state = {}, action) {
 
 export default combineReducers({
   forms: formsReducer,
-  fields: fieldsReducer
+  fields: fieldsReducer,
 });

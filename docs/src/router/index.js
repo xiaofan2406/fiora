@@ -1,11 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Layout } from 'components';
-import { ROUTES } from 'configs';
+import { asyncLoad } from 'factories';
+import { ROUTES } from 'utils/constants';
 
 import Home from './Home';
-import About from './About';
-import Contact from './Contact';
 
 function Router() {
   return (
@@ -20,12 +19,17 @@ function Router() {
           <Route
             path={ROUTES.ABOUT.path}
             exact={ROUTES.ABOUT.exact}
-            component={About}
+            component={asyncLoad({
+              importer: () => import(/* webpackChunkName: "About" */ './About'),
+            })}
           />
           <Route
             path={ROUTES.CONTACT.path}
             exact={ROUTES.CONTACT.exact}
-            component={Contact}
+            component={asyncLoad({
+              importer: () =>
+                import(/* webpackChunkName: "Contact" */ './Contact'),
+            })}
           />
         </Switch>
       </Layout>

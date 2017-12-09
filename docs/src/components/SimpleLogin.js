@@ -6,7 +6,7 @@ const loginRequest = formValues => {
 };
 
 const SimpleLogin = () => (
-  <Fiora name="login" onSubmit={loginRequest}>
+  <Fiora name="simple-login" onSubmit={loginRequest}>
     <Field name="username">
       {({ value, handleChange }) => (
         <input

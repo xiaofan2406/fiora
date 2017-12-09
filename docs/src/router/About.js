@@ -1,7 +1,6 @@
 import React from 'react';
+import { Login } from 'components';
 
-function About() {
-  return <div>About</div>;
-}
+const About = () => <Login />;
 
 export default About;

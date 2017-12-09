@@ -12,7 +12,7 @@ test('Component renders children function with handleSubmit', () => {
 
 test('Submit has handleSubmit injected from fiora context', () => {
   const wrapper = mount(<Submit>{() => ''}</Submit>, {
-    context: { fiora: { formName: 'login', handleSubmit: () => {} } }
+    context: { fiora: { formName: 'login', handleSubmit: () => {} } },
   });
   expect(wrapper.find(Component).props().handleSubmit).toEqual(
     wrapper.instance().context.fiora.handleSubmit

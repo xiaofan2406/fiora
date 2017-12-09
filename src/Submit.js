@@ -7,7 +7,7 @@ function Submit({ children, handleSubmit }) {
 
 Submit.propTypes = {
   children: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 export default withFiora({ withHandleSubmit: true })(Submit);

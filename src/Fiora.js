@@ -10,29 +10,29 @@ import {
   finishSubmitting,
   updateFieldError,
   startValidatingField,
-  finishValidatingField
+  finishValidatingField,
 } from './actions';
 import { getFormValues } from './selectors';
 import { zip, FORM_ERROR_KEY, DEFAULT_ERROR } from './helpers';
 
 class Fiora extends React.Component {
   static contextTypes = {
-    store: storeShape
+    store: storeShape,
   };
 
   static propTypes = {
     name: PropTypes.string.isRequired,
     onValidate: PropTypes.func,
     onSubmit: PropTypes.func.isRequired,
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
   };
 
   static defaultProps = {
-    onValidate: async () => null
+    onValidate: async () => null,
   };
 
   static childContextTypes = {
-    fiora: PropTypes.object
+    fiora: PropTypes.object,
   };
 
   getChildContext() {
@@ -40,8 +40,8 @@ class Fiora extends React.Component {
       fiora: {
         formName: this.props.name,
         setValidateFunc: this.setValidateFunc,
-        handleSubmit: this.handleSubmit
-      }
+        handleSubmit: this.handleSubmit,
+      },
     };
   }
 

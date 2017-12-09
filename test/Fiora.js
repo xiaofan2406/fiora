@@ -10,7 +10,7 @@ import {
   finishSubmitting,
   updateFieldError,
   startValidatingField,
-  finishValidatingField
+  finishValidatingField,
 } from '../src/actions';
 import * as selectors from '../src/selectors';
 import { DEFAULT_ERROR, FORM_ERROR_KEY } from '../src/helpers';
@@ -27,9 +27,9 @@ beforeEach(() => {
         store: {
           dispatch: jest.fn(),
           subscribe: jest.fn(),
-          getState: jest.fn()
-        }
-      }
+          getState: jest.fn(),
+        },
+      },
     }
   );
 });
@@ -39,7 +39,7 @@ describe('handleErrorsIfAny', () => {
     const errors = {
       username: 'Invalid',
       email: undefined,
-      password: ['Invalid']
+      password: ['Invalid'],
     };
     const fields = ['username', 'email', 'password'];
     const { context, handleErrorsIfAny } = wrapper.instance();
@@ -132,7 +132,7 @@ describe('runValidations', () => {
       expect(handleErrorsIfAny).toHaveBeenCalledWith(
         {
           username: 'invalid',
-          password: undefined
+          password: undefined,
         },
         ['username', 'password']
       );
@@ -148,7 +148,7 @@ describe('runValidations', () => {
     let result;
     beforeEach(async () => {
       wrapper.setProps({
-        onValidate: jest.fn(() => ({ password: 'invalid' }))
+        onValidate: jest.fn(() => ({ password: 'invalid' })),
       });
       const { runValidations, fieldValidations } = wrapper.instance();
       wrapper.instance().handleErrorsIfAny = jest.fn(() => true);
@@ -171,7 +171,7 @@ describe('runValidations', () => {
       expect(onValidate).toHaveBeenCalledTimes(1);
       expect(onValidate).toHaveBeenCalledWith({
         username: 'admin',
-        password: 'pass'
+        password: 'pass',
       });
     });
 
@@ -180,7 +180,7 @@ describe('runValidations', () => {
       expect(handleErrorsIfAny).toHaveBeenCalledTimes(1);
       expect(handleErrorsIfAny).toHaveBeenCalledWith({ password: 'invalid' }, [
         'username',
-        'password'
+        'password',
       ]);
       expect(result).toBe(true);
     });
@@ -221,7 +221,7 @@ describe('handleSubmit', () => {
   it('sets the form validation status', async () => {
     const {
       context: { store: { dispatch } },
-      handleSubmit
+      handleSubmit,
     } = wrapper.instance();
     await handleSubmit();
     expect(dispatch).toHaveBeenCalledTimes(3);
@@ -232,7 +232,7 @@ describe('handleSubmit', () => {
   describe('when runValidations return false', () => {
     beforeEach(() => {
       wrapper.setProps({
-        onSubmit: jest.fn(async () => ({ password: 'invalid' }))
+        onSubmit: jest.fn(async () => ({ password: 'invalid' })),
       });
       wrapper.instance().runValidations = jest.fn(async () => false);
       wrapper.instance().handleErrorsIfAny = jest.fn();
@@ -251,7 +251,7 @@ describe('handleSubmit', () => {
     it('sets the form submitting status', async () => {
       const {
         context: { store: { dispatch } },
-        handleSubmit
+        handleSubmit,
       } = wrapper.instance();
       await handleSubmit();
       expect(dispatch).toHaveBeenCalledWith(startSubmitting(formName));
@@ -267,7 +267,7 @@ describe('handleSubmit', () => {
 
       expect(handleErrorsIfAny).toHaveBeenCalledWith({ password: 'invalid' }, [
         'username',
-        'password'
+        'password',
       ]);
     });
   });
@@ -299,7 +299,7 @@ describe('component lifecycle hooks and props', () => {
     const { setValidateFunc } = wrapper.instance().getChildContext().fiora;
     const {
       context: { store: { dispatch } },
-      fieldValidations
+      fieldValidations,
     } = wrapper.instance();
     expect(fieldValidations).toEqual({});
     expect(dispatch).toHaveBeenCalledTimes(1);
