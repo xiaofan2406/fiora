@@ -6,6 +6,8 @@ type FioraProps = {
 };
 
 class Fiora extends React.Component<FioraProps> {
+  componentDidMount() {}
+
   render() {
     const { children } = this.props;
     return <form>{children}</form>;

@@ -3,7 +3,7 @@ import React from 'react';
 import { css } from 'react-emotion';
 import { spacing } from 'styles';
 import { Anchor } from 'widgets';
-import Greet from './Greet';
+import Login from './Login';
 
 const cssHome = css`
   & > .title {
@@ -22,7 +22,7 @@ const cssHome = css`
 const Home = () => (
   <div className={cssHome}>
     <div className="title">Hello world!</div>
-    <Greet />
+    <Login />
     <table>
       <tbody>
         <tr>
