@@ -1,0 +1,80 @@
+{
+  "name": "fiora",
+  "version": "0.0.20",
+  "author": "Xiaofan Wu (https://github.com/xiaofan2406)",
+  "description": "",
+  "keywords": [],
+  "repository": "xiaofan2406/fiora",
+  "bugs": {
+    "url": "https://github.com/xiaofan2406/fiora/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=8"
+  },
+  "main": "dist/commonjs",
+  "module": "dist/es6",
+  "sideEffects": false,
+  "scripts": {
+    "precommit": "lint-staged",
+    "lint:eslint": "eslint src test",
+    "lint:prettier": "prettier-check '{src,test}/**/*.{js,mjs,json,css,md}'",
+    "lint": "yarn lint:eslint && yarn lint:prettier",
+    "format": "prettier '{src,test}/**/*.{js,mjs,json,css,md}' --write",
+    "test": "NODE_ENV=test jest --watch --updateSnapshot",
+    "coverage": "NODE_ENV=test jest --coverage",
+    "build:commonjs": "NODE_ENV=production babel src --out-dir dist/commonjs",
+    "build:es6": "NODE_ENV=production MODULE=es6 babel src --out-dir dist/es6",
+    "build": "yarn build:commonjs && yarn build:es6"
+  },
+  "lint-staged": {
+    "*.{js,mjs,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "browserslist": [
+    "Chrome >= 60",
+    "Safari >= 10.1",
+    "iOS >= 10.3",
+    "Firefox >= 54",
+    "Edge >= 15"
+  ],
+  "peerDependencies": {
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.54",
+    "@babel/core": "^7.0.0-beta.54",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.54",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.54",
+    "@babel/preset-env": "^7.0.0-beta.54",
+    "@babel/preset-flow": "^7.0.0-beta.54",
+    "@babel/preset-react": "^7.0.0-beta.54",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^8.2.6",
+    "babel-jest": "^23.4.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.10.0",
+    "flow-bin": "^0.76.0",
+    "husky": "^0.14.3",
+    "jest": "^23.4.1",
+    "lint-staged": "^7.2.0",
+    "prettier": "^1.13.7",
+    "prettier-check": "^2.0.0",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-testing-library": "^4.1.3"
+  }
+}
