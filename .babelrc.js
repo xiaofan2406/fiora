@@ -10,6 +10,10 @@ if (!isTest && !isDevelopment && !isProduction) {
   );
 }
 
+const emotionConfig = isProduction
+  ? { hoist: true }
+  : { sourceMap: true, autoLabel: true };
+
 module.exports = {
   presets: [
     [
@@ -25,11 +29,17 @@ module.exports = {
     '@babel/preset-flow',
   ],
   plugins: [
+    ['babel-plugin-emotion', emotionConfig],
+
     '@babel/plugin-proposal-class-properties',
 
     [
       '@babel/plugin-proposal-object-rest-spread',
       { loose: true, useBuiltIns: true },
     ],
-  ],
+
+    '@babel/plugin-syntax-dynamic-import',
+
+    isDevelopment && 'react-hot-loader/babel',
+  ].filter(Boolean),
 };
