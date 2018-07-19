@@ -38,6 +38,8 @@ module.exports = {
       { js: 'never', mjs: 'never', json: 'never' },
     ],
     'import/no-extraneous-dependencies': 0, // allow import devDependencies
+    'import/prefer-default-export': 0,
+    'react/sort-comp': 0,
     'react/jsx-filename-extension': 0, // enfore all .js extension
     'react/prefer-stateless-function': 0,
     'react/require-default-props': 0, // conflict flows takes care of it
