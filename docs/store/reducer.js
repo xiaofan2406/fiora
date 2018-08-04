@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
-import greetReducer from './greet/reducer';
+import profileReducer from './profile/reducer';
 
 export default combineReducers({
-  greet: greetReducer,
+  profile: profileReducer,
 });

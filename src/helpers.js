@@ -7,3 +7,16 @@ export const getValues = (fields: { [string]: FieldState }) =>
     }),
     {}
   );
+
+export const getInitialValues = (initialValues: KeydObject) =>
+  initialValues
+    ? Object.keys(initialValues).reduce(
+        (values, fieldName) => ({
+          ...values,
+          [fieldName]: {
+            value: initialValues[fieldName],
+          },
+        }),
+        {}
+      )
+    : {};

@@ -2,15 +2,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
 
 import reducer from './reducer';
-import { actions as greetActions, selectors as greetSelectors } from './greet';
-
-export const actions = {
-  greet: greetActions,
-};
-
-export const selectors = {
-  greet: greetSelectors,
-};
 
 export const configureStore = (initialState = {}) => {
   const middlewares = [reduxThunk];

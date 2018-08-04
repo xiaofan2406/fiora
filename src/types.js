@@ -1,9 +1,10 @@
 /* @flow */
-type FormError = { [string]: mixed } | void;
+type KeydObject = { [string]: mixed } | void;
 
 declare type FormProps = {
   children: React$Node,
-  onSubmit: (data: { [string]: mixed }) => FormError,
+  onSubmit: (data: { [string]: mixed }) => KeydObject,
+  initialValues?: KeydObject,
 }; // support all HTML form attributes, except `name`
 
 declare type FieldState = {

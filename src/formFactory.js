@@ -1,6 +1,6 @@
 /* @flow */
 import * as React from 'react';
-import { getValues } from './helpers';
+import { getValues, getInitialValues } from './helpers';
 
 export default (formName: string, Provider: ContextProvider) =>
   class Form extends React.Component<FormProps, FormState> {
@@ -23,14 +23,6 @@ export default (formName: string, Provider: ContextProvider) =>
     registerField = (fieldName: string, info: {}) => {
       if (!this.fieldsInfo[fieldName]) {
         this.fieldsInfo[fieldName] = info;
-        this.setState(prevState => ({
-          fields: {
-            ...prevState.fields,
-            [fieldName]: {
-              value: '', // default value was ready '', This will not trigger re-render
-            },
-          },
-        }));
       }
     };
 
@@ -48,14 +40,14 @@ export default (formName: string, Provider: ContextProvider) =>
     };
 
     state = {
-      fields: {},
+      fields: getInitialValues(this.props.initialValues),
       updateField: this.updateField,
       registerField: this.registerField,
     };
 
     render() {
       console.log('[Form]: render');
-      const { children, onSubmit, ...rest } = this.props;
+      const { children, onSubmit, initialValues, ...rest } = this.props;
       return (
         <Provider value={this.state}>
           <form {...rest} name={formName} onSubmit={this.handleSubmit}>
