@@ -1,30 +1,13 @@
 import * as React from 'react';
-
+import { login } from 'utils/api';
 import createForm from 'fiora/Fiora';
 
 const { Form, Field } = createForm('login');
 
-const wait = ms =>
-  new Promise(resolve => {
-    setTimeout(resolve, ms);
-  });
-
-const loginReqeust = async ({ username, password }) => {
-  await wait(500);
-  if (username.length < 5) {
-    return { username: 'Invalid username' };
-  }
-
-  if (username === password) {
-    return { form: 'Username and password should be different' };
-  }
-  return undefined;
-};
-
 class Login extends React.Component<{}> {
   render() {
     return (
-      <Form onSubmit={loginReqeust}>
+      <Form onSubmit={login}>
         <label htmlFor="username">
           Username:
           <Field name="username">
@@ -43,7 +26,10 @@ class Login extends React.Component<{}> {
           Password:
           <Field
             name="password"
-            onValidate={value => (value.length < 5 ? 'Wrong' : null)}
+            onValidate={(value, formData) => {
+              console.log(formData);
+              return value.length < 5 ? 'Wrong' : null;
+            }}
           >
             {({ value, error, handleChange, isTouched }) => (
               <>

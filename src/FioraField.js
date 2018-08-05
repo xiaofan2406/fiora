@@ -1,32 +1,28 @@
 /* @flow */
 import * as React from 'react';
+import { DEFAULT_FIELD } from './helpers';
 
 class FioraField extends React.PureComponent<FioraFieldProps> {
-  static defaultProps = {
-    /*
-      always default to empty string.
-      avoid React warning about changing from controlled to uncontrolled
-    */
-    value: '',
-  };
+  static defaultProps = DEFAULT_FIELD;
 
   componentDidMount() {
     const { name, registerField, onValidate } = this.props;
-    registerField(name, {
-      onValidate,
-    });
+
+    registerField(name, { onValidate });
   }
 
   handleChange = async (newValue: mixed) => {
-    const { updateField, name, onValidate } = this.props;
+    const { updateField, name } = this.props;
 
-    // TODO maybe an option allow skip validation on change
-    const error = onValidate ? await onValidate(newValue) : undefined;
+    updateField(name, newValue);
+  };
 
-    updateField(name, {
-      value: newValue,
-      error,
-    });
+  handleValidate = () => {
+    const { name, onValidate, validateField } = this.props;
+
+    if (onValidate) {
+      validateField(name, onValidate);
+    }
   };
 
   render() {
@@ -38,6 +34,7 @@ class FioraField extends React.PureComponent<FioraFieldProps> {
       error,
       isTouched,
       handleChange: this.handleChange,
+      handleValidate: this.handleValidate,
     });
   }
 }

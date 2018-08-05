@@ -7,12 +7,13 @@ export default (formName: string, Consumer: ContextConsumer) => {
     console.log('[Field]: render');
     return (
       <Consumer>
-        {({ fields, registerField, updateField }) => (
+        {({ fields, registerField, updateField, validateField }) => (
           <FioraField
             name={fieldName}
             onValidate={onValidate}
             updateField={updateField}
             registerField={registerField}
+            validateField={validateField}
             {...fields[fieldName]}
           >
             {children}

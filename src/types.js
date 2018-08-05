@@ -1,15 +1,16 @@
 /* @flow */
-type KeydObject = { [string]: mixed } | void;
+type KeydObject = { [string]: mixed };
 
 declare type FormProps = {
   children: React$Node,
-  onSubmit: (data: { [string]: mixed }) => KeydObject,
+  onSubmit: (formData: KeydObject) => KeydObject | void,
+  onValidate?: (formData: KeydObject) => KeydObject | void,
   initialValues?: KeydObject,
 }; // support all HTML form attributes, except `name`
 
 declare type FieldState = {
   value: mixed,
-  error: mixed,
+  error?: mixed,
   isTouched: boolean,
 };
 
@@ -29,10 +30,14 @@ type FieldChangeHandler = (newValue: mixed) => void | Promise<void>;
 
 declare type FieldChildrenProps = FieldState & {
   handleChange: FieldChangeHandler,
+  handleValidate: () => void,
 };
 
 type FieldOnValidate = (value: mixed) => mixed;
 
+/**
+ * Props passed in by users on each Field
+ */
 declare type FieldProps = {
   name: string,
   onValidate?: FieldOnValidate,
@@ -40,12 +45,13 @@ declare type FieldProps = {
 };
 
 declare type FioraFieldProps = FieldProps & {
-  updateField: (fieldName: string, partial: {}) => void,
+  updateField: (fieldName: string, newValue: mixed) => void,
   registerField: (fieldName: string, info: {}) => void,
+  validateField: (fieldName: string, onValidate: FieldOnValidate) => void,
 } & FieldState;
 
 type SubmitChildrenProps = {
-  handleSubmit: (formData: { [string]: mixed }) => { [string]: mixed },
+  handleSubmit: (formData: KeydObject) => KeydObject,
 };
 
 declare type SubmitProps = {

@@ -8,6 +8,7 @@ module.exports = {
       assets: `${paths.appSrc}/assets`,
       components: `${paths.appSrc}/components`,
       factories: `${paths.appSrc}/factories`,
+      forms: `${paths.appSrc}/forms`,
       fiora: paths.libSrc,
       store: `${paths.appSrc}/store`,
       styles: `${paths.appSrc}/styles`,

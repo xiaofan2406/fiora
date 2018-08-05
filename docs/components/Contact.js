@@ -1,16 +1,7 @@
 /* @flow */
 import React from 'react';
-import { css } from 'react-emotion';
-import { Loader } from 'widgets';
+import SignUp from 'forms/SignUp';
 
-const cssContact = css`
-  text-align: center;
-`;
-
-const Contact = () => (
-  <div className={cssContact}>
-    <Loader size={120} />
-  </div>
-);
+const Contact = () => <SignUp />;
 
 export default Contact;
