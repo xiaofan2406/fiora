@@ -1,11 +1,11 @@
 /* @flow */
-type KeydObject = { [string]: mixed };
+type KeyedObject = { [string]: mixed };
 
 declare type FormProps = {
   children: React$Node,
-  onSubmit: (formData: KeydObject) => KeydObject | void,
-  onValidate?: (formData: KeydObject) => KeydObject | void,
-  initialValues?: KeydObject,
+  onSubmit: (formData: KeyedObject) => KeyedObject | void,
+  onValidate?: (formData: KeyedObject) => KeyedObject | void,
+  initialValues?: KeyedObject,
 }; // support all HTML form attributes, except `name`
 
 declare type FieldState = {
@@ -51,7 +51,7 @@ declare type FioraFieldProps = FieldProps & {
 } & FieldState;
 
 type SubmitChildrenProps = {
-  handleSubmit: (formData: KeydObject) => KeydObject,
+  handleSubmit: (formData: KeyedObject) => KeyedObject,
 };
 
 declare type SubmitProps = {

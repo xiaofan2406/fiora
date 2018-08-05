@@ -12,3 +12,13 @@
 [dependencies]: https://david-dm.org/xiaofan2406/fiora
 [prettier-badge]: https://img.shields.io/badge/styled_with-prettier-ff69b4.svg?style=flat-square
 [prettier]: https://github.com/prettier/prettier
+
+Forms, for React
+
+#### TODO
+
+- metastate
+- reset
+- tests
+- perf check
+- `html` mode

@@ -8,7 +8,10 @@ export const getValues = (fields: { [string]: FieldState }) =>
     {}
   );
 
-export const getInitialValues = (initialValues?: KeydObject) =>
+export const getFieldValue = (fieldName: string, state: FormState) =>
+  state.fields[fieldName] ? state.fields[fieldName].value : undefined;
+
+export const getInitialValues = (initialValues?: KeyedObject) =>
   initialValues
     ? Object.keys(initialValues).reduce(
         (values, fieldName) => ({
@@ -22,7 +25,7 @@ export const getInitialValues = (initialValues?: KeydObject) =>
       )
     : {};
 
-export const fieldsUpdater = (name: string, partial: KeydObject) => (
+export const fieldUpdater = (name: string, partial: KeyedObject = {}) => (
   state: FormState
 ) => ({
   fields: {
@@ -30,6 +33,7 @@ export const fieldsUpdater = (name: string, partial: KeydObject) => (
     [name]: {
       ...state.fields[name],
       ...partial,
+      isTouched: true,
     },
   },
 });

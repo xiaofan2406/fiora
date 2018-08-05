@@ -1,6 +1,11 @@
 /* @flow */
 import * as React from 'react';
-import { getValues, getInitialValues, fieldsUpdater } from './helpers';
+import {
+  getValues,
+  getInitialValues,
+  fieldUpdater,
+  getFieldValue,
+} from './helpers';
 
 export default (formName: string, Provider: ContextProvider) =>
   class Form extends React.Component<FormProps, FormState> {
@@ -9,7 +14,7 @@ export default (formName: string, Provider: ContextProvider) =>
 
     updateField = (fieldName: string, value: mixed) => {
       // always is isTouched to true when value changes
-      this.setState(fieldsUpdater(fieldName, { value, isTouched: true }));
+      this.setState(fieldUpdater(fieldName, { value }));
     };
 
     /**
@@ -19,24 +24,23 @@ export default (formName: string, Provider: ContextProvider) =>
      */
     validateField = (fieldName: string, onValidate: FieldOnValidate) => {
       this.setState(prevState => {
-        const fieldValue = prevState.fields[fieldName]
-          ? prevState.fields[fieldName].value
-          : undefined;
+        const fieldValue = getFieldValue(fieldName, prevState);
         const result = onValidate(fieldValue);
 
         // async field onValid
         if (result instanceof Promise) {
           result
             .then(error => {
-              this.setState(fieldsUpdater(fieldName, { error }));
+              this.setState(fieldUpdater(fieldName, { error }));
             })
             .catch(error => {
-              this.setState(fieldsUpdater(fieldName, { error: error.message }));
+              // TODO what to do when the function itsefl throws error
+              this.setState(fieldUpdater(fieldName, { error: error.message }));
             });
           return null;
         }
 
-        return fieldsUpdater(fieldName, { error: result })(prevState);
+        return fieldUpdater(fieldName, { error: result })(prevState);
       });
     };
 
@@ -46,18 +50,67 @@ export default (formName: string, Provider: ContextProvider) =>
       }
     };
 
+    updateErrors = (errors: KeyedObject = {}) => {
+      let hasErrors = false;
+
+      Object.keys(errors).forEach(name => {
+        hasErrors = hasErrors || !!errors[name];
+
+        this.setState(fieldUpdater(name, { error: errors[name] }));
+      });
+
+      return hasErrors;
+    };
+
     handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
       event.preventDefault();
-      // TODO if there is any error dont do anything
-
-      const { onSubmit } = this.props;
+      const { onSubmit, onValidate } = this.props;
       const { fields } = this.state;
-      if (onSubmit) {
-        // TODO validate
 
-        const values = getValues(fields);
-        await onSubmit(values);
+      // If there is any exisitng errors in state, terminate
+      const hasExisitngErrors = Object.keys(fields).some(
+        fieldName => fields[fieldName].error
+      );
+      if (hasExisitngErrors) {
+        return false;
       }
+
+      // run each field validation, if there is any errors, terminate
+      const fieldErrors = await Promise.all(
+        Object.keys(this.fieldsInfo).map(fieldName =>
+          this.fieldsInfo[fieldName].onValidate(
+            getFieldValue(fieldName, this.state)
+          )
+        )
+      );
+      const errors = Object.keys(this.fieldsInfo).reduce(
+        (reduced, fieldName, index) => ({
+          ...reduced,
+          [fieldName]: fieldErrors[index],
+        }),
+        {}
+      );
+      const hasFieldErrors = this.updateErrors(errors);
+
+      if (hasFieldErrors) {
+        return false;
+      }
+
+      // run the form's onValidate
+      const formData = getValues(fields);
+      if (onValidate) {
+        const formErrors = await onValidate(formData);
+        const hasFormErrors = this.updateErrors(formErrors);
+
+        if (hasFormErrors) {
+          return false;
+        }
+      }
+
+      const submitErrors = await onSubmit(formData);
+      this.updateErrors(submitErrors);
+
+      // TODO always return false?
       return false;
     };
 

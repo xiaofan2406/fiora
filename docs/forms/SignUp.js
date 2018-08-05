@@ -10,8 +10,18 @@ import createForm from 'fiora/Fiora';
 
 const { Form, Field } = createForm('signUp');
 
+const signUpSubmit = async data => {
+  const res = await signUp(data);
+  if (res.status === 200) {
+    console.log('Sign up successful!');
+    return null;
+  }
+  console.log(res.errors);
+  return res.errors;
+};
+
 const SignUp = () => (
-  <Form onSubmit={signUp} data-testid="signUpForm">
+  <Form onSubmit={signUpSubmit} data-testid="signUpForm">
     <label htmlFor="username">Username</label>
     <Field name="username" onValidate={usernameValidation}>
       {({ value, error, isTouched, handleChange, handleValidate }) => (
@@ -34,7 +44,7 @@ const SignUp = () => (
 
     <label htmlFor="password">password:</label>
     <Field name="password" onValidate={passwordValidation}>
-      {({ value, error, handleChange, handleValidate }) => (
+      {({ value, error, isTouched, handleChange, handleValidate }) => (
         <>
           <input
             data-testid="passwordInput"
@@ -44,7 +54,7 @@ const SignUp = () => (
             }}
             onBlur={handleValidate}
           />
-          {error ? (
+          {isTouched && error ? (
             <div data-testid="passwordError">{JSON.stringify(error)}</div>
           ) : null}
         </>
@@ -54,7 +64,7 @@ const SignUp = () => (
 
     <label htmlFor="passwordRepeat">Confirm password:</label>
     <Field name="passwordRepeat" onValidate={passwordRepeatValidation}>
-      {({ value, error, handleChange, handleValidate }) => (
+      {({ value, error, isTouched, handleChange, handleValidate }) => (
         <>
           <input
             data-testid="passwordRepeatInput"
@@ -64,7 +74,7 @@ const SignUp = () => (
             }}
             onBlur={handleValidate}
           />
-          {error ? (
+          {isTouched && error ? (
             <div data-testid="passwordRepeateError">
               {JSON.stringify(error)}
             </div>
