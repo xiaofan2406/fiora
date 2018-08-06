@@ -50,7 +50,7 @@ export default (formName: string, Provider: ContextProvider) =>
       }
     };
 
-    updateErrors = (errors: KeyedObject = {}) => {
+    updateErrors = (errors: KeyedObject) => {
       let hasErrors = false;
 
       Object.keys(errors).forEach(name => {
@@ -100,7 +100,7 @@ export default (formName: string, Provider: ContextProvider) =>
       const formData = getValues(fields);
       if (onValidate) {
         const formErrors = await onValidate(formData);
-        const hasFormErrors = this.updateErrors(formErrors);
+        const hasFormErrors = this.updateErrors(formErrors || {});
 
         if (hasFormErrors) {
           return false;
@@ -108,10 +108,9 @@ export default (formName: string, Provider: ContextProvider) =>
       }
 
       const submitErrors = await onSubmit(formData);
-      this.updateErrors(submitErrors);
+      const hasSubmitErrors = this.updateErrors(submitErrors || {});
 
-      // TODO always return false?
-      return false;
+      return hasSubmitErrors;
     };
 
     state = {
