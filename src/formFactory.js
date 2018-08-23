@@ -7,7 +7,7 @@ import {
   getFieldValue,
 } from './helpers';
 
-export default (formName: string, Provider: ContextProvider) =>
+export default (Provider: ContextProvider) =>
   class Form extends React.Component<FormProps, FormState> {
     // // keep tracks of what fields are mounted in the Form
     fieldsInfo = {};
@@ -22,25 +22,16 @@ export default (formName: string, Provider: ContextProvider) =>
      * In order for handleValidate to work in the same event handler
      * where handleChange is called, need to use the functional setState here.
      */
-    validateField = (fieldName: string, onValidate: FieldOnValidate) => {
+    validateField = (fieldName: string) => {
+      const { validator } = this.fieldsInfo[fieldName];
       this.setState(prevState => {
         const fieldValue = getFieldValue(fieldName, prevState);
-        const result = onValidate(fieldValue);
+        validator(fieldValue).then(error => {
+          this.setState(fieldUpdater(fieldName, { error }));
+        });
 
-        // async field onValid
-        if (result instanceof Promise) {
-          result
-            .then(error => {
-              this.setState(fieldUpdater(fieldName, { error }));
-            })
-            .catch(error => {
-              // TODO what to do when the function itsefl throws error
-              this.setState(fieldUpdater(fieldName, { error: error.message }));
-            });
-          return null;
-        }
-
-        return fieldUpdater(fieldName, { error: result })(prevState);
+        // no immediate state change
+        return null;
       });
     };
 
@@ -131,7 +122,7 @@ export default (formName: string, Provider: ContextProvider) =>
       } = this.props;
       return (
         <Provider value={this.state}>
-          <form {...rest} name={formName} onSubmit={this.handleSubmit}>
+          <form {...rest} onSubmit={this.handleSubmit}>
             {children}
           </form>
         </Provider>

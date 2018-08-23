@@ -2,7 +2,7 @@
 import * as React from 'react';
 import FioraField from './FioraField';
 
-export default (formName: string, Consumer: ContextConsumer) => {
+export default (Consumer: ContextConsumer) => {
   const Field = ({ name: fieldName, onValidate, children }: FieldProps) => {
     console.log('[Field]: render');
     return (

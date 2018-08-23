@@ -1,11 +1,11 @@
 /* @flow */
-export const wait = ms =>
+export const delay = (ms: number): Promise<void> =>
   new Promise(resolve => {
     setTimeout(resolve, ms);
   });
 
 export const signUp = async ({ username, password }) => {
-  await wait(500);
+  await delay(500);
   const errors = {};
   if (username === 'admin') {
     errors.username = 'Invalid useranme';
@@ -22,7 +22,7 @@ export const signUp = async ({ username, password }) => {
 };
 
 export const login = async ({ username, password }) => {
-  await wait(500);
+  await delay(500);
   if (username.length < 5) {
     return { username: 'Invalid username' };
   }

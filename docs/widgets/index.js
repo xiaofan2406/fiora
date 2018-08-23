@@ -1,7 +1,4 @@
 /* @flow */
-import Anchor from './Anchor';
-import Loader from './Loader';
-
-export { Anchor, Loader };
-
-export default { Anchor, Loader };
+export { default as Anchor } from './Anchor';
+export { default as Input } from './Input';
+export { default as Loader } from './Loader';

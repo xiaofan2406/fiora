@@ -20,7 +20,10 @@ declare type FormState = {
   registerField: (fieldName: string, info: {}) => void,
 };
 
-declare type ContextProvider = React$ComponentType<{ value: any }>;
+declare type ContextProvider = React$ComponentType<{
+  value: any,
+  children?: React$Node,
+}>;
 
 declare type ContextConsumer = React$ComponentType<{
   children: (props: any) => React$Node,
@@ -28,26 +31,29 @@ declare type ContextConsumer = React$ComponentType<{
 
 type FieldChangeHandler = (newValue: mixed) => void | Promise<void>;
 
-declare type FieldChildrenProps = FieldState & {
-  handleChange: FieldChangeHandler,
-  handleValidate: () => void,
+type FioraFieldState = {
+  isValidating: boolean,
 };
 
-type FieldOnValidate = (value: mixed) => mixed;
+declare type FieldChildrenProps = FieldState &
+  FioraFieldState & {
+    handleChange: FieldChangeHandler,
+    handleValidate: () => void,
+  };
 
 /**
  * Props passed in by users on each Field
  */
 declare type FieldProps = {
   name: string,
-  onValidate?: FieldOnValidate,
+  onValidate?: (value: mixed) => mixed,
   children: (props: FieldChildrenProps) => React$Node,
 };
 
 declare type FioraFieldProps = FieldProps & {
   updateField: (fieldName: string, newValue: mixed) => void,
   registerField: (fieldName: string, info: {}) => void,
-  validateField: (fieldName: string, onValidate: FieldOnValidate) => void,
+  validateField: (fieldName: string) => void,
 } & FieldState;
 
 type SubmitChildrenProps = {

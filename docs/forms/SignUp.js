@@ -6,9 +6,10 @@ import {
   passwordValidation,
   passwordRepeatValidation,
 } from 'utils/validations';
+import { Input } from 'widgets';
 import createForm from 'fiora/Fiora';
 
-const { Form, Field } = createForm('signUp');
+const { Form, Field } = createForm();
 
 const signUpSubmit = async data => {
   const res = await signUp(data);
@@ -22,68 +23,75 @@ const signUpSubmit = async data => {
 
 const SignUp = () => (
   <Form onSubmit={signUpSubmit} data-testid="signUpForm">
-    <label htmlFor="username">Username</label>
     <Field name="username" onValidate={usernameValidation}>
-      {({ value, error, isTouched, handleChange, handleValidate }) => (
-        <>
-          <input
-            data-testid="usernameInput"
-            value={value}
-            onChange={event => {
-              handleChange(event.target.value);
-              handleValidate();
-            }}
-          />
-          {isTouched && error ? (
-            <div data-testid="usernameError">{JSON.stringify(error)}</div>
-          ) : null}
-        </>
+      {({
+        value,
+        error,
+        isTouched,
+        isValidating,
+        handleChange,
+        handleValidate,
+      }) => (
+        <Input
+          data-testid="usernameInput"
+          label="Username"
+          value={value}
+          error={error}
+          isTouched={isTouched}
+          isValidating={isValidating}
+          onChange={event => {
+            handleChange(event.target.value);
+            handleValidate();
+          }}
+        />
       )}
     </Field>
-    <br />
-
-    <label htmlFor="password">password:</label>
     <Field name="password" onValidate={passwordValidation}>
-      {({ value, error, isTouched, handleChange, handleValidate }) => (
-        <>
-          <input
-            data-testid="passwordInput"
-            value={value}
-            onChange={event => {
-              handleChange(event.target.value);
-            }}
-            onBlur={handleValidate}
-          />
-          {isTouched && error ? (
-            <div data-testid="passwordError">{JSON.stringify(error)}</div>
-          ) : null}
-        </>
+      {({
+        value,
+        error,
+        isTouched,
+        isValidating,
+        handleChange,
+        handleValidate,
+      }) => (
+        <Input
+          data-testid="passwordInput"
+          label="Password"
+          value={value}
+          error={error}
+          isTouched={isTouched}
+          isValidating={isValidating}
+          onChange={event => {
+            handleChange(event.target.value);
+          }}
+          onBlur={handleValidate}
+        />
       )}
     </Field>
-    <br />
-
-    <label htmlFor="passwordRepeat">Confirm password:</label>
     <Field name="passwordRepeat" onValidate={passwordRepeatValidation}>
-      {({ value, error, isTouched, handleChange, handleValidate }) => (
-        <>
-          <input
-            data-testid="passwordRepeatInput"
-            value={value}
-            onChange={event => {
-              handleChange(event.target.value);
-            }}
-            onBlur={handleValidate}
-          />
-          {isTouched && error ? (
-            <div data-testid="passwordRepeateError">
-              {JSON.stringify(error)}
-            </div>
-          ) : null}
-        </>
+      {({
+        value,
+        error,
+        isTouched,
+        isValidating,
+        handleChange,
+        handleValidate,
+      }) => (
+        <Input
+          data-testid="passwordRepeatInput"
+          label="Confirm password"
+          value={value}
+          error={error}
+          isTouched={isTouched}
+          isValidating={isValidating}
+          onChange={event => {
+            handleChange(event.target.value);
+          }}
+          onBlur={handleValidate}
+        />
       )}
     </Field>
-    <br />
-
     <button type="submit">submit</button>
   </Form>
 );
