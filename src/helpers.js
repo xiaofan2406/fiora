@@ -49,16 +49,3 @@ export const fieldUpdater = (name: string, partial: KeyedObject = {}) => (
           form: {},
         },
       };
-
-export const DEFAULT_VALUE = '';
-
-export const DEFAULT_ERROR = null;
-
-/**
- * always default value to empty string to avoid React warning
- * always default error to null to ?
- */
-export const DEFAULT_FIELD = {
-  value: DEFAULT_VALUE,
-  error: DEFAULT_ERROR,
-};

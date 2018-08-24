@@ -1,9 +1,14 @@
 /* @flow */
 import * as React from 'react';
-import { DEFAULT_FIELD } from './helpers';
 
 class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
-  static defaultProps = DEFAULT_FIELD;
+  /**
+   * Always default value to empty string to avoid React warning.
+   * React will warning if a input value changes from undefined to controlled.
+   */
+  static defaultProps = {
+    value: '',
+  };
 
   state = {
     isValidating: false,
@@ -45,10 +50,10 @@ class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
   };
 
   render() {
-    const { name, children, value, error, isTouched } = this.props;
+    const { children, value, error, isTouched } = this.props;
     const { isValidating } = this.state;
 
-    console.log('[FioraField]: render', name);
+    // console.log('[FioraField]: render', name);
     return children({
       value,
       error,

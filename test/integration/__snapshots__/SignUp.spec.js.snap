@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<form
+  data-testid="signUpForm"
+>
+  <input
+    data-testid="usernameInput"
+    value=""
+  />
+  <input
+    data-testid="passwordInput"
+    value=""
+  />
+  <input
+    data-testid="passwordRepeatInput"
+    value=""
+  />
+  <button
+    type="reset"
+  >
+    Reset
+  </button>
+  <button
+    type="submit"
+  >
+    Submit
+  </button>
+</form>
+`;

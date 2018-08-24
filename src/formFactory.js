@@ -123,7 +123,7 @@ export default (Provider: ContextProvider) =>
     };
 
     render() {
-      console.log('[Form]: render');
+      // console.log('[Form]: render');
       const {
         children,
         onSubmit,
