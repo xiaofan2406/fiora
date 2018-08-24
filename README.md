@@ -17,9 +17,9 @@ Forms, for React
 
 #### TODO
 
-- metastate
 - reset
 - tests
+- form meta
 - perf check
 - investigate `action` prop on form
 - `html` mode

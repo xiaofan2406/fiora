@@ -4,7 +4,13 @@ export const delay = (ms: number): Promise<void> =>
     setTimeout(resolve, ms);
   });
 
-export const signUp = async ({ username, password }) => {
+export const signUp = async ({
+  username,
+  password,
+}: {
+  username: string,
+  password: string,
+}) => {
   await delay(500);
   const errors = {};
   if (username === 'admin') {
@@ -19,16 +25,4 @@ export const signUp = async ({ username, password }) => {
   return Object.keys(errors).length > 0
     ? { status: 400, errors }
     : { status: 200 };
-};
-
-export const login = async ({ username, password }) => {
-  await delay(500);
-  if (username.length < 5) {
-    return { username: 'Invalid username' };
-  }
-
-  if (username === password) {
-    return { form: 'Username and password should be different' };
-  }
-  return undefined;
 };

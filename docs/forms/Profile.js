@@ -1,6 +1,5 @@
 /* @flow */
 import * as React from 'react';
-import { Input } from 'widgets';
 import createForm from 'fiora/Fiora';
 
 const { Form, Field } = createForm();
