@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitForElement } from 'react-testing-library';
+import { render, fireEvent, waitForElement, wait } from 'react-testing-library';
 import SignUp from './SignUp';
 
 it('matches snapshot', () => {
@@ -30,8 +30,17 @@ it('updates value when input onChange is triggered', () => {
 });
 
 describe('username input', () => {
-  it('does not have any error initially', () => {
+  it('validates username when the input is changed', async () => {
     const { getByTestId } = render(<SignUp />);
+    const inputEl = getByTestId('usernameInput');
+
+    fireEvent.change(inputEl, { target: { value: 'n' } });
+    await waitForElement(() => getByTestId('usernameError'));
+    expect(getByTestId('usernameError').innerHTML).toMatch(
+      'Username should be as least 5 characters'
+    );
+
+    fireEvent.change(inputEl, { target: { value: 'new username' } });
     try {
       getByTestId('usernameError');
     } catch (err) {
@@ -41,19 +50,9 @@ describe('username input', () => {
     }
   });
 
-  it('validates username whenever the input is changed', async () => {
-    const { getByTestId, getByText } = render(<SignUp />);
-
-    fireEvent.change(getByTestId('usernameInput'), { target: { value: 'n' } });
-    await waitForElement(() => getByTestId('usernameError'));
-
-    expect(getByText(/^error:/).innerHTML).toMatch(
-      'Username should be as least 5 characters'
-    );
-
-    fireEvent.change(getByTestId('usernameInput'), {
-      target: { value: 'new username' },
-    });
+  it('shows required error only when input is cleared, but not initially', async () => {
+    const { getByTestId } = render(<SignUp />);
+    const inputEl = getByTestId('usernameInput');
 
     try {
       getByTestId('usernameError');
@@ -62,16 +61,44 @@ describe('username input', () => {
         'Unable to find an element by: [data-testid="usernameError"]'
       );
     }
-  });
 
-  it('validates username whenever the input is changed', async () => {
-    const { getByTestId, getByText } = render(<SignUp />);
+    fireEvent.change(inputEl, { target: { value: 'fiora2018' } });
+    fireEvent.change(inputEl, { target: { value: '' } });
 
-    fireEvent.change(getByTestId('usernameInput'), { target: { value: 'n' } });
     await waitForElement(() => getByTestId('usernameError'));
-
-    expect(getByText(/^error:/).innerHTML).toMatch(
-      'Username should be as least 5 characters'
+    expect(getByTestId('usernameError').innerHTML).toMatch(
+      'Username is required'
     );
+  });
+});
+
+describe('password input', () => {
+  it('validates password when the input is blured', async () => {
+    const { getByTestId } = render(<SignUp />);
+    const inputEl = getByTestId('passwordInput');
+
+    fireEvent.blur(inputEl);
+    await waitForElement(() => getByTestId('passwordError'));
+    expect(getByTestId('passwordError').innerHTML).toMatch(
+      'Password is required'
+    );
+
+    fireEvent.change(inputEl, { target: { value: '12345' } });
+    fireEvent.blur(inputEl);
+    await wait(() =>
+      expect(getByTestId('passwordError').innerHTML).toMatch(
+        'Password should be as least 6 characters'
+      )
+    );
+
+    fireEvent.change(inputEl, { target: { value: '123456789' } });
+    fireEvent.blur(inputEl);
+    try {
+      getByTestId('passwordError');
+    } catch (err) {
+      expect(err.message).toMatch(
+        'Unable to find an element by: [data-testid="passwordError"]'
+      );
+    }
   });
 });
