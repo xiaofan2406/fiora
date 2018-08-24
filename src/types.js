@@ -1,10 +1,11 @@
 /* @flow */
-type KeyedObject = { [string]: mixed };
+type KeyedObject = { [string]: any };
 
 declare type FormProps = {
   children: React$Node,
   onSubmit: (formData: KeyedObject) => KeyedObject | void,
   onValidate?: (formData: KeyedObject) => KeyedObject | void,
+  onReset?: () => void,
   initialValues?: KeyedObject,
 }; // support all HTML form attributes, except `name`
 

@@ -11,7 +11,7 @@ import createForm from 'fiora/Fiora';
 
 const { Form, Field } = createForm();
 
-const signUpSubmit = async data => {
+const signUpSubmit = async (data: { username: string, password: string }) => {
   const res = await signUp(data);
   if (res.status === 200) {
     console.log('Sign up successful!');
@@ -22,7 +22,13 @@ const signUpSubmit = async data => {
 };
 
 const SignUp = () => (
-  <Form onSubmit={signUpSubmit} data-testid="signUpForm">
+  <Form
+    onSubmit={signUpSubmit}
+    onReset={() => {
+      console.log('reseted');
+    }}
+    data-testid="signUpForm"
+  >
     <Field name="username" onValidate={usernameValidation}>
       {({
         value,
@@ -92,7 +98,8 @@ const SignUp = () => (
         />
       )}
     </Field>
-    <button type="submit">submit</button>
+    <button type="reset">Reset</button>
+    <button type="submit">Submit</button>
   </Form>
 );
 

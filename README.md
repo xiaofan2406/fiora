@@ -17,9 +17,9 @@ Forms, for React
 
 #### TODO
 
-- reset
 - tests
 - form meta
 - perf check
+- better type defs
 - investigate `action` prop on form
 - `html` mode

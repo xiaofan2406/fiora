@@ -69,7 +69,7 @@ export default (Provider: ContextProvider) =>
       // run each field validation, if there is any errors, terminate
       const fieldErrors = await Promise.all(
         Object.keys(this.fieldsInfo).map(fieldName =>
-          this.fieldsInfo[fieldName].onValidate(
+          this.fieldsInfo[fieldName].validator(
             getFieldValue(fieldName, this.state)
           )
         )
@@ -104,6 +104,17 @@ export default (Provider: ContextProvider) =>
       return hasSubmitErrors;
     };
 
+    handleReset = () => {
+      const { initialValues, onReset } = this.props;
+      this.setState({
+        fields: getInitialValues(initialValues),
+      });
+
+      if (onReset) {
+        onReset();
+      }
+    };
+
     state = {
       fields: getInitialValues(this.props.initialValues),
       updateField: this.updateField,
@@ -122,7 +133,11 @@ export default (Provider: ContextProvider) =>
       } = this.props;
       return (
         <Provider value={this.state}>
-          <form {...rest} onSubmit={this.handleSubmit}>
+          <form
+            {...rest}
+            onSubmit={this.handleSubmit}
+            onReset={this.handleReset}
+          >
             {children}
           </form>
         </Provider>
