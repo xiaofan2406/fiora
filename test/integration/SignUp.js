@@ -1,9 +1,9 @@
 /* @flow */
 import * as React from 'react';
 
-import createForm from '../../src/Fiora';
+import { createFiora } from '../../src';
 
-const { Form, Field } = createForm();
+const { Form, Field } = createFiora();
 
 export const usernameValidation = (username: string) => {
   if (!username) {

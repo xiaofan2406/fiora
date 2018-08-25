@@ -1,8 +1,9 @@
 /* @flow */
 import * as React from 'react';
-import createForm from 'fiora/Fiora';
 
-const { Form, Field } = createForm();
+import { createFiora } from '../../src';
+
+const { Form, Field } = createFiora();
 
 type ProfileProps = {
   profile: {},

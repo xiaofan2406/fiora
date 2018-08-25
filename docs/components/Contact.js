@@ -7,9 +7,9 @@ import {
   passwordValidation,
   passwordRepeatValidation,
 } from 'utils/validations';
-import createForm from 'fiora/Fiora';
+import { createFiora } from 'fiora';
 
-const { Form, Field } = createForm();
+const { Form, Field } = createFiora();
 
 const signUpSubmit = async (data: { username: string, password: string }) => {
   const res = await signUp(data);

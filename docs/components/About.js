@@ -5,9 +5,9 @@ import {
   updateProfile as updateProfileAction,
   getProfile,
 } from 'store/profile';
-import createForm from 'fiora/Fiora';
+import { createFiora } from 'fiora';
 
-const { Form, Field } = createForm();
+const { Form, Field } = createFiora();
 
 type AboutProps = {
   profile: {},
