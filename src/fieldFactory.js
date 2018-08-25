@@ -4,13 +4,12 @@ import FioraField from './FioraField';
 
 export default (Consumer: ContextConsumer) => {
   const Field = ({ name, onValidate, children }: FieldProps) => (
-    // console.log('[Field]: render');
     <Consumer>
-      {({ fields, registerField, updateField, validateField }) => (
+      {({ fields, registerField, updateValue, validateField }) => (
         <FioraField
           name={name}
           onValidate={onValidate}
-          updateField={updateField}
+          updateValue={updateValue}
           registerField={registerField}
           validateField={validateField}
           {...fields[name]}

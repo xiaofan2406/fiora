@@ -17,6 +17,7 @@ module.file_ext=.mjs
 module.file_ext=.json
 module.use_strict=true
 experimental.const_params=true
+esproposal.decorators=ignore
 suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe
 module.name_mapper='^assets' -> '<PROJECT_ROOT>/docs/assets'
 module.name_mapper='^components' -> '<PROJECT_ROOT>/docs/components'

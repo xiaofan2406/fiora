@@ -1,7 +1,7 @@
 /* @flow */
 import React from 'react';
-import { Input } from 'widgets';
-import { signUp } from 'utils/api';
+import { Input, Loader } from 'widgets';
+import { delay, signUp } from 'utils/api';
 import {
   usernameValidation,
   passwordValidation,
@@ -9,7 +9,7 @@ import {
 } from 'utils/validations';
 import { createFiora } from 'fiora';
 
-const { Form, Field } = createFiora();
+const { Form, Field, FormMeta } = createFiora();
 
 const signUpSubmit = async (data: { username: string, password: string }) => {
   const res = await signUp(data);
@@ -23,11 +23,21 @@ const signUpSubmit = async (data: { username: string, password: string }) => {
 const Contact = () => (
   <Form
     onSubmit={signUpSubmit}
+    onValidate={() => delay(3000)}
     onReset={() => {
-      console.log('reseted');
+      console.log('reset');
     }}
     data-testid="signUpForm"
   >
+    <FormMeta>
+      {({ error, isValidating, isSubmitting }) => (
+        <>
+          <div>{error}</div>
+          {isValidating ? <Loader color="orange" size={32} /> : null}
+          {isSubmitting ? <Loader color="green" size={32} /> : null}
+        </>
+      )}
+    </FormMeta>
     <Field name="username" onValidate={usernameValidation}>
       {({
         value,

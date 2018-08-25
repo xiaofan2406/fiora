@@ -2,6 +2,10 @@ import React from 'react';
 import { render, fireEvent, wait } from 'react-testing-library';
 import SignUp from './SignUp';
 
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 it('matches snapshot', () => {
   const { container } = render(<SignUp />);
 
@@ -66,7 +70,7 @@ describe('username input', () => {
 });
 
 describe('password input', () => {
-  it('validates password when the input is blured', async () => {
+  it('validates password when the input is blurred', async () => {
     const { getByTestId, queryByTestId } = render(<SignUp />);
     const inputEl = getByTestId('passwordInput');
 
@@ -94,7 +98,7 @@ describe('password input', () => {
 });
 
 describe('password repeat input', () => {
-  it('validates password when the input is blured', async () => {
+  it('validates password when the input is blurred', async () => {
     const { getByTestId } = render(<SignUp />);
     const inputEl = getByTestId('passwordRepeatInput');
 
@@ -134,5 +138,51 @@ describe('password repeat input', () => {
     await wait(() =>
       expect(queryByTestId('passwordRepeatError')).not.toBeInTheDocument()
     );
+  });
+});
+
+describe('submission', () => {
+  it('submits successfully when all data are valid', async () => {
+    const { getByTestId } = render(<SignUp />);
+
+    fireEvent.change(getByTestId('usernameInput'), {
+      target: { value: 'fiora2018' },
+    });
+    fireEvent.change(getByTestId('passwordInput'), {
+      target: { value: '1234567' },
+    });
+    fireEvent.change(getByTestId('passwordRepeatInput'), {
+      target: { value: '1234567' },
+    });
+    fireEvent.click(getByTestId('submit'));
+
+    await wait(() =>
+      expect(getByTestId('response')).toHaveTextContent('Sign up successful!')
+    );
+  });
+
+  it('validates the form first', async () => {
+    const { getByTestId, queryByTestId } = render(<SignUp />);
+
+    fireEvent.change(getByTestId('usernameInput'), {
+      target: { value: 'admin' },
+    });
+    fireEvent.change(getByTestId('passwordInput'), {
+      target: { value: 'password' },
+    });
+    fireEvent.change(getByTestId('passwordRepeatInput'), {
+      target: { value: 'password' },
+    });
+    fireEvent.click(getByTestId('submit'));
+
+    await wait(() => {
+      expect(getByTestId('usernameError')).toHaveTextContent(
+        'Username not allowed'
+      );
+      expect(getByTestId('passwordError')).toHaveTextContent(
+        'Password is insecure'
+      );
+      expect(queryByTestId('response')).not.toBeInTheDocument();
+    });
   });
 });

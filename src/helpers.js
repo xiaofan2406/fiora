@@ -29,26 +29,15 @@ export const getInitialValues = (initialValues?: KeyedObject) =>
 
 export const fieldUpdater = (name: string, partial: KeyedObject = {}) => (
   state: FormState
-) =>
-  name === 'form'
-    ? {
-        fields: {
-          ...state.fields,
-          [name]: {
-            ...state.fields[name],
-            ...partial,
-          },
-        },
-      }
-    : {
-        fields: {
-          ...state.fields,
-          [name]: {
-            ...state.fields[name],
-            ...partial,
-            // Any field updates will consider touching the field
-            isTouched: true,
-          },
-          form: {},
-        },
-      };
+) => ({
+  fields: {
+    ...state.fields,
+    [name]: {
+      ...state.fields[name],
+      ...partial,
+      // Any field updates will consider touching the field
+      isTouched: true,
+    },
+    form: {},
+  },
+});

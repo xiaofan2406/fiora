@@ -17,11 +17,13 @@ exports[`matches snapshot 1`] = `
     value=""
   />
   <button
+    data-testid="reset"
     type="reset"
   >
     Reset
   </button>
   <button
+    data-testid="submit"
     type="submit"
   >
     Submit

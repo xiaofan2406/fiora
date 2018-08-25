@@ -31,7 +31,8 @@ module.exports = {
   plugins: [
     ['babel-plugin-emotion', emotionConfig],
 
-    '@babel/plugin-proposal-class-properties',
+    isTest && ['@babel/plugin-proposal-decorators', { legacy: true }],
+    ['@babel/plugin-proposal-class-properties', { loose: isTest }],
 
     [
       '@babel/plugin-proposal-object-rest-spread',

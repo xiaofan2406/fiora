@@ -1,10 +1,11 @@
 /* @flow */
 import * as React from 'react';
+import type { FormState } from './formFactory';
 
 type FioraFieldProps = FieldProps & {
-  updateField: (fieldName: string, newValue: any) => void,
-  registerField: (fieldName: string, info: {}) => void,
-  validateField: (fieldName: string) => void,
+  updateValue: $PropertyType<FormState, 'updateValue'>,
+  registerField: $PropertyType<FormState, 'registerField'>,
+  validateField: $PropertyType<FormState, 'validateField'>,
 } & InternalFieldState;
 
 type FioraFieldState = {
@@ -31,9 +32,9 @@ class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
   }
 
   handleChange = (newValue: any) => {
-    const { updateField, name } = this.props;
+    const { updateValue, name } = this.props;
 
-    updateField(name, newValue);
+    updateValue(name, newValue);
   };
 
   validator = async (value: any) => {

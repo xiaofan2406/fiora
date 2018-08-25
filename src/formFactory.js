@@ -8,9 +8,13 @@ import {
 } from './helpers';
 
 export type FormState = {
+  error: $PropertyType<FormMetaRenderProps, 'error'>,
+  isValidating: $PropertyType<FormMetaRenderProps, 'isValidating'>,
+  isSubmitting: $PropertyType<FormMetaRenderProps, 'isSubmitting'>,
   fields: { [string]: InternalFieldState },
   registerField: (fieldName: string, info: {}) => void,
-  updateField: (fieldName: string, value: any) => void,
+  updateValue: (fieldName: string, value: any) => void,
+  validateField: (fieldName: string) => void,
 };
 
 export default (Provider: ContextProvider) =>
@@ -36,8 +40,9 @@ export default (Provider: ContextProvider) =>
      * @param {string} fieldName The name of the field.
      * @param {any} value The new value for the field.
      */
-    updateField = (fieldName: string, value: any) => {
-      this.setState(fieldUpdater(fieldName, { value }));
+    updateValue = (fieldName: string, value: any) => {
+      // Clear field error whenever value changes
+      this.setState(fieldUpdater(fieldName, { value, error: null }));
     };
 
     /**
@@ -73,15 +78,17 @@ export default (Provider: ContextProvider) =>
       let hasErrors = false;
       const errorObj = errors || {};
 
-      Object.keys(errorObj)
-        .filter(name => !this.fieldsInfo[name] || name !== 'form')
-        .forEach(fieldName => {
-          hasErrors = hasErrors || !!errorObj[fieldName];
+      // TODO 1 setState to rule them all
+      Object.keys(errorObj).forEach(name => {
+        hasErrors = hasErrors || !!errorObj[name];
 
-          this.setState(
-            fieldUpdater(fieldName, { error: errorObj[fieldName] })
-          );
-        });
+        if (name === 'form') {
+          this.setState({
+            error: errorObj[name],
+          });
+        }
+        this.setState(fieldUpdater(name, { error: errorObj[name] }));
+      });
 
       return hasErrors;
     };
@@ -112,6 +119,8 @@ export default (Provider: ContextProvider) =>
       );
       if (hasExistingErrors) return false;
 
+      this.setState({ isValidating: true });
+
       // Run each field's validation.
       const fieldNames = Object.keys(this.fieldsInfo);
       const fieldErrors = await Promise.all(
@@ -137,12 +146,19 @@ export default (Provider: ContextProvider) =>
         const formErrors = await onValidate(formData);
         const hasFormErrors = this._updateErrors(formErrors);
 
+        this.setState({ isValidating: false });
+
         if (hasFormErrors) return false;
+      } else {
+        this.setState({ isValidating: false });
       }
+
+      this.setState({ isSubmitting: true });
 
       // Run the form's submission.
       const submitErrors = await onSubmit(formData);
       const hasSubmitErrors = this._updateErrors(submitErrors);
+      this.setState({ isSubmitting: false });
 
       return hasSubmitErrors;
     };
@@ -162,8 +178,12 @@ export default (Provider: ContextProvider) =>
     };
 
     state = {
+      error: null,
+      isValidating: false,
+      isSubmitting: false,
+
       fields: getInitialValues(this.props.initialValues),
-      updateField: this.updateField,
+      updateValue: this.updateValue,
       registerField: this.registerField,
       validateField: this.validateField,
     };

@@ -38,6 +38,18 @@ declare type FieldProps = {|
   children: (props: FieldRenderProps) => React$Node,
 |};
 
+declare type FormMetaRenderProps = {|
+  error: any,
+  isValidating: boolean,
+  isSubmitting: boolean,
+  isTouched: boolean,
+  isValid: boolean,
+|};
+
+declare type FormMetaProps = {|
+  children: (props: FormMetaRenderProps) => React$Node,
+|};
+
 // =================== Internal =============
 
 declare type InternalFieldState = {|

@@ -18,14 +18,9 @@ Forms, for React
 #### TODO
 
 - tests
-- form meta
 - perf check
 - investigate `action` prop on form
 - `html` mode
-
-#### Q
-
-- should error always be cleared when value change
 
 #### Note
 
