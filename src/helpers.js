@@ -1,5 +1,5 @@
 /* @flow */
-export const getValues = (fields: { [string]: FieldState }) =>
+export const getFormValues = (fields: { [string]: FieldState }) =>
   Object.keys(fields).reduce(
     (values, fieldName) => ({
       ...values,
@@ -44,6 +44,7 @@ export const fieldUpdater = (name: string, partial: KeyedObject = {}) => (
           [name]: {
             ...state.fields[name],
             ...partial,
+            // Any field updates will consider touching the field
             isTouched: true,
           },
           form: {},

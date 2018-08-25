@@ -27,3 +27,9 @@ Forms, for React
 #### Q
 
 - should error always be cleared when value change
+
+#### Note
+
+- any falsy value representation of an error will be discarded
+- value will be initialized as `''` if not given
+- `'form'` is a special field name
