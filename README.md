@@ -23,3 +23,7 @@ Forms, for React
 - better type defs
 - investigate `action` prop on form
 - `html` mode
+
+#### Q
+
+- should error always be cleared when value change

@@ -52,51 +52,43 @@ const Contact = () => (
       )}
     </Field>
     <Field name="password" onValidate={passwordValidation}>
-      {({
-        value,
-        error,
-        isTouched,
-        isValidating,
-        handleChange,
-        handleValidate,
-      }) => (
-        <Input
-          data-testid="passwordInput"
-          label="Password"
-          value={value}
-          error={error}
-          isTouched={isTouched}
-          isValidating={isValidating}
-          onChange={event => {
-            handleChange(event.target.value);
-          }}
-          onBlur={handleValidate}
-        />
+      {password => (
+        <Field
+          name="passwordRepeat"
+          onValidate={passwordRepeatValidation(password.value)}
+        >
+          {passwordRepeat => (
+            <>
+              <Input
+                data-testid="passwordInput"
+                label="Password"
+                value={password.value}
+                error={password.error}
+                isTouched={password.isTouched}
+                isValidating={password.isValidating}
+                onChange={event => {
+                  password.handleChange(event.target.value);
+                }}
+                onBlur={password.handleValidate}
+              />
+              <Input
+                data-testid="passwordRepeatInput"
+                label="Confirm password"
+                value={passwordRepeat.value}
+                error={passwordRepeat.error}
+                isTouched={passwordRepeat.isTouched}
+                isValidating={passwordRepeat.isValidating}
+                onChange={event => {
+                  passwordRepeat.handleChange(event.target.value);
+                }}
+                onBlur={passwordRepeat.handleValidate}
+              />
+            </>
+          )}
+        </Field>
       )}
     </Field>
-    <Field name="passwordRepeat" onValidate={passwordRepeatValidation}>
-      {({
-        value,
-        error,
-        isTouched,
-        isValidating,
-        handleChange,
-        handleValidate,
-      }) => (
-        <Input
-          data-testid="passwordRepeatInput"
-          label="Confirm password"
-          value={value}
-          error={error}
-          isTouched={isTouched}
-          isValidating={isValidating}
-          onChange={event => {
-            handleChange(event.target.value);
-          }}
-          onBlur={handleValidate}
-        />
-      )}
-    </Field>
+
     <button type="reset">Reset</button>
     <button type="submit">Submit</button>
   </Form>

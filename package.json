@@ -86,6 +86,7 @@
     "husky": "^0.14.3",
     "ip": "^1.1.5",
     "jest": "^23.5.0",
+    "jest-dom": "^1.12.0",
     "lint-staged": "^7.2.2",
     "mini-css-extract-plugin": "^0.4.2",
     "optimize-css-assets-webpack-plugin": "^5.0.0",

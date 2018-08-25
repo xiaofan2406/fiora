@@ -18,9 +18,14 @@ export const passwordValidation = password => {
   return null;
 };
 
-export const passwordRepeatValidation = password => {
-  if (!password) {
-    return 'Please confirm your password';
+export const passwordRepeatValidation = password => passwordRepeat => {
+  const baseError = passwordValidation(passwordRepeat);
+
+  if (baseError) return baseError;
+
+  if (passwordRepeat !== password) {
+    return 'Passwords do not match';
   }
+
   return null;
 };

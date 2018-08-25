@@ -25,10 +25,15 @@ export const passwordValidation = password => {
   return null;
 };
 
-export const passwordRepeatValidation = password => {
-  if (!password) {
-    return 'Please confirm your password';
+export const passwordRepeatValidation = password => passwordRepeat => {
+  const baseError = passwordValidation(passwordRepeat);
+
+  if (baseError) return baseError;
+
+  if (passwordRepeat !== password) {
+    return 'Passwords do not match';
   }
+
   return null;
 };
 
@@ -99,43 +104,46 @@ const SignUp = () => (
       )}
     </Field>
     <Field name="password" onValidate={passwordValidation}>
-      {({ value, error, isTouched, handleChange, handleValidate }) => (
-        <>
-          <input
-            data-testid="passwordInput"
-            value={value}
-            onChange={event => {
-              handleChange(event.currentTarget.value);
-            }}
-            onBlur={handleValidate}
-          />
-          {isTouched && error ? (
-            <span data-testid="passwordError">
-              error: {JSON.stringify(error)}
-            </span>
-          ) : null}
-        </>
+      {password => (
+        <Field
+          name="passwordRepeat"
+          onValidate={passwordRepeatValidation(password.value)}
+        >
+          {passwordRepeat => (
+            <>
+              <input
+                data-testid="passwordInput"
+                value={password.value}
+                onChange={event => {
+                  password.handleChange(event.currentTarget.value);
+                }}
+                onBlur={password.handleValidate}
+              />
+              {password.isTouched && password.error ? (
+                <span data-testid="passwordError">
+                  error: {JSON.stringify(password.error)}
+                </span>
+              ) : null}
+
+              <input
+                data-testid="passwordRepeatInput"
+                value={passwordRepeat.value}
+                onChange={event => {
+                  passwordRepeat.handleChange(event.currentTarget.value);
+                }}
+                onBlur={passwordRepeat.handleValidate}
+              />
+              {passwordRepeat.isTouched && passwordRepeat.error ? (
+                <span data-testid="passwordRepeatError">
+                  error: {JSON.stringify(passwordRepeat.error)}
+                </span>
+              ) : null}
+            </>
+          )}
+        </Field>
       )}
     </Field>
-    <Field name="passwordRepeat" onValidate={passwordRepeatValidation}>
-      {({ value, error, isTouched, handleChange, handleValidate }) => (
-        <>
-          <input
-            data-testid="passwordRepeatInput"
-            value={value}
-            onChange={event => {
-              handleChange(event.currentTarget.value);
-            }}
-            onBlur={handleValidate}
-          />
-          {isTouched && error ? (
-            <span data-testid="passwordRepeatError">
-              error: {JSON.stringify(error)}
-            </span>
-          ) : null}
-        </>
-      )}
-    </Field>
+
     <button type="reset">Reset</button>
     <button type="submit">Submit</button>
   </Form>
