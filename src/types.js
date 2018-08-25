@@ -1,25 +1,50 @@
 /* @flow */
 type KeyedObject = { [string]: any };
 
+/**
+ * Props passed in by users on the Form
+ */
 declare type FormProps = {
   children: React$Node,
-  onSubmit: (formData: KeyedObject) => KeyedObject | void,
-  onValidate?: (formData: KeyedObject) => KeyedObject | void,
+
+  onSubmit: (
+    formData: KeyedObject
+  ) => KeyedObject | Promise<KeyedObject | void>,
+
   onReset?: () => void,
+
+  onValidate?: (
+    formData: KeyedObject
+  ) => KeyedObject | Promise<KeyedObject | void>,
+
   initialValues?: KeyedObject,
-}; // support all HTML form attributes, except `name`
+}; // support all HTML form attributes
 
-declare type FieldState = {
-  value: mixed,
-  error?: mixed,
+declare type FieldRenderProps = {|
+  value: any,
+  error: any,
   isTouched: boolean,
-};
+  isValidating: boolean,
+  handleChange: (newValue: any) => void,
+  handleValidate: () => void,
+|};
 
-declare type FormState = {
-  fields: { [string]: FieldState },
-  updateField: (fieldName: string, partial: {}) => void,
-  registerField: (fieldName: string, info: {}) => void,
-};
+/**
+ * Props passed in by users on the Field
+ */
+declare type FieldProps = {|
+  name: string,
+  onValidate?: (value: any) => any | Promise<any>,
+  children: (props: FieldRenderProps) => React$Node,
+|};
+
+// =================== Internal =============
+
+declare type InternalFieldState = {|
+  value: $PropertyType<FieldRenderProps, 'value'>,
+  error: $PropertyType<FieldRenderProps, 'error'>,
+  isTouched: $PropertyType<FieldRenderProps, 'isTouched'>,
+|};
 
 declare type ContextProvider = React$ComponentType<{
   value: any,
@@ -29,38 +54,3 @@ declare type ContextProvider = React$ComponentType<{
 declare type ContextConsumer = React$ComponentType<{
   children: (props: any) => React$Node,
 }>;
-
-type FieldChangeHandler = (newValue: mixed) => void | Promise<void>;
-
-type FioraFieldState = {
-  isValidating: boolean,
-};
-
-declare type FieldChildrenProps = FieldState &
-  FioraFieldState & {
-    handleChange: FieldChangeHandler,
-    handleValidate: () => void,
-  };
-
-/**
- * Props passed in by users on each Field
- */
-declare type FieldProps = {
-  name: string,
-  onValidate?: (value: mixed) => mixed,
-  children: (props: FieldChildrenProps) => React$Node,
-};
-
-declare type FioraFieldProps = FieldProps & {
-  updateField: (fieldName: string, newValue: mixed) => void,
-  registerField: (fieldName: string, info: {}) => void,
-  validateField: (fieldName: string) => void,
-} & FieldState;
-
-type SubmitChildrenProps = {
-  handleSubmit: (formData: KeyedObject) => KeyedObject,
-};
-
-declare type SubmitProps = {
-  children: (props: SubmitChildrenProps) => React$Node,
-};

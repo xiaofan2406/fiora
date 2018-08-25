@@ -2,10 +2,16 @@
 import * as React from 'react';
 import {
   getFormValues,
-  getInitialValues,
   getFieldValue,
+  getInitialValues,
   fieldUpdater,
 } from './helpers';
+
+export type FormState = {
+  fields: { [string]: InternalFieldState },
+  registerField: (fieldName: string, info: {}) => void,
+  updateField: (fieldName: string, value: any) => void,
+};
 
 export default (Provider: ContextProvider) =>
   class Form extends React.Component<FormProps, FormState> {
@@ -28,7 +34,7 @@ export default (Provider: ContextProvider) =>
     /**
      * Update the field to the given value in the Form.
      * @param {string} fieldName The name of the field.
-     * @param {*} value The new value for the field.
+     * @param {any} value The new value for the field.
      */
     updateField = (fieldName: string, value: any) => {
       this.setState(fieldUpdater(fieldName, { value }));
@@ -147,6 +153,7 @@ export default (Provider: ContextProvider) =>
      */
     handleReset = () => {
       const { initialValues, onReset } = this.props;
+
       this.setState({
         fields: getInitialValues(initialValues),
       });
@@ -165,11 +172,12 @@ export default (Provider: ContextProvider) =>
       const {
         children,
         onSubmit,
-        onRest,
+        onReset,
         onValidate,
         initialValues,
         ...rest
       } = this.props;
+
       return (
         <Provider value={this.state}>
           <form

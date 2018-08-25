@@ -5,7 +5,7 @@ import createForm from '../../src/Fiora';
 
 const { Form, Field } = createForm();
 
-export const usernameValidation = username => {
+export const usernameValidation = (username: string) => {
   if (!username) {
     return 'Username is required';
   }
@@ -15,7 +15,7 @@ export const usernameValidation = username => {
   return null;
 };
 
-export const passwordValidation = password => {
+export const passwordValidation = (password: string) => {
   if (!password) {
     return 'Password is required';
   }
@@ -25,7 +25,9 @@ export const passwordValidation = password => {
   return null;
 };
 
-export const passwordRepeatValidation = password => passwordRepeat => {
+export const passwordRepeatValidation = (password: string) => (
+  passwordRepeat: string
+) => {
   const baseError = passwordValidation(passwordRepeat);
 
   if (baseError) return baseError;
@@ -42,7 +44,7 @@ export const delay = (ms: number): Promise<void> =>
     setTimeout(resolve, ms);
   });
 
-export const signUpReqeust = async ({
+export const signUpRequest = async ({
   username,
   password,
 }: {
@@ -52,7 +54,7 @@ export const signUpReqeust = async ({
   await delay(500);
   const errors = {};
   if (username === 'admin') {
-    errors.username = 'Invalid useranme';
+    errors.username = 'Invalid username';
   }
   if (password === 'password') {
     errors.password = 'Password is insecure';
@@ -69,17 +71,18 @@ export const signUpSubmit = async (data: {
   username: string,
   password: string,
 }) => {
-  const res = await signUpReqeust(data);
+  const res = await signUpRequest(data);
   if (res.status === 200) {
     console.log('Sign up successful!');
     return null;
   }
   console.log(res.errors);
-  return res.errors;
+  // return res.errors;
+  return undefined;
 };
 
 export const signUpReset = () => {
-  console.log('reseted');
+  console.log('reset');
 };
 
 const SignUp = () => (

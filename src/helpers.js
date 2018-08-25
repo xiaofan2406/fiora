@@ -1,8 +1,10 @@
 /* @flow */
-export const getFormValues = (fields: { [string]: FieldState }) =>
+import type { FormState } from './formFactory';
+
+export const getFormValues = (fields: $PropertyType<FormState, 'fields'>) =>
   Object.keys(fields).reduce(
-    (values, fieldName) => ({
-      ...values,
+    (reduced, fieldName) => ({
+      ...reduced,
       [fieldName]: fields[fieldName].value,
     }),
     {}
@@ -14,8 +16,8 @@ export const getFieldValue = (fieldName: string, state: FormState) =>
 export const getInitialValues = (initialValues?: KeyedObject) =>
   initialValues
     ? Object.keys(initialValues).reduce(
-        (values, fieldName) => ({
-          ...values,
+        (reduced, fieldName) => ({
+          ...reduced,
           [fieldName]: {
             // TODO clone
             value: initialValues[fieldName],

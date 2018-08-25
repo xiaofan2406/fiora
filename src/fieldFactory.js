@@ -3,17 +3,17 @@ import * as React from 'react';
 import FioraField from './FioraField';
 
 export default (Consumer: ContextConsumer) => {
-  const Field = ({ name: fieldName, onValidate, children }: FieldProps) => (
+  const Field = ({ name, onValidate, children }: FieldProps) => (
     // console.log('[Field]: render');
     <Consumer>
       {({ fields, registerField, updateField, validateField }) => (
         <FioraField
-          name={fieldName}
+          name={name}
           onValidate={onValidate}
           updateField={updateField}
           registerField={registerField}
           validateField={validateField}
-          {...fields[fieldName]}
+          {...fields[name]}
         >
           {children}
         </FioraField>

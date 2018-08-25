@@ -1,6 +1,16 @@
 /* @flow */
 import * as React from 'react';
 
+type FioraFieldProps = FieldProps & {
+  updateField: (fieldName: string, newValue: any) => void,
+  registerField: (fieldName: string, info: {}) => void,
+  validateField: (fieldName: string) => void,
+} & InternalFieldState;
+
+type FioraFieldState = {
+  isValidating: $PropertyType<FieldRenderProps, 'isValidating'>,
+};
+
 class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
   /**
    * Always default value to empty string to avoid React warning.
@@ -20,13 +30,13 @@ class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
     registerField(name, { validator: this.validator });
   }
 
-  handleChange = async (newValue: mixed) => {
+  handleChange = (newValue: any) => {
     const { updateField, name } = this.props;
 
     updateField(name, newValue);
   };
 
-  validator = async (value: mixed) => {
+  validator = async (value: any) => {
     const { onValidate } = this.props;
     if (onValidate) {
       try {
@@ -53,7 +63,6 @@ class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
     const { children, value, error, isTouched } = this.props;
     const { isValidating } = this.state;
 
-    // console.log('[FioraField]: render', name);
     return children({
       value,
       error,
