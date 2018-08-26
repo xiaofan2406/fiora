@@ -12,7 +12,7 @@ type FioraFieldState = {
   isValidating: $PropertyType<FieldRenderProps, 'isValidating'>,
 };
 
-class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
+class FioraField extends React.Component<FioraFieldProps, FioraFieldState> {
   /**
    * Always default value to empty string to avoid React warning.
    * React will warning if a input value changes from undefined to controlled.
@@ -24,6 +24,27 @@ class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
   state = {
     isValidating: false,
   };
+
+  shouldComponentUpdate(
+    nextProps: FioraFieldProps,
+    nextState: FioraFieldState
+  ) {
+    let changed = false;
+    Object.keys(nextProps).forEach(key => {
+      if (nextProps[key] !== this.props[key]) {
+        console.log(`[FioraField]: Props ${key}`);
+        changed = true;
+      }
+    });
+    Object.keys(nextState).forEach(key => {
+      if (nextState[key] !== this.state[key]) {
+        console.log(`[FioraField]: State ${key}`);
+        changed = true;
+      }
+    });
+
+    return changed;
+  }
 
   componentDidMount() {
     const { name, registerField } = this.props;
@@ -63,6 +84,7 @@ class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
   render() {
     const { children, value, error, isTouched } = this.props;
     const { isValidating } = this.state;
+    console.log('[FioraField]: render');
 
     return children({
       value,

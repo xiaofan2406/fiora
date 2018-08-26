@@ -19,6 +19,20 @@ export default (Provider: ContextProvider) =>
     // At the moment, only contains `validator` function.
     fieldsInfo = {};
 
+    shouldComponentUpdate(nextProps: FormProps, nextState: FormState) {
+      Object.keys(nextProps).forEach(key => {
+        if (nextProps[key] !== this.props[key]) {
+          console.log(`[Form]: Props ${key}`);
+        }
+      });
+      Object.keys(nextState).forEach(key => {
+        if (nextState[key] !== this.state[key]) {
+          console.log(`[Form]: State ${key}`);
+        }
+      });
+      return true;
+    }
+
     /**
      * Register the mounted field in the Form.
      * @param {string} fieldName The name of the field.
@@ -249,7 +263,8 @@ export default (Provider: ContextProvider) =>
         initialValues,
         ...rest
       } = this.props;
-      console.log('Form');
+      console.log('[Form]: render');
+
       return (
         <Provider value={this.state}>
           <form
