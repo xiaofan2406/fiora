@@ -17,13 +17,13 @@ const signUpSubmit = async (data: { username: string, password: string }) => {
     console.log('Sign up successful!');
     return null;
   }
-  console.log(res.errors);
   return res.errors;
 };
+
 const Contact = () => (
   <Form
     onSubmit={signUpSubmit}
-    onValidate={() => delay(3000)}
+    onValidate={() => delay(2000)}
     onReset={() => {
       console.log('reset');
     }}

@@ -14,7 +14,7 @@ export const signUp = async ({
   await delay(500);
   const errors = {};
   if (username === 'admin') {
-    errors.username = 'Invalid useranme';
+    errors.username = 'Username is not allowed';
   }
   if (password === 'password') {
     errors.password = 'Password is insecure';

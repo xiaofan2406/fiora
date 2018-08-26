@@ -12,7 +12,6 @@ type FioraFormMetaProps = {
 
 class FioraFormMeta extends React.PureComponent<FioraFormMetaProps> {
   render() {
-    console.log('FioraFormMeta');
     const {
       children,
       error,

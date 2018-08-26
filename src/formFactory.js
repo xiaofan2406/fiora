@@ -1,11 +1,6 @@
 /* @flow */
 import * as React from 'react';
-import {
-  getFormValues,
-  getFieldValue,
-  getInitialValues,
-  fieldUpdater,
-} from './helpers';
+import { getFormValues, getFieldValue, getInitialValues } from './helpers';
 
 export type FormState = {
   error: $PropertyType<FormMetaRenderProps, 'error'>,
@@ -25,7 +20,7 @@ export default (Provider: ContextProvider) =>
     fieldsInfo = {};
 
     /**
-     * Register the mounted field in the Form.     *
+     * Register the mounted field in the Form.
      * @param {string} fieldName The name of the field.
      * @param {Object} info The info to replace
      */
@@ -41,8 +36,24 @@ export default (Provider: ContextProvider) =>
      * @param {any} value The new value for the field.
      */
     updateValue = (fieldName: string, value: any) => {
-      // Clear field error whenever value changes
-      this.setState(fieldUpdater(fieldName, { value, error: null }));
+      this.setState(
+        prevState =>
+          !prevState.fields[fieldName] ||
+          prevState.fields[fieldName].value !== value
+            ? {
+                fields: {
+                  ...prevState.fields,
+                  [fieldName]: {
+                    ...prevState.fields[fieldName],
+                    value,
+                    // Clear field error whenever value changes
+                    error: null,
+                    isTouched: true,
+                  },
+                },
+              }
+            : null
+      );
     };
 
     /**
@@ -60,7 +71,23 @@ export default (Provider: ContextProvider) =>
         this.fieldsInfo[fieldName]
           .validator(getFieldValue(fieldName, prevState))
           .then(error => {
-            this.setState(fieldUpdater(fieldName, { error }));
+            this.setState(
+              nextState =>
+                error &&
+                (!nextState.fields[fieldName] ||
+                  nextState.fields[fieldName].error !== error)
+                  ? {
+                      fields: {
+                        ...nextState.fields,
+                        [fieldName]: {
+                          ...nextState.fields[fieldName],
+                          error,
+                          isTouched: true,
+                        },
+                      },
+                    }
+                  : null
+            );
           });
 
         // No immediate state change when validation is triggered
@@ -78,17 +105,45 @@ export default (Provider: ContextProvider) =>
       let hasErrors = false;
       const errorObj = errors || {};
 
-      // TODO 1 setState to rule them all
-      Object.keys(errorObj).forEach(name => {
-        hasErrors = hasErrors || !!errorObj[name];
+      let partial = {
+        fields: this.state.fields,
+        isSubmitting: false,
+        isValidating: false,
+      };
 
-        if (name === 'form') {
-          this.setState({
-            error: errorObj[name],
-          });
-        }
-        this.setState(fieldUpdater(name, { error: errorObj[name] }));
-      });
+      Object.keys(errorObj)
+        .filter(name => !!errorObj[name])
+        .forEach(name => {
+          if (name === 'form' && this.state.error !== errorObj[name]) {
+            hasErrors = true;
+            partial = {
+              ...partial,
+              error: errorObj[name],
+            };
+          }
+          if (
+            name !== 'form' &&
+            (!this.state.fields[name] ||
+              this.state.fields[name].error !== errorObj[name])
+          ) {
+            hasErrors = true;
+            partial = {
+              ...partial,
+              fields: {
+                ...partial.fields,
+                [name]: {
+                  ...this.state.fields[name],
+                  error: errorObj[name],
+                  isTouched: true,
+                },
+              },
+            };
+          }
+        });
+
+      if (hasErrors) {
+        this.setState(partial);
+      }
 
       return hasErrors;
     };
@@ -113,13 +168,16 @@ export default (Provider: ContextProvider) =>
       const { onSubmit, onValidate } = this.props;
       const { fields } = this.state;
 
+      this.setState({ isSubmitting: true, isValidating: true });
+
       // Check if there is any error currently.
       const hasExistingErrors = Object.keys(fields).some(
         fieldName => fields[fieldName].error
       );
-      if (hasExistingErrors) return false;
-
-      this.setState({ isValidating: true });
+      if (hasExistingErrors) {
+        this.setState({ isSubmitting: false, isValidating: false });
+        return false;
+      }
 
       // Run each field's validation.
       const fieldNames = Object.keys(this.fieldsInfo);
@@ -146,19 +204,14 @@ export default (Provider: ContextProvider) =>
         const formErrors = await onValidate(formData);
         const hasFormErrors = this._updateErrors(formErrors);
 
-        this.setState({ isValidating: false });
-
         if (hasFormErrors) return false;
       } else {
         this.setState({ isValidating: false });
       }
 
-      this.setState({ isSubmitting: true });
-
       // Run the form's submission.
       const submitErrors = await onSubmit(formData);
       const hasSubmitErrors = this._updateErrors(submitErrors);
-      this.setState({ isSubmitting: false });
 
       return hasSubmitErrors;
     };
@@ -181,7 +234,6 @@ export default (Provider: ContextProvider) =>
       error: null,
       isValidating: false,
       isSubmitting: false,
-
       fields: getInitialValues(this.props.initialValues),
       updateValue: this.updateValue,
       registerField: this.registerField,
@@ -197,7 +249,7 @@ export default (Provider: ContextProvider) =>
         initialValues,
         ...rest
       } = this.props;
-
+      console.log('Form');
       return (
         <Provider value={this.state}>
           <form
