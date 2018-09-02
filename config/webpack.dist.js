@@ -40,7 +40,7 @@ module.exports = {
     ],
   },
   externals: {
-    react: 'react',
+    react: 'React',
   },
   optimization: {
     minimizer: [
@@ -53,23 +53,18 @@ module.exports = {
           compress: {
             warnings: false,
             comparisons: false,
+            drop_console: true,
           },
           output: {
             comments: false,
             ascii_only: true,
-          },
-          mangle: {
-            safari10: true,
           },
         },
       }),
     ],
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"production"',
-    }),
-    new webpack.NamedModulesPlugin(),
+    new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"production"' }),
   ],
   node: {
     dgram: 'empty',

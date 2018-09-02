@@ -7,9 +7,6 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
-      webpack: {
-        config: './config/webpack.common.js',
-      },
       node: {
         extensions: ['.js', '.mjs', '.json'],
       },
@@ -39,11 +36,11 @@ module.exports = {
     ],
     'import/no-extraneous-dependencies': 0, // allow import devDependencies
     'import/prefer-default-export': 0,
+    'jsx-a11y/label-has-for': [2, { required: { every: ['name'] } }],
     'react/sort-comp': 0,
-    'react/jsx-filename-extension': 0, // enfore all .js extension
+    'react/jsx-filename-extension': 0, // enforce all .js extension
     'react/prefer-stateless-function': 0,
     'react/require-default-props': 0, // conflict flows takes care of it
-    'jsx-a11y/label-has-for': [2, { required: { every: ['name'] } }],
     'react/jsx-one-expression-per-line': 0, // prettier takes care of it
     'react/jsx-wrap-multilines': 0, // prettier takes care of it
     'react/destructuring-assignment': 0, // cannot init state with props

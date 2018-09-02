@@ -3,7 +3,6 @@
 */
 /* @flow */
 import * as React from 'react';
-import autobind from 'autobind-decorator';
 
 import { createFiora } from '../../src';
 
@@ -72,8 +71,7 @@ class SignUp extends React.Component<{}, { success: boolean }> {
     success: false,
   };
 
-  @autobind
-  async handleSubmit(data: { username: string, password: string }) {
+  handleSubmit = async (data: { username: string, password: string }) => {
     const res = await signUpRequest(data);
     if (res.status === 200) {
       this.setState({ success: true });
@@ -81,20 +79,12 @@ class SignUp extends React.Component<{}, { success: boolean }> {
     }
     console.log(res.errors);
     return res.errors;
-  }
+  };
 
-  @autobind
-  async handleValidate({
-    username,
-    password,
-  }: {
-    username: string,
-    password: string,
-  }) {
-    return username === password
+  handleValidate = async ({ username, password }) =>
+    username === password
       ? { form: 'Password should not be similar to username' }
       : null;
-  }
 
   render() {
     const { success } = this.state;
