@@ -30,7 +30,9 @@
     "build:es6": "NODE_ENV=production MODULE=es6 babel src --out-dir dist/es6",
     "build:umd": "NODE_ENV=production webpack --config ./config/webpack.dist.js",
     "build": "yarn build:commonjs && yarn build:es6 && yarn build:umd",
-    "dev": "NODE_ENV=development webpack-dev-server --config ./config/webpack.dev.js"
+    "dev": "NODE_ENV=development webpack-dev-server --config ./config/webpack.dev.js",
+    "prepublishOnly": "yarn build",
+    "postpublish": "git push && git push --tags"
   },
   "lint-staged": {
     "*.{js,mjs,json,css,md}": [
