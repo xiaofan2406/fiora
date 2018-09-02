@@ -1,11 +1,15 @@
 config/
 coverage/
+docs/
+flow-typed/
 src/
 test/
 .babelrc.js
 .eslintrc.js
+.flowconfig
 .gitignore
 .travis.yml
 CODE_OF_CONDUCT.md
+jest.config.js
 yarn-error.log
 yarn.lock
