@@ -15,6 +15,20 @@
 
 Forms, for React
 
+#### Get Started
+
+Install using `yarn`
+
+```shell
+yarn add fiora
+```
+
+or using `npm`
+
+```shell
+npm install fiora
+```
+
 #### TODO
 
 - tests
