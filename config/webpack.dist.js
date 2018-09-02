@@ -1,19 +1,24 @@
+const path = require('path');
 const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const common = require('./webpack.common');
-const paths = require('./paths');
+
+const libSrcPath = path.join(__dirname, '../src');
+const umdDistPath = path.join(__dirname, '../dist/umd');
 
 module.exports = {
   mode: 'production',
   bail: true,
   devtool: 'source-map',
-  entry: `${paths.libSrc}/index.js`,
-  resolve: common.resolve,
+  entry: `${libSrcPath}/index.js`,
+  resolve: {
+    extensions: ['.js', '.mjs', '.json'],
+    mainFields: ['module', 'main'],
+  },
   output: {
-    path: paths.umdDist,
+    path: umdDistPath,
     filename: 'fiora-umd.min.js',
     libraryTarget: 'umd',
-    library: 'AdslotGrid',
+    library: 'Fiora',
   },
   module: {
     strictExportPresence: true,
@@ -22,11 +27,11 @@ module.exports = {
         test: /\.(js|mjs)$/,
         enforce: 'pre',
         loader: 'eslint-loader',
-        include: [paths.appSrc, paths.libSrc],
+        include: libSrcPath,
       },
       {
         test: /\.(js|mjs)$/,
-        include: [paths.appSrc, paths.libSrc],
+        include: libSrcPath,
         loader: 'babel-loader',
         options: {
           compact: true,
@@ -66,6 +71,12 @@ module.exports = {
     }),
     new webpack.NamedModulesPlugin(),
   ],
-  node: common.node,
+  node: {
+    dgram: 'empty',
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty',
+  },
   performance: false,
 };
