@@ -41,3 +41,4 @@ npm install fiora
 - any falsy value representation of an error will be discarded
 - value will be initialized as `''` if not given
 - `'form'` is a special field name
+- https://codesandbox.io/s/639l62mv3
