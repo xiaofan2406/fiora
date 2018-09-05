@@ -4,6 +4,7 @@ docs/
 flow-typed/
 src/
 test/
+www/
 .babelrc.js
 .eslintrc.js
 .flowconfig

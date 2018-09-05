@@ -3,6 +3,7 @@ import babel from 'rollup-plugin-babel';
 import replace from 'rollup-plugin-replace';
 import commonjs from 'rollup-plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
+import pkg from './package.json';
 
 const env = process.env.NODE_ENV;
 
@@ -12,17 +13,13 @@ if (env !== 'production') {
   );
 }
 
-const config = {
+export default {
   input: 'src/index.js',
   external: ['react'],
   output: {
-    format: 'umd',
-    file: 'fiora.min.js',
-    dir: 'dist/umd',
-    name: 'Fiora',
-    globals: {
-      react: 'React',
-    },
+    file: pkg.main,
+    format: 'cjs',
+    sourcemap: true,
   },
   plugins: [
     nodeResolve(),
@@ -36,5 +33,3 @@ const config = {
     terser(),
   ],
 };
-
-export default config;

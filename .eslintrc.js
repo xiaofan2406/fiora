@@ -29,11 +29,7 @@ module.exports = {
     'no-param-reassign': [2, { props: false }],
     'no-underscore-dangle': [2, { allowAfterThis: true }],
     'no-nested-ternary': 0,
-    'import/extensions': [
-      2,
-      'always',
-      { js: 'never', mjs: 'never', json: 'never' },
-    ],
+    'import/extensions': [2, 'always', { js: 'never', mjs: 'never' }],
     'import/no-extraneous-dependencies': 0, // allow import devDependencies
     'import/prefer-default-export': 0,
     'jsx-a11y/label-has-for': [2, { required: { every: ['name'] } }],
