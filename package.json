@@ -31,7 +31,11 @@
     "build:esm": "NODE_ENV=production babel src --out-dir dist/esm",
     "build": "yarn build:cjs && yarn build:esm",
     "prepublishOnly": "yarn build",
-    "postpublish": "git push && git push --tags"
+    "postpublish": "git push && git push --tags",
+    "docs:dev": "cd ./www && yarn dev",
+    "docs:build": "cd ./www && yarn build",
+    "predocs:release": "yarn docs:build",
+    "docs:release": "surge -p ./www/public -d fiora.surge.sh"
   },
   "lint-staged": {
     "*.{js,json,flow,md}": [
@@ -86,6 +90,7 @@
     "rollup-plugin-commonjs": "^9.1.6",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-replace": "^2.0.0",
-    "rollup-plugin-terser": "^2.0.2"
+    "rollup-plugin-terser": "^2.0.2",
+    "surge": "^0.20.1"
   }
 }
