@@ -78,7 +78,7 @@ class SignUp extends React.Component<{}, { success: boolean }> {
     return res.errors;
   };
 
-  handleValidate = (data: { username: string, password: string }) =>
+  validate = (data: { username: string, password: string }) =>
     data.username === data.password
       ? { form: 'Password should not be similar to username' }
       : null;
@@ -90,18 +90,18 @@ class SignUp extends React.Component<{}, { success: boolean }> {
         <Form
           onSubmit={this.handleSubmit}
           onReset={signUpReset}
-          onValidate={this.handleValidate}
+          onValidate={this.validate}
           data-testid="signUpForm"
         >
           <Field name="username" onValidate={usernameValidation}>
-            {({ value, error, isTouched, handleChange, handleValidate }) => (
+            {({ value, error, isTouched, updateValue, validate }) => (
               <>
                 <input
                   data-testid="usernameInput"
                   value={value}
                   onChange={event => {
-                    handleChange(event.currentTarget.value);
-                    handleValidate();
+                    updateValue(event.currentTarget.value);
+                    validate();
                   }}
                 />
                 {isTouched && error ? (
@@ -124,9 +124,9 @@ class SignUp extends React.Component<{}, { success: boolean }> {
                       data-testid="passwordInput"
                       value={password.value}
                       onChange={event => {
-                        password.handleChange(event.currentTarget.value);
+                        password.updateValue(event.currentTarget.value);
                       }}
-                      onBlur={password.handleValidate}
+                      onBlur={password.validate}
                     />
                     {password.isTouched && password.error ? (
                       <span data-testid="passwordError">
@@ -138,9 +138,9 @@ class SignUp extends React.Component<{}, { success: boolean }> {
                       data-testid="passwordRepeatInput"
                       value={passwordRepeat.value}
                       onChange={event => {
-                        passwordRepeat.handleChange(event.currentTarget.value);
+                        passwordRepeat.updateValue(event.currentTarget.value);
                       }}
-                      onBlur={passwordRepeat.handleValidate}
+                      onBlur={passwordRepeat.validate}
                     />
                     {passwordRepeat.isTouched && passwordRepeat.error ? (
                       <span data-testid="passwordRepeatError">

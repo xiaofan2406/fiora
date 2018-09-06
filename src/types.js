@@ -23,8 +23,8 @@ declare type FieldRenderProps = {|
   error: any,
   isTouched: boolean,
   isValidating: boolean,
-  handleChange: (newValue: any) => void,
-  handleValidate: () => void,
+  updateValue: (newValue: any) => void,
+  validate: () => void,
 |};
 
 /**

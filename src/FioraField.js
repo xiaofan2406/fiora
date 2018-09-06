@@ -52,7 +52,7 @@ class FioraField extends React.Component<FioraFieldProps, FioraFieldState> {
     registerField(name, { validator: this.validator });
   }
 
-  handleChange = (newValue: any) => {
+  updateValue = (newValue: any) => {
     const { updateValue, name } = this.props;
 
     updateValue(name, newValue);
@@ -75,7 +75,7 @@ class FioraField extends React.Component<FioraFieldProps, FioraFieldState> {
     return null;
   };
 
-  handleValidate = () => {
+  validate = () => {
     const { name, validateField } = this.props;
 
     validateField(name);
@@ -91,8 +91,8 @@ class FioraField extends React.Component<FioraFieldProps, FioraFieldState> {
       error,
       isTouched: !!isTouched,
       isValidating,
-      handleChange: this.handleChange,
-      handleValidate: this.handleValidate,
+      updateValue: this.updateValue,
+      validate: this.validate,
     });
   }
 }

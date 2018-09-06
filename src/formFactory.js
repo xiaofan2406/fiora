@@ -74,8 +74,8 @@ export default (Provider: ContextProvider) =>
      * Validate the given field using on the validator registered.
      *
      * This function is here because React batches setState in event handlers.
-     * In order for handleValidate to work in the same event handler
-     * where handleChange is called, need to use the functional setState here.
+     * In order for validate to work in the same event handler
+     * where updateValue is called, need to use the functional setState here.
      * @param {string} fieldName The name of the field.
      */
     validateField = (fieldName: string) => {
