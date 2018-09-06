@@ -1,14 +1,10 @@
-import { Link } from 'gatsby';
-import TutorialNavigation from '../components/TutorialNavigation'
-
-# Tutorial
+## Tutorial
 
 This tutorial will demonstrate how to build a simple user registration form with Fiora.
 
-#### 1. Create a form
+#### Create a form
 
-First thing we will need to do import the factory function and create an instance of fiora form.
-
+First thing we will need to do is to import the factory function and create an instance of the fiora form.
 
 ```js-static
 import createFiora from 'fiora';
@@ -18,6 +14,61 @@ const { Form, Field } = createFiora();
 
 `Form` and `Field` are the two essential components we need to start building.
 
-Next, <Link to='/tutorial/01'>lets add a simple field</Link>
+#### Add a username field
 
-<TutorialNavigation />
+Now lets add a username field, by simply using the Field component with a render function.
+
+```jsx
+<Form>
+  <Field name="username">
+    {({ value, updateValue }) =>
+      <>
+        <label>Username: </label>
+        <input
+          type="text"
+          value={value}
+          onChange={({ target: { value } }) => {
+            updateValue(value); // updates the value
+          }}
+        />
+      </>
+    }
+  </Field>
+</Form>
+```
+
+To render a simplest field, you will want to use `value` together with `updateValue`.
+
+The `updateValue` function is expecting a param as the new value to update the field with.
+
+#### Add validation to the field
+
+Now we have the username field in place, we can add some validation to it. For now let's just disallow all usernames with length less than 5 characters, and we can specifify that we want the validation to be trigger whenever the value is changed.
+
+To do this, we will just use the `onValidate` prop on the Field component, and use the `validate` render prop.
+
+```jsx
+<Form>
+  <Field
+    name="username"
+    onValidate={username =>
+      username.length < 5 ? 'Invalid username' : null
+    }
+  >
+    {({ value, updateValue, validate }) => (
+      <>
+        <label>Username: </label>
+        <input
+          type="text"
+          value={value}
+          onChange={({ target: { value } }) => {
+            updateValue(value); // updates the value
+            validate(); // triggers the validation
+          }}
+        />
+      </>
+    )}
+  </Field>
+</Form>
+```
+

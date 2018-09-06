@@ -11,9 +11,13 @@ import PreComponent from './PreComponent';
 const cssLayout = css``;
 
 const cssMain = css`
-  width: 864px;
   margin-left: 240px;
-  padding: 24px 96px 96px 96px;
+`;
+
+const cssMainSection = css`
+  margin: auto;
+  width: 1020px;
+  padding: 36px 72px 72px 72px;
 `;
 
 function Layout({ children }) {
@@ -30,20 +34,21 @@ function Layout({ children }) {
           }
         }
       `}
-      render={({ site }) => (
+    >
+      {({ site }) => (
         <>
           <Meta metadata={site.siteMetadata} />
           <div className={cssLayout}>
             <Sidebar siteTitle={site.siteMetadata.title} />
             <main className={cssMain}>
               <MDXProvider components={{ pre: PreComponent }}>
-                {children}
+                <section className={cssMainSection}>{children}</section>
               </MDXProvider>
             </main>
           </div>
         </>
       )}
-    />
+    </StaticQuery>
   );
 }
 

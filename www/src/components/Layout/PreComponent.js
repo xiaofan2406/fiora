@@ -1,7 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import createFiora from 'fiora';
+import { css } from 'react-emotion';
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
+import createFiora from '../../../../src';
+
+const cssLive = css`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+`;
+
+const cssEditor = css`
+  width: 480px;
+  padding: 24px;
+  position: relative;
+`;
+
+const cssPreview = css`
+  padding: 24px;
+  width: 396px;
+  background-color: #fafafa;
+`;
 
 class PreComponent extends React.Component {
   instance = createFiora();
@@ -17,10 +36,14 @@ class PreComponent extends React.Component {
         code={children.props.children}
         scope={this.instance}
         mountStylesheet={false}
+        className={showInteractive ? cssLive : ''}
       >
-        <LiveEditor contentEditable={showInteractive} />
+        <LiveEditor
+          contentEditable={showInteractive}
+          className={showInteractive ? cssEditor : ''}
+        />
         {showInteractive ? <LiveError /> : null}
-        {showInteractive ? <LivePreview /> : null}
+        {showInteractive ? <LivePreview className={cssPreview} /> : null}
       </LiveProvider>
     );
   }

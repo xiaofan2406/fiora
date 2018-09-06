@@ -32,6 +32,7 @@ module.exports = {
     'react/jsx-one-expression-per-line': 0, // prettier takes care of it
     'react/jsx-wrap-multilines': 0, // prettier takes care of it
     'react/destructuring-assignment': 0, // cannot init state with props
+    'react/forbid-prop-types': 0,
     'react/button-has-type': [
       2,
       {

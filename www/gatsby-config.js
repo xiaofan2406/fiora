@@ -17,6 +17,7 @@ module.exports = {
         // Accepts all options defined by `babel-plugin-emotion` plugin.
       },
     },
+    'gatsby-plugin-flow',
     'gatsby-plugin-react-helmet',
     {
       resolve: `gatsby-plugin-manifest`,

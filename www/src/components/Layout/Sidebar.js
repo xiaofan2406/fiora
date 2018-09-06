@@ -52,6 +52,9 @@ function Sidebar({ siteTitle }) {
         <Link to="/tutorial" className={cssLink} activeStyle={activeLinkStyle}>
           Tutorial
         </Link>
+        <Link to="/api" className={cssLink} activeStyle={activeLinkStyle}>
+          API
+        </Link>
       </div>
       <div>footer</div>
     </div>
