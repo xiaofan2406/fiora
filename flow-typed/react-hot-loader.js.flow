@@ -1,4 +1,0 @@
-/* eslint-disable flowtype/no-types-missing-file-annotation */
-declare module 'react-hot-loader' {
-  declare module.exports: any;
-}

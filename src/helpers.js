@@ -13,7 +13,7 @@ export const getFormValues = (fields: $PropertyType<FormState, 'fields'>) =>
 export const getFieldValue = (fieldName: string, state: FormState) =>
   state.fields[fieldName] ? state.fields[fieldName].value : undefined;
 
-export const getInitialValues = (initialValues?: KeyedObject) =>
+export const getInitialValues = (initialValues?: PlainObject) =>
   initialValues
     ? Object.keys(initialValues).reduce(
         (reduced, fieldName) => ({

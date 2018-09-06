@@ -115,7 +115,7 @@ export default (Provider: ContextProvider) =>
      * @param {Object} errors An object with key being the field name and value being the error.
      * @returns {boolean} Representing if there were any error set in the state.
      */
-    _updateErrors = (errors: KeyedObject) => {
+    _updateErrors = (errors: ErrorObject) => {
       let hasErrors = false;
       const errorObj = errors || {};
 

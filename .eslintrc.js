@@ -5,13 +5,6 @@ module.exports = {
     node: true,
     jest: true,
   },
-  settings: {
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.mjs', '.json'],
-      },
-    },
-  },
   parser: 'babel-eslint',
   parserOptions: {
     sourceType: 'module',
@@ -29,7 +22,6 @@ module.exports = {
     'no-param-reassign': [2, { props: false }],
     'no-underscore-dangle': [2, { allowAfterThis: true }],
     'no-nested-ternary': 0,
-    'import/extensions': [2, 'always', { js: 'never', mjs: 'never' }],
     'import/no-extraneous-dependencies': 0, // allow import devDependencies
     'import/prefer-default-export': 0,
     'jsx-a11y/label-has-for': [2, { required: { every: ['name'] } }],

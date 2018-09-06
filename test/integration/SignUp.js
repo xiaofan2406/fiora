@@ -1,10 +1,7 @@
-/* eslint-disable class-methods-use-this,
-  Putting functions as class methods due to jest not spying exports correctly
-*/
 /* @flow */
 import * as React from 'react';
 
-import { createFiora } from '../../src';
+import createFiora from '../../src';
 
 const { Form, Field } = createFiora();
 
@@ -81,8 +78,8 @@ class SignUp extends React.Component<{}, { success: boolean }> {
     return res.errors;
   };
 
-  handleValidate = async ({ username, password }) =>
-    username === password
+  handleValidate = (data: { username: string, password: string }) =>
+    data.username === data.password
       ? { form: 'Password should not be similar to username' }
       : null;
 

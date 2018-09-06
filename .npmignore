@@ -1,6 +1,5 @@
 config/
 coverage/
-docs/
 flow-typed/
 src/
 test/
@@ -13,4 +12,5 @@ www/
 CODE_OF_CONDUCT.md
 jest.config.js
 yarn-error.log
+rollup.config.js
 yarn.lock

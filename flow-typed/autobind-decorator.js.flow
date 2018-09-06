@@ -1,4 +1,0 @@
-/* eslint-disable flowtype/no-types-missing-file-annotation */
-declare module 'autobind-decorator' {
-  declare module.exports: any;
-}

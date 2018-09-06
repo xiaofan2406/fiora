@@ -1,5 +1,7 @@
 /* @flow */
-type KeyedObject = { [string]: any };
+type PlainObject = { [string]: any };
+
+type ErrorObject = PlainObject | void | null;
 
 /**
  * Props passed in by users on the Form
@@ -7,17 +9,13 @@ type KeyedObject = { [string]: any };
 declare type FormProps = {
   children: React$Node,
 
-  onSubmit: (
-    formData: KeyedObject
-  ) => KeyedObject | Promise<KeyedObject | void>,
+  onSubmit: (formData: PlainObject) => ErrorObject | Promise<ErrorObject>,
 
   onReset?: () => void,
 
-  onValidate?: (
-    formData: KeyedObject
-  ) => KeyedObject | Promise<KeyedObject | void>,
+  onValidate?: (formData: PlainObject) => ErrorObject | Promise<ErrorObject>,
 
-  initialValues?: KeyedObject,
+  initialValues?: PlainObject,
 }; // support all HTML form attributes
 
 declare type FieldRenderProps = {|
