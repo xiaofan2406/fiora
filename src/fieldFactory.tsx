@@ -1,9 +1,8 @@
-/* @flow */
 import * as React from 'react';
 import FioraField from './FioraField';
 
-export default (Consumer: ContextConsumer) => {
-  const Field = ({ name, onValidate, children }: FieldProps) => (
+const fieldFactory = (Consumer: ContextConsumer) => {
+  const Field: React.SFC<FieldProps> = ({ name, onValidate, children }) => (
     <Consumer>
       {({ fields, registerField, updateValue, validateField }) => (
         <FioraField
@@ -21,3 +20,5 @@ export default (Consumer: ContextConsumer) => {
   );
   return Field;
 };
+
+export default fieldFactory;

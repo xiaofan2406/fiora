@@ -1,7 +1,4 @@
-/* @flow */
-import type { FormState } from './formFactory';
-
-export const getFormValues = (fields: $PropertyType<FormState, 'fields'>) =>
+export const getFormValues = (fields: FormState['fields']) =>
   Object.keys(fields).reduce(
     (reduced, fieldName) => ({
       ...reduced,

@@ -1,11 +1,10 @@
-/* @flow */
 import * as React from 'react';
 import createForm from './formFactory';
 import createField from './fieldFactory';
 import createFormMeta from './formMetaFactory';
 
 const createFiora = () => {
-  const { Provider, Consumer } = React.createContext();
+  const { Provider, Consumer } = React.createContext({} as FormState);
 
   return {
     Form: createForm(Provider),

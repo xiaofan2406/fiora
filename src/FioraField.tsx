@@ -1,18 +1,6 @@
-/* @flow */
 import * as React from 'react';
-import type { FormState } from './formFactory';
 
-type FioraFieldProps = FieldProps & {
-  updateValue: $PropertyType<FormState, 'updateValue'>,
-  registerField: $PropertyType<FormState, 'registerField'>,
-  validateField: $PropertyType<FormState, 'validateField'>,
-} & InternalFieldState;
-
-type FioraFieldState = {
-  isValidating: $PropertyType<FieldRenderProps, 'isValidating'>,
-};
-
-class FioraField extends React.Component<FioraFieldProps, FioraFieldState> {
+class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
   /**
    * Always default value to empty string to avoid React warning.
    * React will warning if a input value changes from undefined to controlled.
@@ -24,27 +12,6 @@ class FioraField extends React.Component<FioraFieldProps, FioraFieldState> {
   state = {
     isValidating: false,
   };
-
-  shouldComponentUpdate(
-    nextProps: FioraFieldProps,
-    nextState: FioraFieldState
-  ) {
-    let changed = false;
-    Object.keys(nextProps).forEach(key => {
-      if (nextProps[key] !== this.props[key]) {
-        console.log(`[FioraField]: Props ${key}`);
-        changed = true;
-      }
-    });
-    Object.keys(nextState).forEach(key => {
-      if (nextState[key] !== this.state[key]) {
-        console.log(`[FioraField]: State ${key}`);
-        changed = true;
-      }
-    });
-
-    return changed;
-  }
 
   componentDidMount() {
     const { name, registerField } = this.props;

@@ -14,12 +14,12 @@ if (env !== 'production') {
 }
 
 const commonConfig = {
-  input: 'src/index.js',
+  input: 'src/index.ts',
   external: ['react'],
   plugins: [
     nodeResolve(),
     babel({
-      exclude: '**/node_modules/**',
+      exclude: 'node_modules/**',
     }),
     replace({
       'process.env.NODE_ENV': JSON.stringify(env),

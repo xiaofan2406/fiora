@@ -1,9 +1,8 @@
-/* @flow */
 import * as React from 'react';
 import FioraFormMeta from './FioraFormMeta';
 
 export default (Consumer: ContextConsumer) => {
-  const FormMeta = ({ children }: FormMetaProps) => (
+  const FormMeta: React.SFC<FormMetaProps> = ({ children }) => (
     <Consumer>
       {({ fields, error, isValidating, isSubmitting }) => (
         <FioraFormMeta

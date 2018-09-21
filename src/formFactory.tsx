@@ -1,44 +1,19 @@
-/* @flow */
 import * as React from 'react';
 import { getFormValues, getFieldValue, getInitialValues } from './helpers';
 
-export type FormState = {
-  error: $PropertyType<FormMetaRenderProps, 'error'>,
-  isValidating: $PropertyType<FormMetaRenderProps, 'isValidating'>,
-  isSubmitting: $PropertyType<FormMetaRenderProps, 'isSubmitting'>,
-  fields: { [string]: InternalFieldState },
-  registerField: (fieldName: string, info: {}) => void,
-  updateValue: (fieldName: string, value: any) => void,
-  validateField: (fieldName: string) => void,
-};
-
-export default (Provider: ContextProvider) =>
+const formFactory = (Provider: ContextProvider) =>
   class Form extends React.Component<FormProps, FormState> {
     // Keep tracks of what fields are mounted in the Form.
     // This is the source of truth for field names that belongs to the form.
     // At the moment, only contains `validator` function.
-    fieldsInfo = {};
-
-    shouldComponentUpdate(nextProps: FormProps, nextState: FormState) {
-      Object.keys(nextProps).forEach(key => {
-        if (nextProps[key] !== this.props[key]) {
-          console.log(`[Form]: Props ${key}`);
-        }
-      });
-      Object.keys(nextState).forEach(key => {
-        if (nextState[key] !== this.state[key]) {
-          console.log(`[Form]: State ${key}`);
-        }
-      });
-      return true;
-    }
+    fieldsInfo: { [key: string]: InternalFieldInfo } = {};
 
     /**
      * Register the mounted field in the Form.
      * @param {string} fieldName The name of the field.
      * @param {Object} info The info to replace
      */
-    registerField = (fieldName: string, info: {}) => {
+    registerField = (fieldName: string, info: InternalFieldInfo) => {
       if (!this.fieldsInfo[fieldName]) {
         this.fieldsInfo[fieldName] = info;
       }
@@ -119,7 +94,7 @@ export default (Provider: ContextProvider) =>
       let hasErrors = false;
       const errorObj = errors || {};
 
-      let partial = {
+      let partial: Partial<FormState> = {
         fields: this.state.fields,
         isSubmitting: false,
         isValidating: false,
@@ -156,6 +131,7 @@ export default (Provider: ContextProvider) =>
         });
 
       if (hasErrors) {
+        // @ts-ignore
         this.setState(partial);
       }
 
@@ -177,7 +153,7 @@ export default (Provider: ContextProvider) =>
      * @param {SyntheticEvent} event The onSubmit event of the HTML form.
      * @returns {boolean} Representing if there were any error.
      */
-    handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
+    handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
       event.preventDefault();
       const { onSubmit, onValidate } = this.props;
       const { fields } = this.state;
@@ -244,7 +220,7 @@ export default (Provider: ContextProvider) =>
       if (onReset) onReset();
     };
 
-    state = {
+    state: FormState = {
       error: null,
       isValidating: false,
       isSubmitting: false,
@@ -278,3 +254,5 @@ export default (Provider: ContextProvider) =>
       );
     }
   };
+
+export default formFactory;
