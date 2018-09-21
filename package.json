@@ -15,8 +15,9 @@
   "engines": {
     "node": ">=8"
   },
-  "main": "dist/cjs/index.js",
+  "main": "dist/cjs/fiora.js",
   "module": "dist/esm/index.js",
+  "browser": "dist/umd/fiora.min.js",
   "sideEffects": false,
   "scripts": {
     "precommit": "lint-staged",

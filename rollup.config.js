@@ -13,14 +13,9 @@ if (env !== 'production') {
   );
 }
 
-export default {
+const commonConfig = {
   input: 'src/index.js',
   external: ['react'],
-  output: {
-    file: pkg.main,
-    format: 'cjs',
-    sourcemap: true,
-  },
   plugins: [
     nodeResolve(),
     babel({
@@ -33,3 +28,26 @@ export default {
     terser(),
   ],
 };
+
+export default [
+  {
+    ...commonConfig,
+    output: {
+      file: pkg.main,
+      format: 'cjs',
+      sourcemap: true,
+    },
+  },
+  {
+    ...commonConfig,
+    output: {
+      file: pkg.browser,
+      format: 'umd',
+      name: 'Fiora',
+      globals: {
+        react: 'React',
+      },
+      sourcemap: true,
+    },
+  },
+];
