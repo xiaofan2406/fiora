@@ -216,7 +216,7 @@ function formFactory(Provider: ContextProvider) {
 
     /**
      * Reset the form.
-     * It will clear all fields' state.
+     * It will clear all fields' state and set values to initial values.
      */
     handleReset = () => {
       const { initialValues, onReset } = this.props;

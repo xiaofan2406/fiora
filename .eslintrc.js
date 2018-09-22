@@ -14,6 +14,13 @@ module.exports = {
       jsx: true,
     },
   },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.ts', '.tsx', '.js', '.mjs'],
+      },
+    },
+  },
   plugins: ['react'],
   extends: ['airbnb', 'prettier'],
   rules: {
