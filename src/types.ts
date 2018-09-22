@@ -87,11 +87,11 @@ type ContextProvider = React.ComponentType<React.ProviderProps<FormState>>;
 
 type ContextConsumer = React.ComponentType<React.ConsumerProps<FormState>>;
 
-type FioraFieldProps = FieldProps & {
+interface FioraFieldProps extends FieldProps, InternalFieldState {
   updateValue: FormState['updateValue'];
   registerField: FormState['registerField'];
   validateField: FormState['validateField'];
-} & InternalFieldState;
+}
 
 interface FioraFieldState {
   isValidating: FieldRenderProps['isValidating'];
