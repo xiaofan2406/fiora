@@ -1,12 +1,41 @@
 import * as React from 'react';
-import { getFieldValue, getFormValues, getInitialValues } from './helpers';
+import * as ReactDOM from 'react-dom';
+import {
+  formHasError,
+  getFieldValue,
+  getFormValues,
+  getInitialValues,
+  updateFieldError,
+  updateFieldValue,
+  updateFormErrors,
+  updateFormStatus,
+} from './helpers';
 
 function formFactory(Provider: ContextProvider) {
   return class Form extends React.Component<FormProps, FormState> {
     // Keep tracks of what fields are mounted in the Form.
     // This is the source of truth for field names that belongs to the form.
     // At the moment, only contains `validator` function.
-    fieldsInfo: Record<string, InternalFieldInfo> = {};
+    mountedFields: Record<string, InternalFieldInfo> = {};
+
+    // shouldComponentUpdate(nextProps: FormProps, nextState: FormState) {
+    //   (Object.keys(nextProps) as (keyof FormProps)[]).forEach(key => {
+    //     if (nextProps[key] !== this.props[key]) {
+    //       console.log(
+    //         `[Form]: Props ${key}: ${this.props[key]} -> ${nextProps[key]}`
+    //       );
+    //     }
+    //   });
+    //   (Object.keys(nextState) as (keyof FormState)[]).forEach(key => {
+    //     if (nextState[key] !== this.state[key]) {
+    //       console.log(
+    //         `[Form]: State ${key}: ${this.state[key]} -> ${nextState[key]}`
+    //       );
+    //     }
+    //   });
+
+    //   return true;
+    // }
 
     /**
      * Register the mounted field in the Form.
@@ -14,8 +43,8 @@ function formFactory(Provider: ContextProvider) {
      * @param {InternalFieldInfo} info The info to replace
      */
     registerField = (fieldName: string, info: InternalFieldInfo) => {
-      if (!this.fieldsInfo[fieldName]) {
-        this.fieldsInfo[fieldName] = info;
+      if (!this.mountedFields[fieldName]) {
+        this.mountedFields[fieldName] = info;
       }
     };
 
@@ -25,24 +54,7 @@ function formFactory(Provider: ContextProvider) {
      * @param {any} value The new value for the field.
      */
     updateValue = (fieldName: string, value: FieldValue) => {
-      this.setState(
-        prevState =>
-          !prevState.fields[fieldName] ||
-          prevState.fields[fieldName].value !== value
-            ? {
-                fields: {
-                  ...prevState.fields,
-                  [fieldName]: {
-                    ...prevState.fields[fieldName],
-                    value,
-                    // Clear field error whenever value changes
-                    error: null,
-                    isTouched: true,
-                  },
-                },
-              }
-            : null
-      );
+      this.setState(updateFieldValue(fieldName, value));
     };
 
     /**
@@ -54,97 +66,79 @@ function formFactory(Provider: ContextProvider) {
      * @param {string} fieldName The name of the field.
      */
     validateField = (fieldName: string) => {
-      this.setState(prevState => {
-        // Unable to use async/await in setState function
-        // This promise always resolves
-        this.fieldsInfo[fieldName]
-          .validator(getFieldValue(fieldName, prevState))
-          .then(error => {
-            this.setState(
-              nextState =>
-                error &&
-                (!nextState.fields[fieldName] ||
-                  nextState.fields[fieldName].error !== error)
-                  ? {
-                      fields: {
-                        ...nextState.fields,
-                        [fieldName]: {
-                          ...nextState.fields[fieldName],
-                          error,
-                          isTouched: true,
-                        },
-                      },
-                    }
-                  : null
-            );
-          });
+      const { onValidate, beforeValidate, afterValidate } = this.mountedFields[
+        fieldName
+      ];
 
-        // No immediate state change when validation is triggered
-        return null;
-      });
+      if (onValidate) {
+        this.setState(prevState => {
+          const result = onValidate(getFieldValue(fieldName, prevState));
+          if (result instanceof Promise) {
+            beforeValidate();
+            result
+              .then(error => {
+                this.setState(updateFieldError(fieldName, error));
+              })
+              .catch(err => {
+                // TODO handle error
+                return null;
+              })
+              .finally(() => {
+                afterValidate();
+              });
+            return null;
+          }
+
+          return updateFieldError(fieldName, result)(prevState);
+        });
+      }
     };
 
     /**
-     * A helper function to update errors to the state.
-     * Any falsy value of the error will be ignored.
-     * @param {FormErrors} errors
-     * @returns {boolean} Representing if there were any error set in the state.
+     * Assumption: this func is triggered only via setState callback.
+     *             as a result, allow `this.state` directly
      */
-    updateErrors = (errors: FormErrors) => {
-      let hasErrors = false;
-      const errorObj = errors || {};
-
-      let partial: Partial<FormState> = {
-        fields: this.state.fields,
-        isSubmitting: false,
-        isValidating: false,
-      };
-
-      Object.keys(errorObj)
-        .filter(name => !!errorObj[name])
-        .forEach(name => {
-          if (name === 'form' && this.state.error !== errorObj[name]) {
-            hasErrors = true;
-            partial = {
-              ...partial,
-              error: errorObj[name],
-            };
-          }
-          if (
-            name !== 'form' &&
-            (!this.state.fields[name] ||
-              this.state.fields[name].error !== errorObj[name])
-          ) {
-            hasErrors = true;
-            partial = {
-              ...partial,
-              fields: {
-                ...partial.fields,
-                [name]: {
-                  ...this.state.fields[name],
-                  error: errorObj[name],
-                  isTouched: true,
-                },
-              },
-            };
-          }
-        });
-
-      if (hasErrors) {
-        // @ts-ignore
-        this.setState(partial);
+    submitForm = async () => {
+      console.log('submitForm');
+      const { onSubmit } = this.props;
+      if (!onSubmit) {
+        return;
+      }
+      const hasError = formHasError(this.state);
+      if (hasError) {
+        return;
       }
 
-      return hasErrors;
+      const result = onSubmit(getFormValues(this.state));
+
+      if (result instanceof Promise) {
+        this.setState(updateFormStatus('isSubmitting', true));
+
+        let errors: FormErrors;
+        try {
+          errors = await result;
+        } catch (err) {
+          // TODO
+          errors = { form: 'Error during submission' };
+        } finally {
+          ReactDOM.unstable_batchedUpdates(() => {
+            this.setState(updateFormErrors(errors));
+            this.setState(updateFormStatus('isSubmitting', false));
+          });
+        }
+        return;
+      }
+      this.setState(updateFormErrors(result));
     };
 
     /**
      * Submit the form.
      *
+     * Assumption: this func is triggered via user interaction only.
+     *             as a result, allow `this.state` directly
+     *
      * It will proceed to do the following in the order:
      *    - Check if there is any error currently.
-     *    - If there is any error then terminate else continue.
-     *    - Run each field's validation.
      *    - If there is any error then terminate else continue.
      *    - Run the form's validation.
      *    - If there is any error then terminate else continue.
@@ -155,63 +149,34 @@ function formFactory(Provider: ContextProvider) {
      */
     handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
       event.preventDefault();
-      const { onSubmit, onValidate } = this.props;
-      const { fields } = this.state;
-
-      if (!onSubmit) {
+      const { onValidate } = this.props;
+      if (!onValidate) {
         return;
       }
 
-      this.setState({ isSubmitting: true, isValidating: true });
+      const result = onValidate(getFormValues(this.state));
 
-      // Check if there is any error currently.
-      const hasExistingErrors = Object.keys(fields).some(
-        fieldName => fields[fieldName].error
-      );
-      if (hasExistingErrors) {
-        this.setState({ isSubmitting: false, isValidating: false });
-        return false;
-      }
+      if (result instanceof Promise) {
+        this.setState(updateFormStatus('isValidating', true));
 
-      // Run each field's validation.
-      const fieldNames = Object.keys(this.fieldsInfo);
-      const fieldErrors = await Promise.all(
-        fieldNames.map(fieldName =>
-          this.fieldsInfo[fieldName].validator(
-            getFieldValue(fieldName, this.state)
-          )
-        )
-      );
-      const errors = fieldNames.reduce(
-        (reduced, fieldName, index) => ({
-          ...reduced,
-          [fieldName]: fieldErrors[index],
-        }),
-        {}
-      );
-      const hasFieldErrors = this.updateErrors(errors);
-      if (hasFieldErrors) {
-        return false;
-      }
-
-      // Run the form's validation.
-      const formData = getFormValues(fields);
-      if (onValidate) {
-        const formErrors = await onValidate(formData);
-        const hasFormErrors = this.updateErrors(formErrors);
-
-        if (hasFormErrors) {
-          return false;
+        let errors: FormErrors;
+        try {
+          errors = await result;
+        } catch (err) {
+          // TODO
+          errors = { form: 'Error during validation' };
+        } finally {
+          ReactDOM.unstable_batchedUpdates(() => {
+            this.setState(updateFormErrors(errors));
+            this.setState(
+              updateFormStatus('isValidating', false),
+              this.submitForm
+            );
+          });
         }
-      } else {
-        this.setState({ isValidating: false });
+        return;
       }
-
-      // Run the form's submission.
-      const submitErrors = await onSubmit(formData);
-      const hasSubmitErrors = this.updateErrors(submitErrors);
-
-      return hasSubmitErrors;
+      this.setState(updateFormErrors(result), this.submitForm);
     };
 
     /**
@@ -222,6 +187,9 @@ function formFactory(Provider: ContextProvider) {
       const { initialValues, onReset } = this.props;
 
       this.setState({
+        error: null,
+        isValidating: false,
+        isSubmitting: false,
         fields: getInitialValues(initialValues),
       });
 

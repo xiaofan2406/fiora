@@ -64,7 +64,9 @@ interface FormMetaProps {
 */
 
 interface InternalFieldInfo {
-  validator: (value: FieldValue) => Promise<FieldError>;
+  onValidate: FieldProps['onValidate'];
+  beforeValidate: () => void;
+  afterValidate: () => void;
 }
 
 interface InternalFieldState {
