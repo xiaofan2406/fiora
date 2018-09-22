@@ -10,7 +10,7 @@ export const getFormValues = (fields: FormState['fields']) =>
 export const getFieldValue = (fieldName: string, state: FormState) =>
   state.fields[fieldName] ? state.fields[fieldName].value : undefined;
 
-export const getInitialValues = (initialValues?: PlainObject) =>
+export const getInitialValues = (initialValues?: FormValues) =>
   initialValues
     ? Object.keys(initialValues).reduce(
         (reduced, fieldName) => ({

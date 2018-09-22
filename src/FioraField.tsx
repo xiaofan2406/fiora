@@ -19,13 +19,13 @@ class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
     registerField(name, { validator: this.validator });
   }
 
-  updateValue = (newValue: any) => {
+  updateValue = (newValue: FieldValue) => {
     const { updateValue, name } = this.props;
 
     updateValue(name, newValue);
   };
 
-  validator = async (value: any) => {
+  validator = async (value: FieldValue) => {
     const { onValidate } = this.props;
     if (onValidate) {
       try {

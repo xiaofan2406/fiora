@@ -1,7 +1,7 @@
 import * as React from 'react';
 import FioraField from './FioraField';
 
-const fieldFactory = (Consumer: ContextConsumer) => {
+function fieldFactory(Consumer: ContextConsumer) {
   const Field: React.SFC<FieldProps> = ({ name, onValidate, children }) => (
     <Consumer>
       {({ fields, registerField, updateValue, validateField }) => (
@@ -19,6 +19,6 @@ const fieldFactory = (Consumer: ContextConsumer) => {
     </Consumer>
   );
   return Field;
-};
+}
 
 export default fieldFactory;

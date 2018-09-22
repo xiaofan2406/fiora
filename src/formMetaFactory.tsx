@@ -1,7 +1,7 @@
 import * as React from 'react';
 import FioraFormMeta from './FioraFormMeta';
 
-export default (Consumer: ContextConsumer) => {
+function formMetaFactory(Consumer: ContextConsumer) {
   const FormMeta: React.SFC<FormMetaProps> = ({ children }) => (
     <Consumer>
       {({ fields, error, isValidating, isSubmitting }) => (
@@ -18,4 +18,6 @@ export default (Consumer: ContextConsumer) => {
     </Consumer>
   );
   return FormMeta;
-};
+}
+
+export default formMetaFactory;

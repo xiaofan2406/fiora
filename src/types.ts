@@ -1,57 +1,70 @@
-type Mixed = string | number | {} | null | undefined;
-type PlainObject = { [key: string]: Mixed };
-
-type ErrorObject = PlainObject | null | undefined;
+type FieldValue = any;
+type FieldError = any;
+type FormValues = Record<string, FieldValue>;
+type FormErrors = Record<string, FieldError> | null | undefined;
 
 /**
- * Props passed in by users on the Form
+ * From props. Supports all HTML form attributes
  */
-type FormProps = {
+interface FormProps {
+  initialValues?: FormValues;
+
   children: React.ReactNode;
 
-  onSubmit: (formData: PlainObject) => ErrorObject | Promise<ErrorObject>;
+  onSubmit?: (formValues: FormValues) => FormErrors | Promise<FormErrors>;
 
   onReset?: () => void;
 
-  onValidate?: (formData: PlainObject) => ErrorObject | Promise<ErrorObject>;
+  onValidate?: (formValues: FormValues) => FormErrors | Promise<FormErrors>;
+}
 
-  initialValues?: PlainObject;
-}; // support all HTML form attributes
-
+/**
+ * Field children render props.
+ */
 type FieldRenderProps = {
-  value: any;
-  error: any;
+  value: FieldValue;
+  error: FieldError;
   isTouched: boolean;
   isValidating: boolean;
-  updateValue: (newValue: any) => void;
+  updateValue: (newValue: FieldValue) => void;
   validate: () => void;
 };
 
 /**
- * Props passed in by users on the Field
+ * Field props.
  */
 interface FieldProps {
   name: string;
-  onValidate?: (value: any) => any | Promise<any>;
+  onValidate?: (value: FieldValue) => FieldError | Promise<FieldError>;
   children: (props: FieldRenderProps) => React.ReactNode;
 }
 
+/**
+ * FormMeta children render props.
+ */
 type FormMetaRenderProps = {
-  error: any;
+  error: FieldError;
   isValidating: boolean;
   isSubmitting: boolean;
   isTouched: boolean;
   isValid: boolean;
 };
 
-type FormMetaProps = {
+/**
+ * FormMeta props.
+ */
+interface FormMetaProps {
   children: (props: FormMetaRenderProps) => React.ReactNode;
-};
+}
 
-// =================== Internal =============
+/*
+  ================================================
+  =================== Internal ===================
+  ================================================
+*/
 
 type InternalFieldInfo = {
-  validator: (value: any) => Promise<any>;
+  validator: (value: FieldValue) => Promise<FieldError>;
 };
 
 type InternalFieldState = {
@@ -64,9 +77,9 @@ type FormState = {
   error: FormMetaRenderProps['error'];
   isValidating: FormMetaRenderProps['isValidating'];
   isSubmitting: FormMetaRenderProps['isSubmitting'];
-  fields: { [key: string]: InternalFieldState };
+  fields: Record<string, InternalFieldState>;
   registerField: (fieldName: string, info: InternalFieldInfo) => void;
-  updateValue: (fieldName: string, value: any) => void;
+  updateValue: (fieldName: string, value: FieldValue) => void;
   validateField: (fieldName: string) => void;
 };
 

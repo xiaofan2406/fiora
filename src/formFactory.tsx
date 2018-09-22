@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { getFormValues, getFieldValue, getInitialValues } from './helpers';
 
-const formFactory = (Provider: ContextProvider) =>
-  class Form extends React.Component<FormProps, FormState> {
+function formFactory(Provider: ContextProvider) {
+  return class Form extends React.Component<FormProps, FormState> {
     // Keep tracks of what fields are mounted in the Form.
     // This is the source of truth for field names that belongs to the form.
     // At the moment, only contains `validator` function.
-    fieldsInfo: { [key: string]: InternalFieldInfo } = {};
+    fieldsInfo: Record<string, InternalFieldInfo> = {};
 
     /**
      * Register the mounted field in the Form.
      * @param {string} fieldName The name of the field.
-     * @param {Object} info The info to replace
+     * @param {InternalFieldInfo} info The info to replace
      */
     registerField = (fieldName: string, info: InternalFieldInfo) => {
       if (!this.fieldsInfo[fieldName]) {
@@ -24,7 +24,7 @@ const formFactory = (Provider: ContextProvider) =>
      * @param {string} fieldName The name of the field.
      * @param {any} value The new value for the field.
      */
-    updateValue = (fieldName: string, value: any) => {
+    updateValue = (fieldName: string, value: FieldValue) => {
       this.setState(
         prevState =>
           !prevState.fields[fieldName] ||
@@ -87,10 +87,10 @@ const formFactory = (Provider: ContextProvider) =>
     /**
      * A helper function to update errors to the state.
      * Any falsy value of the error will be ignored.
-     * @param {Object} errors An object with key being the field name and value being the error.
+     * @param {FormErrors} errors
      * @returns {boolean} Representing if there were any error set in the state.
      */
-    _updateErrors = (errors: ErrorObject) => {
+    _updateErrors = (errors: FormErrors) => {
       let hasErrors = false;
       const errorObj = errors || {};
 
@@ -157,6 +157,8 @@ const formFactory = (Provider: ContextProvider) =>
       event.preventDefault();
       const { onSubmit, onValidate } = this.props;
       const { fields } = this.state;
+
+      if (!onSubmit) return;
 
       this.setState({ isSubmitting: true, isValidating: true });
 
@@ -254,5 +256,6 @@ const formFactory = (Provider: ContextProvider) =>
       );
     }
   };
+}
 
 export default formFactory;

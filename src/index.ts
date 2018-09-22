@@ -3,7 +3,7 @@ import createForm from './formFactory';
 import createField from './fieldFactory';
 import createFormMeta from './formMetaFactory';
 
-const createFiora = () => {
+function createFiora() {
   const { Provider, Consumer } = React.createContext({} as FormState);
 
   return {
@@ -11,6 +11,6 @@ const createFiora = () => {
     Field: createField(Consumer),
     FormMeta: createFormMeta(Consumer),
   };
-};
+}
 
 export default createFiora;

@@ -1,107 +1,72 @@
 import * as React from 'react';
 
-export type Mixed = string | number | {} | null | undefined;
-export type PlainObject = { [key: string]: Mixed };
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-export type ErrorObject = PlainObject | null | undefined;
+type NativeFormProps = Omit<
+  React.FormHTMLAttributes<HTMLFormElement>,
+  'children' | 'onSubmit'
+>;
+
+type FieldValue = any;
+type FieldError = any;
+type FormValues = Record<string, FieldValue>;
+type FormErrors = Record<string, FieldError> | null | undefined;
 
 /**
- * Props passed in by users on the Form
+ * From props. Supports all HTML form attributes
  */
-export type FormProps = {
+export interface FormProps extends NativeFormProps {
+  initialValues?: FormValues;
+
   children: React.ReactNode;
 
-  onSubmit: (formData: PlainObject) => ErrorObject | Promise<ErrorObject>;
+  onSubmit?: (formValues: FormValues) => FormErrors | Promise<FormErrors>;
 
   onReset?: () => void;
 
-  onValidate?: (formData: PlainObject) => ErrorObject | Promise<ErrorObject>;
+  onValidate?: (formValues: FormValues) => FormErrors | Promise<FormErrors>;
+}
 
-  initialValues?: PlainObject;
-}; // support all HTML form attributes
-
+/**
+ * Field children render props.
+ */
 export type FieldRenderProps = {
-  value: any;
-  error: any;
+  value: FieldValue;
+  error: FieldError;
   isTouched: boolean;
   isValidating: boolean;
-  updateValue: (newValue: any) => void;
+  updateValue: (newValue: FieldValue) => void;
   validate: () => void;
 };
 
 /**
- * Props passed in by users on the Field
+ * Field props.
  */
 export interface FieldProps {
   name: string;
-  onValidate?: (value: any) => any | Promise<any>;
+  onValidate?: (value: FieldValue) => FieldError | Promise<FieldError>;
   children: (props: FieldRenderProps) => React.ReactNode;
 }
 
+/**
+ * FormMeta children render props.
+ */
 export type FormMetaRenderProps = {
-  error: any;
+  error: FieldError;
   isValidating: boolean;
   isSubmitting: boolean;
   isTouched: boolean;
   isValid: boolean;
 };
 
-export type FormMetaProps = {
+/**
+ * FormMeta props.
+ */
+export interface FormMetaProps {
   children: (props: FormMetaRenderProps) => React.ReactNode;
-};
+}
 
-// =================== Internal =============
-
-export type InternalFieldInfo = {
-  validator: (value: any) => Promise<any>;
-};
-
-export type InternalFieldState = {
-  value: FieldRenderProps['value'];
-  error: FieldRenderProps['error'];
-  isTouched: FieldRenderProps['isTouched'];
-};
-
-export type ContextProvider = React.ComponentType<
-  React.ProviderProps<FormState>
->;
-
-// export type ContextConsumer = React.ComponentType<
-//   React.ConsumerProps<FormState>
-// >;
-
-export type ContextConsumer = string;
-
-export type FormState = {
-  error: FormMetaRenderProps['error'];
-  isValidating: FormMetaRenderProps['isValidating'];
-  isSubmitting: FormMetaRenderProps['isSubmitting'];
-  fields: { [key: string]: InternalFieldState };
-  registerField: (fieldName: string, info: InternalFieldInfo) => void;
-  updateValue: (fieldName: string, value: any) => void;
-  validateField: (fieldName: string) => void;
-};
-
-export type FioraFieldProps = FieldProps & {
-  updateValue: FormState['updateValue'];
-  registerField: FormState['registerField'];
-  validateField: FormState['validateField'];
-} & InternalFieldState;
-
-export type FioraFieldState = {
-  isValidating: FieldRenderProps['isValidating'];
-};
-
-export type FioraFormMetaProps = {
-  children: FormMetaProps['children'];
-  error: FormMetaRenderProps['error'];
-  isValidating: FormMetaRenderProps['isValidating'];
-  isSubmitting: FormMetaRenderProps['isSubmitting'];
-  isTouched: FormMetaRenderProps['isTouched'];
-  isValid: FormMetaRenderProps['isValid'];
-};
-
-export const createFiora: () => {
+export function createFiora(): {
   Form: React.ComponentClass<FormProps>;
   Field: React.StatelessComponent<FieldProps>;
   FormMeta: React.StatelessComponent<FormMetaProps>;
