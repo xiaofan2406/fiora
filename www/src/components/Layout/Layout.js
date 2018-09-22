@@ -4,47 +4,66 @@ import { StaticQuery, graphql } from 'gatsby';
 import { css } from 'react-emotion';
 import { MDXProvider } from '@mdx-js/tag';
 
-import Meta from './Meta';
+import SiteMeta from './SiteMeta';
+import Header from './Header';
 import Sidebar from './Sidebar';
 import PreComponent from './PreComponent';
-
-const cssLayout = css``;
-
-const cssMain = css`
-  margin-left: 240px;
-`;
-
-const cssMainSection = css`
-  margin: auto;
-  width: 1020px;
-  padding: 36px 72px 72px 72px;
-`;
+import { cssPageWidth, headerHeight, sidebarWidth } from '../../styles';
 
 function Layout({ children }) {
   return (
     <StaticQuery
       query={graphql`
-        query SiteMetaQuery {
+        query SiteTitleQuery {
           site {
             siteMetadata {
               title
-              description
-              keywords
             }
           }
         }
       `}
     >
-      {({ site }) => (
+      {({ site: { siteMetadata } }) => (
         <>
-          <Meta metadata={site.siteMetadata} />
-          <div className={cssLayout}>
-            <Sidebar siteTitle={site.siteMetadata.title} />
-            <main className={cssMain}>
-              <MDXProvider components={{ pre: PreComponent }}>
-                <section className={cssMainSection}>{children}</section>
-              </MDXProvider>
-            </main>
+          <SiteMeta {...siteMetadata} />
+          <div
+            className={css`
+              min-height: calc(100vh - 18px);
+              min-width: 480px;
+              display: flex;
+              flex-direction: column;
+            `}
+          >
+            <Header title={siteMetadata.title} />
+            <div
+              className={css`
+                ${cssPageWidth};
+                margin: ${headerHeight}px 0 0 ${sidebarWidth}px;
+                flex: 1;
+                display: flex;
+              `}
+            >
+              <Sidebar />
+              <section
+                className={css`
+                  flex: 1;
+                  padding: 24px;
+                `}
+              >
+                <main
+                  className={css`
+                    width: 960px;
+                    min-width: 960px;
+                    margin: auto;
+                  `}
+                >
+                  <MDXProvider components={{ pre: PreComponent }}>
+                    {/* remove the extra div wrapping */}
+                    <>{children.props.children}</>
+                  </MDXProvider>
+                </main>
+              </section>
+            </div>
           </div>
         </>
       )}

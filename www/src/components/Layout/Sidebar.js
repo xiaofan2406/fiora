@@ -1,68 +1,68 @@
 import React from 'react';
 import { Link } from 'gatsby';
-import PropTypes from 'prop-types';
 import { css } from 'react-emotion';
+import { sidebarWidth, textColor, themeColor } from '../../styles';
 
-const cssSidebar = css`
-  position: fixed;
-  left: 0;
-  width: 240px;
-  height: 100vh;
-  background: #f04242;
-  display: flex;
-  flex-direction: column;
-`;
-
-const cssNav = css`
-  flex: 1;
-`;
-
-const cssTitle = css`
-  margin-top: 12px;
-  font-size: 54px;
-  color: #fff;
-  text-align: center;
-  cursor: default;
-`;
-
-const cssLink = css`
-  color: #fff;
-  display: block;
+export const cssNavLink = css`
   font-size: 18px;
-  font-weight: 200;
-  padding: 4px 24px;
   text-decoration: none;
+  margin: 6px 0;
+  padding: 6px 24px;
+  color: ${textColor};
+  position: relative;
+
   &:hover {
-    background-color: rgba(255, 255, 255, 0.24);
+    color: ${themeColor};
+    border-right: 4px solid ${themeColor};
   }
 `;
 
-const activeLinkStyle = {
-  backgroundColor: ' rgba(255, 255, 255, 0.24)',
-};
+export const cssActiveNavLink = css`
+  color: ${themeColor};
+  border-right: 4px solid ${themeColor};
+`;
 
-function Sidebar({ siteTitle }) {
+function Sidebar() {
   return (
-    <div className={cssSidebar}>
-      <div className={cssNav}>
-        <h1 className={cssTitle}>{siteTitle}</h1>
-        <Link to="/" className={cssLink} activeStyle={activeLinkStyle}>
-          Get Started
+    <aside
+      className={css`
+        min-width: ${sidebarWidth}px;
+        width: ${sidebarWidth}px;
+        position: fixed;
+        left: 0;
+        height: 100%;
+        background-color: #f8f8f8;
+        border-right: 1px solid #e8e8e8;
+      `}
+    >
+      <nav
+        className={css`
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          margin-top: 12px;
+        `}
+      >
+        <Link to="/" className={cssNavLink} activeClassName={cssActiveNavLink}>
+          Home
         </Link>
-        <Link to="/tutorial" className={cssLink} activeStyle={activeLinkStyle}>
-          Tutorial
+        <Link
+          to="/mdx"
+          className={cssNavLink}
+          activeClassName={cssActiveNavLink}
+        >
+          MDX
         </Link>
-        <Link to="/api" className={cssLink} activeStyle={activeLinkStyle}>
-          API
+        <Link
+          to="/react-live"
+          className={cssNavLink}
+          activeClassName={cssActiveNavLink}
+        >
+          React Live
         </Link>
-      </div>
-      <div>footer</div>
-    </div>
+      </nav>
+    </aside>
   );
 }
-
-Sidebar.propTypes = {
-  siteTitle: PropTypes.string.isRequired,
-};
 
 export default Sidebar;

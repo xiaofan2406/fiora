@@ -1,0 +1,1072 @@
+{
+  "nodes": {
+    "SitePage /dev-404-page/": {
+      "jsonName": "dev-404-page-5f9",
+      "internalComponentName": "ComponentDev404Page",
+      "path": "/dev-404-page/",
+      "component": "/home/xiaofan/dev/fiora/www/.cache/dev-404-page.js",
+      "componentChunkName": "component---cache-dev-404-page-js",
+      "context": {},
+      "pluginCreator___NODE": "Plugin dev-404-page",
+      "pluginCreatorId": "Plugin dev-404-page",
+      "componentPath": "/home/xiaofan/dev/fiora/www/.cache/dev-404-page.js",
+      "id": "SitePage /dev-404-page/",
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "type": "SitePage",
+        "contentDigest": "eef32435231ff08e21ede96817964f29",
+        "description": "Plugin dev-404-page",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "Plugin dev-404-page": {
+      "resolve": "/home/xiaofan/dev/fiora/www/node_modules/gatsby/dist/internal-plugins/dev-404-page",
+      "id": "Plugin dev-404-page",
+      "name": "dev-404-page",
+      "version": "1.0.0",
+      "pluginOptions": {
+        "plugins": []
+      },
+      "nodeAPIs": ["createPagesStatefully"],
+      "browserAPIs": [],
+      "ssrAPIs": [],
+      "pluginFilepath": "/home/xiaofan/dev/fiora/www/node_modules/gatsby/dist/internal-plugins/dev-404-page",
+      "packageJson": {
+        "name": "dev-404-page",
+        "description": "Internal plugin to add a 404 page in development with helpful information",
+        "version": "1.0.0",
+        "main": "index.js",
+        "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+        "license": "MIT",
+        "dependencies": [],
+        "devDependencies": [],
+        "peerDependencies": [],
+        "optionalDependecies": [],
+        "bundledDependecies": []
+      },
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "contentDigest": "d1b926a6f343e93dd5fd15984c093f0e",
+        "type": "SitePlugin",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "Plugin load-babel-config": {
+      "resolve": "/home/xiaofan/dev/fiora/www/node_modules/gatsby/dist/internal-plugins/load-babel-config",
+      "id": "Plugin load-babel-config",
+      "name": "load-babel-config",
+      "version": "1.0.0",
+      "pluginOptions": {
+        "plugins": []
+      },
+      "nodeAPIs": ["onPreBootstrap"],
+      "browserAPIs": [],
+      "ssrAPIs": [],
+      "pluginFilepath": "/home/xiaofan/dev/fiora/www/node_modules/gatsby/dist/internal-plugins/load-babel-config",
+      "packageJson": {
+        "name": "load-babel-config",
+        "description": "Internal plugin that handles loading Babel configs",
+        "version": "1.0.0",
+        "main": "index.js",
+        "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+        "license": "MIT",
+        "dependencies": [],
+        "devDependencies": [],
+        "peerDependencies": [],
+        "optionalDependecies": [],
+        "bundledDependecies": []
+      },
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "contentDigest": "0cfcfc35e7520c76666164e463f26786",
+        "type": "SitePlugin",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "Plugin internal-data-bridge": {
+      "resolve": "/home/xiaofan/dev/fiora/www/node_modules/gatsby/dist/internal-plugins/internal-data-bridge",
+      "id": "Plugin internal-data-bridge",
+      "name": "internal-data-bridge",
+      "version": "1.0.0",
+      "pluginOptions": {
+        "plugins": []
+      },
+      "nodeAPIs": ["sourceNodes", "onCreatePage"],
+      "browserAPIs": [],
+      "ssrAPIs": [],
+      "pluginFilepath": "/home/xiaofan/dev/fiora/www/node_modules/gatsby/dist/internal-plugins/internal-data-bridge",
+      "packageJson": {
+        "name": "internal-data-bridge",
+        "description": "An internal Gatsby plugin which creates data nodes from internal data",
+        "version": "1.0.0",
+        "main": "index.js",
+        "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+        "license": "MIT",
+        "dependencies": [],
+        "devDependencies": [],
+        "peerDependencies": [],
+        "optionalDependecies": [],
+        "bundledDependecies": []
+      },
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "contentDigest": "ac7a4e003c6e98a81d3b1e2c2bc2d2d7",
+        "type": "SitePlugin",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "Plugin prod-404": {
+      "resolve": "/home/xiaofan/dev/fiora/www/node_modules/gatsby/dist/internal-plugins/prod-404",
+      "id": "Plugin prod-404",
+      "name": "prod-404",
+      "version": "1.0.0",
+      "pluginOptions": {
+        "plugins": []
+      },
+      "nodeAPIs": ["onCreatePage"],
+      "browserAPIs": [],
+      "ssrAPIs": [],
+      "pluginFilepath": "/home/xiaofan/dev/fiora/www/node_modules/gatsby/dist/internal-plugins/prod-404",
+      "packageJson": {
+        "name": "prod-404",
+        "description": "Internal plugin to detect various flavors of 404 pages and ensure there's a 404.html path created as well to ensure compatability with static hosts",
+        "version": "1.0.0",
+        "main": "index.js",
+        "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+        "license": "MIT",
+        "dependencies": [],
+        "devDependencies": [],
+        "peerDependencies": [],
+        "optionalDependecies": [],
+        "bundledDependecies": []
+      },
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "contentDigest": "98ad2bfd3d377504ee8e19bc318edabf",
+        "type": "SitePlugin",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "Plugin query-runner": {
+      "resolve": "/home/xiaofan/dev/fiora/www/node_modules/gatsby/dist/internal-plugins/query-runner",
+      "id": "Plugin query-runner",
+      "name": "query-runner",
+      "version": "1.0.0",
+      "pluginOptions": {
+        "plugins": []
+      },
+      "nodeAPIs": ["onCreatePage"],
+      "browserAPIs": [],
+      "ssrAPIs": [],
+      "pluginFilepath": "/home/xiaofan/dev/fiora/www/node_modules/gatsby/dist/internal-plugins/query-runner",
+      "packageJson": {
+        "name": "query-runner",
+        "description": "Internal plugin for running queries",
+        "version": "1.0.0",
+        "main": "index.js",
+        "author": "",
+        "license": "MIT",
+        "dependencies": [],
+        "devDependencies": [],
+        "peerDependencies": [],
+        "optionalDependecies": [],
+        "bundledDependecies": []
+      },
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "contentDigest": "b63142ff8298f0fd8de1c6222ea27c53",
+        "type": "SitePlugin",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "Plugin gatsby-mdx": {
+      "resolve": "/home/xiaofan/dev/fiora/www/node_modules/gatsby-mdx",
+      "id": "Plugin gatsby-mdx",
+      "name": "gatsby-mdx",
+      "version": "0.1.3",
+      "pluginOptions": {
+        "plugins": [],
+        "defaultLayout": "/home/xiaofan/dev/fiora/www/src/components/Layout/index.js"
+      },
+      "nodeAPIs": [
+        "onCreateNode",
+        "setFieldsOnGraphQLNodeType",
+        "onCreatePage",
+        "onCreateWebpackConfig",
+        "resolvableExtensions",
+        "preprocessSource",
+        "onCreateBabelConfig"
+      ],
+      "browserAPIs": [],
+      "ssrAPIs": [],
+      "pluginFilepath": "/home/xiaofan/dev/fiora/www/node_modules/gatsby-mdx",
+      "packageJson": {
+        "name": "gatsby-mdx",
+        "description": "mdx integration for gatsby",
+        "version": "0.1.3",
+        "main": "index.js",
+        "license": "MIT",
+        "dependencies": [
+          {
+            "name": "@babel/plugin-proposal-object-rest-spread",
+            "version": "^7.0.0-beta.54"
+          },
+          {
+            "name": "babel-plugin-pluck-exports",
+            "version": "0.0.1"
+          },
+          {
+            "name": "babel-plugin-pluck-imports",
+            "version": "0.0.1"
+          },
+          {
+            "name": "debug",
+            "version": "^3.1.0"
+          },
+          {
+            "name": "escape-string-regexp",
+            "version": "^1.0.5"
+          },
+          {
+            "name": "fs-extra",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "gray-matter",
+            "version": "^4.0.1"
+          },
+          {
+            "name": "htmltojsx",
+            "version": "^0.3.0"
+          },
+          {
+            "name": "json5",
+            "version": "^1.0.1"
+          },
+          {
+            "name": "lodash",
+            "version": "^4.17.10"
+          },
+          {
+            "name": "mdast-util-to-string",
+            "version": "^1.0.4"
+          },
+          {
+            "name": "mdast-util-toc",
+            "version": "^2.0.1"
+          },
+          {
+            "name": "remark",
+            "version": "^9.0.0"
+          },
+          {
+            "name": "retext",
+            "version": "^5.0.0"
+          },
+          {
+            "name": "strip-markdown",
+            "version": "^3.0.1"
+          },
+          {
+            "name": "underscore.string",
+            "version": "^3.3.4"
+          },
+          {
+            "name": "unist-util-map",
+            "version": "^1.0.4"
+          },
+          {
+            "name": "unist-util-remove",
+            "version": "^1.0.1"
+          },
+          {
+            "name": "unist-util-visit",
+            "version": "^1.4.0"
+          }
+        ],
+        "devDependencies": [
+          {
+            "name": "jest",
+            "version": "^23.4.2"
+          },
+          {
+            "name": "js-combinatorics",
+            "version": "^0.5.3"
+          }
+        ],
+        "peerDependencies": [
+          {
+            "name": "@mdx-js/mdx",
+            "version": "^0.15.0"
+          },
+          {
+            "name": "@mdx-js/tag",
+            "version": "^0.15.0"
+          },
+          {
+            "name": "mdx-deck",
+            "version": "^1.5.7"
+          }
+        ],
+        "optionalDependecies": [],
+        "bundledDependecies": []
+      },
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "contentDigest": "36a649b4887db44ece4df5e6b1485e9e",
+        "type": "SitePlugin",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "Plugin gatsby-plugin-emotion": {
+      "resolve": "/home/xiaofan/dev/fiora/www/node_modules/gatsby-plugin-emotion",
+      "id": "Plugin gatsby-plugin-emotion",
+      "name": "gatsby-plugin-emotion",
+      "version": "2.0.0-rc.1",
+      "pluginOptions": {
+        "plugins": []
+      },
+      "nodeAPIs": ["onCreateBabelConfig"],
+      "browserAPIs": ["onClientEntry"],
+      "ssrAPIs": ["replaceRenderer"],
+      "pluginFilepath": "/home/xiaofan/dev/fiora/www/node_modules/gatsby-plugin-emotion",
+      "packageJson": {
+        "name": "gatsby-plugin-emotion",
+        "description": "Gatsby plugin to add support for Emotion",
+        "version": "2.0.0-rc.1",
+        "main": "index.js",
+        "keywords": ["emotion", "gatsby", "gatsby-plugin"],
+        "author": "Tegan Churchill <churchill.tegan@gmail.com>",
+        "license": "MIT",
+        "dependencies": [
+          {
+            "name": "@babel/runtime",
+            "version": "^7.0.0"
+          }
+        ],
+        "devDependencies": [
+          {
+            "name": "@babel/cli",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "@babel/core",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "cross-env",
+            "version": "^5.1.4"
+          }
+        ],
+        "peerDependencies": [
+          {
+            "name": "emotion",
+            "version": "7 || 8 || 9"
+          },
+          {
+            "name": "emotion-server",
+            "version": "7 || 8 || 9"
+          },
+          {
+            "name": "gatsby",
+            "version": ">2.0.0-alpha"
+          }
+        ],
+        "optionalDependecies": [],
+        "bundledDependecies": []
+      },
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "contentDigest": "485e58f37cc51646593a2b7383696ff9",
+        "type": "SitePlugin",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "Plugin gatsby-plugin-flow": {
+      "resolve": "/home/xiaofan/dev/fiora/www/node_modules/gatsby-plugin-flow",
+      "id": "Plugin gatsby-plugin-flow",
+      "name": "gatsby-plugin-flow",
+      "version": "1.0.1-rc.1",
+      "pluginOptions": {
+        "plugins": []
+      },
+      "nodeAPIs": ["onCreateBabelConfig"],
+      "browserAPIs": [],
+      "ssrAPIs": [],
+      "pluginFilepath": "/home/xiaofan/dev/fiora/www/node_modules/gatsby-plugin-flow",
+      "packageJson": {
+        "name": "gatsby-plugin-flow",
+        "description": "Stub description for gatsby-plugin-flow",
+        "version": "1.0.1-rc.1",
+        "main": "index.js",
+        "keywords": ["gatsby", "gatsby-plugin"],
+        "author": "andrew@gatsbyjs.com",
+        "license": "MIT",
+        "dependencies": [
+          {
+            "name": "@babel/preset-flow",
+            "version": "^7.0.0-rc.1"
+          },
+          {
+            "name": "@babel/runtime",
+            "version": "^7.0.0"
+          }
+        ],
+        "devDependencies": [
+          {
+            "name": "@babel/cli",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "@babel/core",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "cross-env",
+            "version": "^5.0.5"
+          }
+        ],
+        "peerDependencies": [],
+        "optionalDependecies": [],
+        "bundledDependecies": []
+      },
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "contentDigest": "9b3ab967384c04a3a740d1594cc8f00b",
+        "type": "SitePlugin",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "Plugin gatsby-plugin-react-helmet": {
+      "resolve": "/home/xiaofan/dev/fiora/www/node_modules/gatsby-plugin-react-helmet",
+      "id": "Plugin gatsby-plugin-react-helmet",
+      "name": "gatsby-plugin-react-helmet",
+      "version": "3.0.0-rc.1",
+      "pluginOptions": {
+        "plugins": []
+      },
+      "nodeAPIs": [],
+      "browserAPIs": [],
+      "ssrAPIs": ["onRenderBody"],
+      "pluginFilepath": "/home/xiaofan/dev/fiora/www/node_modules/gatsby-plugin-react-helmet",
+      "packageJson": {
+        "name": "gatsby-plugin-react-helmet",
+        "description": "Manage document head data with react-helmet. Provides drop-in server rendering support for Gatsby.",
+        "version": "3.0.0-rc.1",
+        "main": "index.js",
+        "keywords": [
+          "gatsby",
+          "gatsby-plugin",
+          "favicon",
+          "react-helmet",
+          "seo",
+          "document",
+          "head",
+          "title",
+          "meta",
+          "link",
+          "script",
+          "base",
+          "noscript",
+          "style"
+        ],
+        "author": "Kyle Mathews <matthews.kyle@gmail.com>",
+        "license": "MIT",
+        "dependencies": [
+          {
+            "name": "@babel/runtime",
+            "version": "^7.0.0"
+          }
+        ],
+        "devDependencies": [
+          {
+            "name": "@babel/cli",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "@babel/core",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "cross-env",
+            "version": "^5.1.4"
+          }
+        ],
+        "peerDependencies": [
+          {
+            "name": "gatsby",
+            "version": ">2.0.0-alpha"
+          },
+          {
+            "name": "react-helmet",
+            "version": ">=5.1.3"
+          }
+        ],
+        "optionalDependecies": [],
+        "bundledDependecies": []
+      },
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "contentDigest": "48b377920ba6a17158466f9a91c27ae9",
+        "type": "SitePlugin",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "Plugin gatsby-plugin-manifest": {
+      "resolve": "/home/xiaofan/dev/fiora/www/node_modules/gatsby-plugin-manifest",
+      "id": "Plugin gatsby-plugin-manifest",
+      "name": "gatsby-plugin-manifest",
+      "version": "2.0.2-rc.1",
+      "pluginOptions": {
+        "plugins": [],
+        "name": "gatsby-starter-default",
+        "short_name": "starter",
+        "start_url": "/",
+        "background_color": "#f04242",
+        "theme_color": "#f04242",
+        "display": "minimal-ui",
+        "icon": "src/images/gatsby-icon.png"
+      },
+      "nodeAPIs": ["onPostBootstrap"],
+      "browserAPIs": [],
+      "ssrAPIs": ["onRenderBody"],
+      "pluginFilepath": "/home/xiaofan/dev/fiora/www/node_modules/gatsby-plugin-manifest",
+      "packageJson": {
+        "name": "gatsby-plugin-manifest",
+        "description": "Gatsby plugin which adds a manifest.webmanifest to make sites progressive web apps",
+        "version": "2.0.2-rc.1",
+        "main": "index.js",
+        "keywords": [
+          "gatsby",
+          "gatsby-plugin",
+          "favicon",
+          "icons",
+          "manifest.webmanifest",
+          "progressive-web-app",
+          "pwa"
+        ],
+        "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+        "license": "MIT",
+        "dependencies": [
+          {
+            "name": "@babel/runtime",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "bluebird",
+            "version": "^3.5.0"
+          },
+          {
+            "name": "sharp",
+            "version": "^0.20.2"
+          }
+        ],
+        "devDependencies": [
+          {
+            "name": "@babel/cli",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "@babel/core",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "cross-env",
+            "version": "^5.1.4"
+          }
+        ],
+        "peerDependencies": [
+          {
+            "name": "gatsby",
+            "version": ">2.0.0-alpha"
+          }
+        ],
+        "optionalDependecies": [],
+        "bundledDependecies": []
+      },
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "contentDigest": "2721eea4c6e042ccb3775ec4e24d58e0",
+        "type": "SitePlugin",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "Plugin gatsby-plugin-offline": {
+      "resolve": "/home/xiaofan/dev/fiora/www/node_modules/gatsby-plugin-offline",
+      "id": "Plugin gatsby-plugin-offline",
+      "name": "gatsby-plugin-offline",
+      "version": "2.0.0-rc.4",
+      "pluginOptions": {
+        "plugins": []
+      },
+      "nodeAPIs": ["createPages", "onPostBuild"],
+      "browserAPIs": [
+        "registerServiceWorker",
+        "onPrefetchPathname",
+        "onServiceWorkerInstalled"
+      ],
+      "ssrAPIs": [],
+      "pluginFilepath": "/home/xiaofan/dev/fiora/www/node_modules/gatsby-plugin-offline",
+      "packageJson": {
+        "name": "gatsby-plugin-offline",
+        "description": "Gatsby plugin which sets up a site to be able to run offline",
+        "version": "2.0.0-rc.4",
+        "main": "index.js",
+        "keywords": [
+          "gatsby",
+          "gatsby-plugin",
+          "offline",
+          "precache",
+          "service-worker"
+        ],
+        "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+        "license": "MIT",
+        "dependencies": [
+          {
+            "name": "@babel/runtime",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "cheerio",
+            "version": "^1.0.0-rc.2"
+          },
+          {
+            "name": "lodash",
+            "version": "^4.17.10"
+          },
+          {
+            "name": "workbox-build",
+            "version": "^3.4.1"
+          }
+        ],
+        "devDependencies": [
+          {
+            "name": "@babel/cli",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "@babel/core",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "cross-env",
+            "version": "^5.1.4"
+          }
+        ],
+        "peerDependencies": [
+          {
+            "name": "gatsby",
+            "version": ">2.0.0-beta"
+          }
+        ],
+        "optionalDependecies": [],
+        "bundledDependecies": []
+      },
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "contentDigest": "7b3e5585587afc576731778919cabbc2",
+        "type": "SitePlugin",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "Plugin default-site-plugin": {
+      "resolve": "/home/xiaofan/dev/fiora/www",
+      "id": "Plugin default-site-plugin",
+      "name": "default-site-plugin",
+      "version": "20bc812b8f86f4ce10a206197ea1edf5",
+      "pluginOptions": {
+        "plugins": []
+      },
+      "nodeAPIs": [],
+      "browserAPIs": [],
+      "ssrAPIs": [],
+      "pluginFilepath": "/home/xiaofan/dev/fiora/www",
+      "packageJson": {
+        "name": "gatsby-starter-default",
+        "description": "Gatsby default starter",
+        "version": "1.0.0",
+        "keywords": ["gatsby"],
+        "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+        "license": "MIT",
+        "dependencies": [
+          {
+            "name": "@mdx-js/mdx",
+            "version": "^0.15.0"
+          },
+          {
+            "name": "@mdx-js/tag",
+            "version": "^0.15.0"
+          },
+          {
+            "name": "emotion",
+            "version": "^9.2.8"
+          },
+          {
+            "name": "emotion-server",
+            "version": "^9.2.8"
+          },
+          {
+            "name": "fiora",
+            "version": "^1.0.2"
+          },
+          {
+            "name": "gatsby",
+            "version": "^2.0.0-rc.13"
+          },
+          {
+            "name": "gatsby-mdx",
+            "version": "^0.1.3"
+          },
+          {
+            "name": "gatsby-plugin-emotion",
+            "version": "^2.0.0-rc.1"
+          },
+          {
+            "name": "gatsby-plugin-flow",
+            "version": "^1.0.1-rc.1"
+          },
+          {
+            "name": "gatsby-plugin-manifest",
+            "version": "^2.0.2-rc.1"
+          },
+          {
+            "name": "gatsby-plugin-offline",
+            "version": "^2.0.0-rc.4"
+          },
+          {
+            "name": "gatsby-plugin-react-helmet",
+            "version": "^3.0.0-rc.1"
+          },
+          {
+            "name": "react",
+            "version": "^16.5.0"
+          },
+          {
+            "name": "react-dom",
+            "version": "^16.5.0"
+          },
+          {
+            "name": "react-emotion",
+            "version": "^9.2.8"
+          },
+          {
+            "name": "react-helmet",
+            "version": "^5.2.0"
+          },
+          {
+            "name": "react-live",
+            "version": "^1.11.0"
+          }
+        ],
+        "devDependencies": [
+          {
+            "name": "prop-types",
+            "version": "^15.6.2"
+          }
+        ],
+        "peerDependencies": [],
+        "optionalDependecies": [],
+        "bundledDependecies": []
+      },
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "contentDigest": "c812e7e3c0d333e6c11011d8d3c23636",
+        "type": "SitePlugin",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "Plugin gatsby-plugin-page-creator": {
+      "resolve": "/home/xiaofan/dev/fiora/www/node_modules/gatsby-plugin-page-creator",
+      "id": "Plugin gatsby-plugin-page-creator",
+      "name": "gatsby-plugin-page-creator",
+      "version": "2.0.0-rc.1",
+      "pluginOptions": {
+        "plugins": [],
+        "path": "/home/xiaofan/dev/fiora/www/src/pages",
+        "pathCheck": false
+      },
+      "nodeAPIs": ["createPagesStatefully"],
+      "browserAPIs": [],
+      "ssrAPIs": [],
+      "pluginFilepath": "/home/xiaofan/dev/fiora/www/node_modules/gatsby-plugin-page-creator",
+      "packageJson": {
+        "name": "gatsby-plugin-page-creator",
+        "description": "Gatsby plugin that automatically creates pages from React components in specified directories",
+        "version": "2.0.0-rc.1",
+        "main": "index.js",
+        "keywords": ["gatsby", "gatsby-plugin"],
+        "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+        "license": "MIT",
+        "dependencies": [
+          {
+            "name": "@babel/runtime",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "bluebird",
+            "version": "^3.5.0"
+          },
+          {
+            "name": "chokidar",
+            "version": "^1.7.0"
+          },
+          {
+            "name": "fs-exists-cached",
+            "version": "^1.0.0"
+          },
+          {
+            "name": "glob",
+            "version": "^7.1.1"
+          },
+          {
+            "name": "lodash",
+            "version": "^4.17.4"
+          },
+          {
+            "name": "parse-filepath",
+            "version": "^1.0.1"
+          },
+          {
+            "name": "slash",
+            "version": "^1.0.0"
+          }
+        ],
+        "devDependencies": [
+          {
+            "name": "@babel/cli",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "@babel/core",
+            "version": "^7.0.0"
+          },
+          {
+            "name": "cross-env",
+            "version": "^5.0.5"
+          }
+        ],
+        "peerDependencies": [
+          {
+            "name": "gatsby",
+            "version": ">2.0.0-alpha"
+          }
+        ],
+        "optionalDependecies": [],
+        "bundledDependecies": []
+      },
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "contentDigest": "e7d762c8a2407f083690082309738d61",
+        "type": "SitePlugin",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "Site": {
+      "siteMetadata": {
+        "title": "Fiora",
+        "description": "Fiora documentation website",
+        "keywords": ["fiora", "react", "documentation", "forms"]
+      },
+      "port": "8000",
+      "host": "192.168.1.67",
+      "pathPrefix": "",
+      "polyfill": true,
+      "buildTime": "2018-09-21T10:51:52.040Z",
+      "id": "Site",
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "contentDigest": "27ed3736ebf843cbf8f97e53acaf65a8",
+        "type": "Site",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "SitePage /404/": {
+      "jsonName": "404-22d",
+      "internalComponentName": "Component404",
+      "path": "/404/",
+      "component": "/home/xiaofan/dev/fiora/www/src/pages/404.mdx",
+      "componentChunkName": "component---src-pages-404-mdx",
+      "context": {
+        "frontmatter": {}
+      },
+      "pluginCreator___NODE": "Plugin gatsby-mdx",
+      "pluginCreatorId": "Plugin gatsby-mdx",
+      "componentPath": "/home/xiaofan/dev/fiora/www/src/pages/404.mdx",
+      "id": "SitePage /404/",
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "type": "SitePage",
+        "contentDigest": "d01f2f57d811937ab6a20bc6acd9b0a0",
+        "description": "Plugin gatsby-mdx",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "SitePage /api/": {
+      "jsonName": "api-b29",
+      "internalComponentName": "ComponentApi",
+      "path": "/api/",
+      "component": "/home/xiaofan/dev/fiora/www/src/pages/api.mdx",
+      "componentChunkName": "component---src-pages-api-mdx",
+      "context": {
+        "frontmatter": {}
+      },
+      "pluginCreator___NODE": "Plugin gatsby-mdx",
+      "pluginCreatorId": "Plugin gatsby-mdx",
+      "componentPath": "/home/xiaofan/dev/fiora/www/src/pages/api.mdx",
+      "id": "SitePage /api/",
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "type": "SitePage",
+        "contentDigest": "b1b23fb853d79225bc6f468826ea1495",
+        "description": "Plugin gatsby-mdx",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "SitePage /": {
+      "jsonName": "index",
+      "internalComponentName": "ComponentIndex",
+      "path": "/",
+      "component": "/home/xiaofan/dev/fiora/www/src/pages/index.mdx",
+      "componentChunkName": "component---src-pages-index-mdx",
+      "context": {
+        "frontmatter": {}
+      },
+      "pluginCreator___NODE": "Plugin gatsby-mdx",
+      "pluginCreatorId": "Plugin gatsby-mdx",
+      "componentPath": "/home/xiaofan/dev/fiora/www/src/pages/index.mdx",
+      "id": "SitePage /",
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "type": "SitePage",
+        "contentDigest": "cbf512b370ab2c55a076816c7033ba12",
+        "description": "Plugin gatsby-mdx",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "SitePage /tutorial/": {
+      "jsonName": "tutorial-c98",
+      "internalComponentName": "ComponentTutorial",
+      "path": "/tutorial/",
+      "component": "/home/xiaofan/dev/fiora/www/src/pages/tutorial.mdx",
+      "componentChunkName": "component---src-pages-tutorial-mdx",
+      "context": {
+        "frontmatter": {}
+      },
+      "pluginCreator___NODE": "Plugin gatsby-mdx",
+      "pluginCreatorId": "Plugin gatsby-mdx",
+      "componentPath": "/home/xiaofan/dev/fiora/www/src/pages/tutorial.mdx",
+      "id": "SitePage /tutorial/",
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "type": "SitePage",
+        "contentDigest": "b446c9cf645c5a6813d13cef9aac4574",
+        "description": "Plugin gatsby-mdx",
+        "owner": "internal-data-bridge"
+      }
+    },
+    "SitePage /404.html": {
+      "jsonName": "404-html-516",
+      "internalComponentName": "Component404Html",
+      "path": "/404.html",
+      "component": "/home/xiaofan/dev/fiora/www/src/pages/404.mdx",
+      "componentChunkName": "component---src-pages-404-mdx",
+      "context": {
+        "frontmatter": {}
+      },
+      "pluginCreator___NODE": "Plugin gatsby-mdx",
+      "pluginCreatorId": "Plugin gatsby-mdx",
+      "componentPath": "/home/xiaofan/dev/fiora/www/src/pages/404.mdx",
+      "id": "SitePage /404.html",
+      "parent": "SOURCE",
+      "children": [],
+      "internal": {
+        "type": "SitePage",
+        "contentDigest": "97ab0e02d27e127949bd45f6ce314d39",
+        "description": "Plugin gatsby-mdx",
+        "owner": "internal-data-bridge"
+      }
+    }
+  },
+  "status": {
+    "plugins": {},
+    "PLUGINS_HASH": "8153959db8c6b6aed30948fed6049513"
+  },
+  "componentDataDependencies": {
+    "nodes": {
+      "Site": ["sq--src-components-layout-layout-js"]
+    },
+    "connections": {}
+  },
+  "jsonDataPaths": {
+    "sq--src-components-layout-layout-js": 2913518534,
+    "dev-404-page-5f9": "920/path---dev-404-page-5-f-9-fab-NZuapzHg3X9TaN1iIixfv1W23E",
+    "sq--src-components-tutorial-navigation-js": 1246124988,
+    "404-22d": "794/path---404-22-d-bce-YV2xtnt8tPyAY05Un6wm26zkpgI",
+    "index": "864/path---index-6a9-YV2xtnt8tPyAY05Un6wm26zkpgI",
+    "tutorial-c98": "345/path---tutorial-c-98-8d0-YV2xtnt8tPyAY05Un6wm26zkpgI",
+    "tutorial-01-860": "221/path---tutorial-01-860-d31-YV2xtnt8tPyAY05Un6wm26zkpgI",
+    "tutorial-02-9f3": "262/path---tutorial-02-9-f-3-ce2-YV2xtnt8tPyAY05Un6wm26zkpgI",
+    "tutorial-03-6bd": "617/path---tutorial-03-6-bd-674-YV2xtnt8tPyAY05Un6wm26zkpgI",
+    "404-html-516": "408/path---404-html-516-62a-YV2xtnt8tPyAY05Un6wm26zkpgI",
+    "tutorial-01-get-started-cc6": "721/path---tutorial-01-get-started-cc-6-6d1-YV2xtnt8tPyAY05Un6wm26zkpgI",
+    "sq--src-components-with-tutorials-js": 1246124988,
+    "tutorial-01-create-a-form-6fc": "754/path---tutorial-01-create-a-form-6-fc-bca-YV2xtnt8tPyAY05Un6wm26zkpgI",
+    "tutorial-02-add-a-field-d5d": "614/path---tutorial-02-add-a-field-d-5-d-5f3-YV2xtnt8tPyAY05Un6wm26zkpgI",
+    "tutorial-01-create-a-form-e5b": "645/path---tutorial-01-create-a-form-e-5-b-c44-YV2xtnt8tPyAY05Un6wm26zkpgI",
+    "tutorial-02-add-a-field-c8a": "129/path---tutorial-02-add-a-field-c-8-a-824-YV2xtnt8tPyAY05Un6wm26zkpgI",
+    "tutorial-03-placeholder-df9": "197/path---tutorial-03-placeholder-df-9-5d0-YV2xtnt8tPyAY05Un6wm26zkpgI",
+    "api-b29": "294/path---api-b-29-d61-YV2xtnt8tPyAY05Un6wm26zkpgI",
+    "offline-plugin-app-shell-fallback-a30": "520/path---offline-plugin-app-shell-fallback-a-30-c5a-NZuapzHg3X9TaN1iIixfv1W23E"
+  },
+  "components": {
+    "/home/xiaofan/dev/fiora/www/.cache/dev-404-page.js": {
+      "query": "",
+      "componentPath": "/home/xiaofan/dev/fiora/www/.cache/dev-404-page.js"
+    },
+    "/home/xiaofan/dev/fiora/www/src/pages/404.mdx": {
+      "query": "",
+      "componentPath": "/home/xiaofan/dev/fiora/www/src/pages/404.mdx"
+    },
+    "/home/xiaofan/dev/fiora/www/src/pages/api.mdx": {
+      "query": "",
+      "componentPath": "/home/xiaofan/dev/fiora/www/src/pages/api.mdx"
+    },
+    "/home/xiaofan/dev/fiora/www/src/pages/index.mdx": {
+      "query": "",
+      "componentPath": "/home/xiaofan/dev/fiora/www/src/pages/index.mdx"
+    },
+    "/home/xiaofan/dev/fiora/www/src/pages/tutorial.mdx": {
+      "query": "",
+      "componentPath": "/home/xiaofan/dev/fiora/www/src/pages/tutorial.mdx"
+    }
+  },
+  "staticQueryComponents": {
+    "sq--src-components-layout-layout-js": {
+      "name": "SiteMetaQuery",
+      "componentPath": "/home/xiaofan/dev/fiora/www/src/components/Layout/Layout.js",
+      "id": "sq--src-components-layout-layout-js",
+      "jsonName": "sq--src-components-layout-layout-js",
+      "query": "query SiteMetaQuery {\n  site {\n    siteMetadata {\n      title\n      description\n      keywords\n    }\n  }\n}\n",
+      "hash": 2913518534
+    }
+  }
+}

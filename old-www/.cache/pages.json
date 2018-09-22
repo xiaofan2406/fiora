@@ -1,0 +1,32 @@
+[
+  {
+    "componentChunkName": "component---src-pages-index-mdx",
+    "jsonName": "index",
+    "path": "/"
+  },
+  {
+    "componentChunkName": "component---src-pages-404-mdx",
+    "jsonName": "404-html-516",
+    "path": "/404.html"
+  },
+  {
+    "componentChunkName": "component---src-pages-404-mdx",
+    "jsonName": "404-22d",
+    "path": "/404/"
+  },
+  {
+    "componentChunkName": "component---src-pages-api-mdx",
+    "jsonName": "api-b29",
+    "path": "/api/"
+  },
+  {
+    "componentChunkName": "component---cache-dev-404-page-js",
+    "jsonName": "dev-404-page-5f9",
+    "path": "/dev-404-page/"
+  },
+  {
+    "componentChunkName": "component---src-pages-tutorial-mdx",
+    "jsonName": "tutorial-c98",
+    "path": "/tutorial/"
+  }
+]

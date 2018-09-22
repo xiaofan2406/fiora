@@ -1,0 +1,102 @@
+{
+  "develop": {
+    "plugins": [
+      {
+        "name": "@babel/plugin-proposal-object-rest-spread",
+        "options": {}
+      },
+      {
+        "name": "babel-plugin-emotion",
+        "options": {
+          "sourceMap": true,
+          "plugins": []
+        }
+      }
+    ],
+    "presets": [
+      {
+        "name": "@babel/preset-flow",
+        "options": {}
+      }
+    ],
+    "options": {
+      "cacheDirectory": true,
+      "sourceType": "unambiguous"
+    }
+  },
+  "develop-html": {
+    "plugins": [
+      {
+        "name": "@babel/plugin-proposal-object-rest-spread",
+        "options": {}
+      },
+      {
+        "name": "babel-plugin-emotion",
+        "options": {
+          "sourceMap": true,
+          "plugins": []
+        }
+      }
+    ],
+    "presets": [
+      {
+        "name": "@babel/preset-flow",
+        "options": {}
+      }
+    ],
+    "options": {
+      "cacheDirectory": true,
+      "sourceType": "unambiguous"
+    }
+  },
+  "build-html": {
+    "plugins": [
+      {
+        "name": "@babel/plugin-proposal-object-rest-spread",
+        "options": {}
+      },
+      {
+        "name": "babel-plugin-emotion",
+        "options": {
+          "sourceMap": true,
+          "plugins": []
+        }
+      }
+    ],
+    "presets": [
+      {
+        "name": "@babel/preset-flow",
+        "options": {}
+      }
+    ],
+    "options": {
+      "cacheDirectory": true,
+      "sourceType": "unambiguous"
+    }
+  },
+  "build-javascript": {
+    "plugins": [
+      {
+        "name": "@babel/plugin-proposal-object-rest-spread",
+        "options": {}
+      },
+      {
+        "name": "babel-plugin-emotion",
+        "options": {
+          "sourceMap": true,
+          "plugins": []
+        }
+      }
+    ],
+    "presets": [
+      {
+        "name": "@babel/preset-flow",
+        "options": {}
+      }
+    ],
+    "options": {
+      "cacheDirectory": true,
+      "sourceType": "unambiguous"
+    }
+  }
+}

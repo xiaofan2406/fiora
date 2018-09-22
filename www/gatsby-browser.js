@@ -5,6 +5,4 @@
  */
 
 import './src/assets/reset.css';
-
-// react-live will have prismjs as a dependency
 import 'prismjs/themes/prism-solarizedlight.css';
