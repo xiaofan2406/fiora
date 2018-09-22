@@ -2,6 +2,7 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import replace from 'rollup-plugin-replace';
 import commonjs from 'rollup-plugin-commonjs';
+import typescript from 'rollup-plugin-typescript';
 import { terser } from 'rollup-plugin-terser';
 import pkg from './package.json';
 
@@ -15,7 +16,10 @@ if (env !== 'production') {
 
 const commonConfig = {
   input: 'src/index.ts',
-  external: ['react'],
+  external: [
+    ...Object.keys(pkg.dependencies),
+    ...Object.keys(pkg.peerDependencies),
+  ],
   plugins: [
     nodeResolve(),
     babel({
@@ -25,6 +29,7 @@ const commonConfig = {
       'process.env.NODE_ENV': JSON.stringify(env),
     }),
     commonjs(),
+    typescript(),
     terser(),
   ],
 };

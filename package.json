@@ -18,20 +18,21 @@
   "main": "dist/cjs/fiora.js",
   "module": "dist/esm/index.js",
   "browser": "dist/umd/fiora.min.js",
-  "typings": "./index.d.ts",
+  "typings": "./fiora.d.ts",
   "sideEffects": false,
   "scripts": {
-    "precommit": "lint-staged",
-    "lint:eslint": "eslint '**/*.{js,flow}' --ignore-path .gitignore",
-    "lint:prettier": "prettier-check '**/*.{js,json,flow,md}' --ignore-path .gitignore",
-    "lint": "yarn lint:eslint && yarn lint:prettier",
-    "format": "prettier '**/*.{js,json,flow,md}' --write  --ignore-path .gitignore",
     "typecheck": "tsc --noEmit",
+    "precommit": "lint-staged",
+    "lint:tslint": "tslint 'src/**/*.{ts,tsx}' './fiora.d.ts' -c tslint.json",
+    "lint:eslint": "eslint '**/*.js' --ignore-path .gitignore",
+    "lint:prettier": "prettier-check '**/*.{js,json,ts,tsx,md}' --ignore-path .gitignore",
+    "lint": "yarn lint:tslint && yarn lint:eslint && yarn lint:prettier",
+    "format": "prettier '**/*.{js,json,ts,tsx,md}' --write --ignore-path .gitignore",
     "test": "NODE_ENV=test jest --watch --updateSnapshot",
     "coverage": "NODE_ENV=test jest --coverage",
     "prebuild": "rm -rf dist",
     "build:cjs": "NODE_ENV=production rollup -c",
-    "build:esm": "NODE_ENV=production babel src --out-dir dist/esm --extensions \".ts,.tsx\"",
+    "build:esm": "NODE_ENV=production babel src --out-dir dist/esm --extensions '.ts,.tsx'",
     "build": "yarn build:cjs && yarn build:esm",
     "prepublishOnly": "yarn build",
     "postpublish": "git push && git push --tags",
@@ -41,7 +42,7 @@
     "docs:release": "surge -p ./www/public -d fiora.surge.sh"
   },
   "lint-staged": {
-    "*.{js,json,flow,md}": [
+    "*.{js,json,ts,tsx,md}": [
       "prettier --write",
       "git add"
     ]
@@ -60,13 +61,13 @@
   "peerDependencies": {
     "react": "^16.4.2"
   },
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.1.0",
     "@babel/core": "^7.1.0",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
-    "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.1.0",
     "@types/react": "^16.4.14",
@@ -76,11 +77,9 @@
     "eslint": "^5.6.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^3.0.1",
-    "eslint-plugin-flowtype": "^2.50.1",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.1",
-    "flow-bin": "^0.81.0",
     "husky": "^0.14.3",
     "jest": "^23.6.0",
     "jest-dom": "^1.12.1",
@@ -96,8 +95,10 @@
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-terser": "^3.0.0",
+    "rollup-plugin-typescript": "^1.0.0",
     "surge": "^0.20.1",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.3"
-  },
-  "dependencies": {}
+  }
 }

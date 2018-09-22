@@ -14,8 +14,8 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['react', 'flowtype'],
-  extends: ['plugin:flowtype/recommended', 'airbnb', 'prettier'],
+  plugins: ['react'],
+  extends: ['airbnb', 'prettier'],
   rules: {
     'no-console': 0,
     'global-require': 0,
@@ -28,11 +28,11 @@ module.exports = {
     'react/sort-comp': 0,
     'react/jsx-filename-extension': 0, // enforce all .js extension
     'react/prefer-stateless-function': 0,
-    'react/require-default-props': 0, // conflict flows takes care of it
+    'react/require-default-props': 0, // allow undefined as prop value
     'react/jsx-one-expression-per-line': 0, // prettier takes care of it
     'react/jsx-wrap-multilines': 0, // prettier takes care of it
     'react/destructuring-assignment': 0, // cannot init state with props
-    'react/forbid-prop-types': 0,
+    'react/forbid-prop-types': 0, // allow object, array PropTypes
     'react/button-has-type': [
       2,
       {
@@ -41,6 +41,5 @@ module.exports = {
         reset: true,
       },
     ],
-    'flowtype/space-after-type-colon': 0,
   },
 };

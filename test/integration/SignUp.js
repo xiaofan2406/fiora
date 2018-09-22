@@ -1,11 +1,10 @@
-/* @flow */
 import * as React from 'react';
 
-import createFiora from '../../src';
+import createFiora from '../../src/index.ts';
 
 const { Form, Field } = createFiora();
 
-export const usernameValidation = (username: string) => {
+export const usernameValidation = username => {
   if (!username) {
     return 'Username is required';
   }
@@ -15,7 +14,7 @@ export const usernameValidation = (username: string) => {
   return null;
 };
 
-export const passwordValidation = (password: string) => {
+export const passwordValidation = password => {
   if (!password) {
     return 'Password is required';
   }
@@ -25,9 +24,7 @@ export const passwordValidation = (password: string) => {
   return null;
 };
 
-export const passwordRepeatValidation = (password: string) => (
-  passwordRepeat: string
-) => {
+export const passwordRepeatValidation = password => passwordRepeat => {
   const baseError = passwordValidation(passwordRepeat);
 
   if (baseError) return baseError;
@@ -39,7 +36,7 @@ export const passwordRepeatValidation = (password: string) => (
   return null;
 };
 
-const delay = (ms: number): Promise<void> =>
+const delay = ms =>
   new Promise(resolve => {
     setTimeout(resolve, ms);
   });
@@ -63,12 +60,12 @@ export const signUpReset = () => {
   console.log('reset');
 };
 
-class SignUp extends React.Component<{}, { success: boolean }> {
+class SignUp extends React.Component {
   state = {
     success: false,
   };
 
-  handleSubmit = async (data: { username: string, password: string }) => {
+  handleSubmit = async data => {
     const res = await signUpRequest(data);
     if (res.status === 200) {
       this.setState({ success: true });
@@ -78,7 +75,7 @@ class SignUp extends React.Component<{}, { success: boolean }> {
     return res.errors;
   };
 
-  validate = (data: { username: string, password: string }) =>
+  validate = data =>
     data.username === data.password
       ? { form: 'Password should not be similar to username' }
       : null;

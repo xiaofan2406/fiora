@@ -1,6 +1,6 @@
 import * as React from 'react';
-import createForm from './formFactory';
 import createField from './fieldFactory';
+import createForm from './formFactory';
 import createFormMeta from './formMetaFactory';
 
 function createFiora() {

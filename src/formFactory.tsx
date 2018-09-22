@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getFormValues, getFieldValue, getInitialValues } from './helpers';
+import { getFieldValue, getFormValues, getInitialValues } from './helpers';
 
 function formFactory(Provider: ContextProvider) {
   return class Form extends React.Component<FormProps, FormState> {
@@ -90,7 +90,7 @@ function formFactory(Provider: ContextProvider) {
      * @param {FormErrors} errors
      * @returns {boolean} Representing if there were any error set in the state.
      */
-    _updateErrors = (errors: FormErrors) => {
+    updateErrors = (errors: FormErrors) => {
       let hasErrors = false;
       const errorObj = errors || {};
 
@@ -158,7 +158,9 @@ function formFactory(Provider: ContextProvider) {
       const { onSubmit, onValidate } = this.props;
       const { fields } = this.state;
 
-      if (!onSubmit) return;
+      if (!onSubmit) {
+        return;
+      }
 
       this.setState({ isSubmitting: true, isValidating: true });
 
@@ -187,23 +189,27 @@ function formFactory(Provider: ContextProvider) {
         }),
         {}
       );
-      const hasFieldErrors = this._updateErrors(errors);
-      if (hasFieldErrors) return false;
+      const hasFieldErrors = this.updateErrors(errors);
+      if (hasFieldErrors) {
+        return false;
+      }
 
       // Run the form's validation.
       const formData = getFormValues(fields);
       if (onValidate) {
         const formErrors = await onValidate(formData);
-        const hasFormErrors = this._updateErrors(formErrors);
+        const hasFormErrors = this.updateErrors(formErrors);
 
-        if (hasFormErrors) return false;
+        if (hasFormErrors) {
+          return false;
+        }
       } else {
         this.setState({ isValidating: false });
       }
 
       // Run the form's submission.
       const submitErrors = await onSubmit(formData);
-      const hasSubmitErrors = this._updateErrors(submitErrors);
+      const hasSubmitErrors = this.updateErrors(submitErrors);
 
       return hasSubmitErrors;
     };
@@ -219,7 +225,9 @@ function formFactory(Provider: ContextProvider) {
         fields: getInitialValues(initialValues),
       });
 
-      if (onReset) onReset();
+      if (onReset) {
+        onReset();
+      }
     };
 
     state: FormState = {

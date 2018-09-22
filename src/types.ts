@@ -21,14 +21,14 @@ interface FormProps {
 /**
  * Field children render props.
  */
-type FieldRenderProps = {
+interface FieldRenderProps {
   value: FieldValue;
   error: FieldError;
   isTouched: boolean;
   isValidating: boolean;
   updateValue: (newValue: FieldValue) => void;
   validate: () => void;
-};
+}
 
 /**
  * Field props.
@@ -42,13 +42,13 @@ interface FieldProps {
 /**
  * FormMeta children render props.
  */
-type FormMetaRenderProps = {
+interface FormMetaRenderProps {
   error: FieldError;
   isValidating: boolean;
   isSubmitting: boolean;
   isTouched: boolean;
   isValid: boolean;
-};
+}
 
 /**
  * FormMeta props.
@@ -63,17 +63,17 @@ interface FormMetaProps {
   ================================================
 */
 
-type InternalFieldInfo = {
+interface InternalFieldInfo {
   validator: (value: FieldValue) => Promise<FieldError>;
-};
+}
 
-type InternalFieldState = {
+interface InternalFieldState {
   value: FieldRenderProps['value'];
   error: FieldRenderProps['error'];
   isTouched: FieldRenderProps['isTouched'];
-};
+}
 
-type FormState = {
+interface FormState {
   error: FormMetaRenderProps['error'];
   isValidating: FormMetaRenderProps['isValidating'];
   isSubmitting: FormMetaRenderProps['isSubmitting'];
@@ -81,7 +81,7 @@ type FormState = {
   registerField: (fieldName: string, info: InternalFieldInfo) => void;
   updateValue: (fieldName: string, value: FieldValue) => void;
   validateField: (fieldName: string) => void;
-};
+}
 
 type ContextProvider = React.ComponentType<React.ProviderProps<FormState>>;
 
@@ -93,15 +93,15 @@ type FioraFieldProps = FieldProps & {
   validateField: FormState['validateField'];
 } & InternalFieldState;
 
-type FioraFieldState = {
+interface FioraFieldState {
   isValidating: FieldRenderProps['isValidating'];
-};
+}
 
-type FioraFormMetaProps = {
+interface FioraFormMetaProps {
   children: FormMetaProps['children'];
   error: FormMetaRenderProps['error'];
   isValidating: FormMetaRenderProps['isValidating'];
   isSubmitting: FormMetaRenderProps['isSubmitting'];
   isTouched: FormMetaRenderProps['isTouched'];
   isValid: FormMetaRenderProps['isValid'];
-};
+}

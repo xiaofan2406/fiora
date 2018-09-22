@@ -30,14 +30,14 @@ export interface FormProps extends NativeFormProps {
 /**
  * Field children render props.
  */
-export type FieldRenderProps = {
+export interface FieldRenderProps {
   value: FieldValue;
   error: FieldError;
   isTouched: boolean;
   isValidating: boolean;
   updateValue: (newValue: FieldValue) => void;
   validate: () => void;
-};
+}
 
 /**
  * Field props.
@@ -51,13 +51,13 @@ export interface FieldProps {
 /**
  * FormMeta children render props.
  */
-export type FormMetaRenderProps = {
+export interface FormMetaRenderProps {
   error: FieldError;
   isValidating: boolean;
   isSubmitting: boolean;
   isTouched: boolean;
   isValid: boolean;
-};
+}
 
 /**
  * FormMeta props.

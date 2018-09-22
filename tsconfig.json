@@ -3,8 +3,7 @@
     "target": "esnext",
     "module": "commonjs",
     "jsx": "react",
-    "declaration": true,
-    "outDir": "dist",
+    "noEmit": true,
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true

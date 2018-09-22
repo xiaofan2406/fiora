@@ -1,13 +1,13 @@
 module.exports = {
-  collectCoverageFrom: ['src/**/*.{js,mjs}', 'test/**/*.{js,mjs}'],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', 'test/**/*.{ts,tsx}'],
   setupTestFrameworkScriptFile: '<rootDir>/config/jestFrameworkSetup.js',
-  testMatch: ['<rootDir>/test/**/*.spec.{js,mjs}'],
+  testMatch: ['<rootDir>/test/**/*.spec.{ts,tsx,js,mjs}'],
   testEnvironment: 'jsdom',
   testURL: 'http://localhost',
   transform: {
-    '^.+\\.(js|mjs)$': 'babel-jest',
+    '^.+\\.(ts|tsx|js|mjs)$': 'babel-jest',
   },
-  moduleFileExtensions: ['js', 'mjs', 'json'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'mjs', 'json'],
   coverageThreshold: {
     global: {
       branches: 80,
