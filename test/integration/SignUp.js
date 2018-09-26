@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 
-import createFiora from '../../src/index.ts';
+import createFiora from '../../src';
 
 const { Form, Field } = createFiora();
 

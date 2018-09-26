@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
+class FioraField extends React.Component<FioraFieldProps, FioraFieldState> {
   /**
    * Always default value to empty string to avoid React warning.
    * React will warning if a input value changes from undefined to controlled.
@@ -39,13 +39,9 @@ class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
   // }
 
   componentDidMount() {
-    const { name, registerField, onValidate } = this.props;
+    const { name, registerField } = this.props;
 
-    registerField(name, {
-      onValidate,
-      beforeValidate: this.beforeValidate,
-      afterValidate: this.afterValidate,
-    });
+    registerField(name, { validator: this.validator });
   }
 
   updateValue = (newValue: FieldValue) => {
@@ -62,26 +58,28 @@ class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
     this.setState({ isValidating: false });
   };
 
-  // validator = async (value: FieldValue) => {
-  //   const { onValidate } = this.props;
-  //   if (onValidate) {
-  //     const res = onValidate(value);
+  validator = (value: FieldValue) => {
+    const { onValidate } = this.props;
 
-  //     if (res instanceof Promise) {
-  //       this.beforeValidate();
-  //       try {
-  //         const error = await res;
-  //         this.updateError();
-  //       } catch (err) {
-  //         // TODO handle error
-  //         return null;
-  //       } finally {
-  //         this.afterValidate();
-  //       }
-  //     }
-  //     return res;
-  //   }
-  // };
+    if (onValidate) {
+      const result = onValidate(value);
+      if (result instanceof Promise) {
+        this.beforeValidate();
+        return result
+          .then(error => {
+            return error;
+          })
+          .catch(err => {
+            // TODO handle error
+            return `Error during field onValidate: ${JSON.stringify(err)}`;
+          })
+          .finally(() => {
+            this.afterValidate();
+          });
+      }
+      return result;
+    }
+  };
 
   validate = () => {
     const { name, validateField } = this.props;

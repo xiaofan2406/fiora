@@ -32,7 +32,6 @@ npm install fiora
 #### TODO
 
 - tests
-- perf check
 - investigate `action` prop on form
 - `html` mode
 

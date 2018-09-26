@@ -66,32 +66,21 @@ function formFactory(Provider: ContextProvider) {
      * @param {string} fieldName The name of the field.
      */
     validateField = (fieldName: string) => {
-      const { onValidate, beforeValidate, afterValidate } = this.mountedFields[
-        fieldName
-      ];
+      const { validator } = this.mountedFields[fieldName];
 
-      if (onValidate) {
-        this.setState(prevState => {
-          const result = onValidate(getFieldValue(fieldName, prevState));
-          if (result instanceof Promise) {
-            beforeValidate();
-            result
-              .then(error => {
-                this.setState(updateFieldError(fieldName, error));
-              })
-              .catch(err => {
-                // TODO handle error
-                return null;
-              })
-              .finally(() => {
-                afterValidate();
-              });
-            return null;
-          }
+      this.setState(prevState => {
+        const result = validator(getFieldValue(fieldName, prevState));
 
-          return updateFieldError(fieldName, result)(prevState);
-        });
-      }
+        if (result instanceof Promise) {
+          // This promise always resolves
+          result.then(error => {
+            this.setState(updateFieldError(fieldName, error));
+          });
+          return null;
+        }
+
+        return updateFieldError(fieldName, result)(prevState);
+      });
     };
 
     /**
