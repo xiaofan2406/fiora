@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-class FioraField extends React.Component<FioraFieldProps, FioraFieldState> {
+class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
   /**
    * Always default value to empty string to avoid React warning.
    * React will warning if a input value changes from undefined to controlled.

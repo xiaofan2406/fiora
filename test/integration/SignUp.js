@@ -1,95 +1,38 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import createFiora from '../../src';
 
-const { Form, Field } = createFiora();
-
-export const usernameValidation = username => {
-  if (!username) {
-    return 'Username is required';
-  }
-  if (username.length < 5) {
-    return 'Username should be as least 5 characters';
-  }
-  return null;
-};
-
-export const passwordValidation = password => {
-  if (!password) {
-    return 'Password is required';
-  }
-  if (password.length < 6) {
-    return 'Password should be as least 6 characters';
-  }
-  return null;
-};
-
-export const passwordRepeatValidation = password => passwordRepeat => {
-  const baseError = passwordValidation(passwordRepeat);
-
-  if (baseError) return baseError;
-
-  if (passwordRepeat !== password) {
-    return 'Passwords do not match';
-  }
-
-  return null;
-};
-
-const delay = ms =>
-  new Promise(resolve => {
-    setTimeout(resolve, ms);
-  });
-
-const signUpRequest = async ({ username, password }) => {
-  await delay(200);
-  const errors = {};
-  if (username === 'admin') {
-    errors.username = 'Username not allowed';
-  }
-  if (password === 'password') {
-    errors.password = 'Password is insecure';
-  }
-
-  return Object.keys(errors).length > 0
-    ? { status: 400, errors }
-    : { status: 200 };
-};
-
-export const signUpReset = () => {
-  console.log('reset');
-};
+const { Form, Field, FormMeta } = createFiora();
 
 class SignUp extends React.Component {
-  state = {
-    success: false,
+  static propTypes = {
+    usernameValidation: PropTypes.func,
+    passwordValidation: PropTypes.func,
+    passwordRepeatValidation: PropTypes.func,
+    formSubmit: PropTypes.func,
+    formValidate: PropTypes.func,
   };
-
-  handleSubmit = async data => {
-    const res = await signUpRequest(data);
-    if (res.status === 200) {
-      this.setState({ success: true });
-      return null;
-    }
-    console.log(res.errors);
-    return res.errors;
-  };
-
-  validate = data =>
-    data.username === data.password
-      ? { form: 'Password should not be similar to username' }
-      : null;
 
   render() {
-    const { success } = this.state;
+    const {
+      formSubmit,
+      formValidate,
+      usernameValidation,
+      passwordValidation,
+      passwordRepeatValidation,
+    } = this.props;
     return (
       <>
         <Form
-          onSubmit={this.handleSubmit}
-          onReset={signUpReset}
-          onValidate={this.validate}
+          onSubmit={formSubmit}
+          onValidate={formValidate}
           data-testid="signUpForm"
         >
+          <FormMeta>
+            {({ error }) =>
+              error ? <div data-testid="formError">{error}</div> : null
+            }
+          </FormMeta>
           <Field name="username" onValidate={usernameValidation}>
             {({ value, error, isTouched, updateValue, validate }) => (
               <>
@@ -157,7 +100,6 @@ class SignUp extends React.Component {
             Submit
           </button>
         </Form>
-        {success ? <div data-testid="response">Sign up successful!</div> : null}
       </>
     );
   }

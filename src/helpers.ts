@@ -62,52 +62,57 @@ export function updateFieldValue(fieldName: string, value: FieldValue) {
   };
 }
 
-// TODO cleanup
-export function updateFormErrors(errors: FormErrors) {
+export function updateFormErrors(errors: FormErrors, validFields: string[]) {
   return (state: FormState) => {
     if (!errors) {
       return null;
     }
     let hasFormError = false;
-    let partial: Partial<FormState> = {
-      fields: { ...state.fields },
-    };
+    let updates: Partial<FormState> = {};
 
     if (errors.form) {
       hasFormError = true;
-      partial.error = errors.form || null;
+      updates.error = errors.form || null;
     }
 
     let hasFieldError = false;
 
-    const keys = Object.keys(errors).filter(
-      name => name !== 'form'
-    ) as (keyof FormState)[];
+    const names = Object.keys(errors)
+      .filter(name => name !== 'form')
+      .filter(name => validFields.includes(name));
 
-    if (keys.length > 0) {
-      partial = {
-        ...partial,
-        fields: { ...state.fields },
+    if (names.length > 0) {
+      hasFieldError = true;
+
+      updates = {
+        ...updates,
+        fields: {
+          ...state.fields,
+        },
       };
+
+      names.forEach(name => {
+        updates = {
+          ...updates,
+          ...updateFieldError(name, errors[name])(updates as FormState),
+        };
+      });
     }
 
-    keys.forEach(name => {
-      hasFieldError = true;
-      partial.fields![name] = { ...state.fields[name] };
-      // @ts-ignore
-      partial = updateFieldError(name, errors[name])(partial);
-    });
-
     return hasFieldError || hasFormError
-      ? (partial as Pick<FormState, keyof FormState>)
+      ? (updates as Pick<FormState, keyof FormState>)
       : null;
   };
 }
 
-export function updateFormStatus(name: keyof FormState, status: boolean) {
-  return (state: FormState): Pick<FormState, keyof FormState> | null =>
+export function updateFormStatus(
+  name: 'isSubmitting' | 'isValidating',
+  status: boolean
+) {
+  return (state: FormState): Pick<FormState, keyof FormState> | null => {
     // @ts-ignore
-    state[name] !== status ? { [name as keyof FormState]: status } : null;
+    return state[name] !== status ? { [name]: status } : null;
+  };
 }
 
 export function formHasError(state: FormState) {

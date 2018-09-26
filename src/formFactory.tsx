@@ -18,6 +18,8 @@ function formFactory(Provider: ContextProvider) {
     // At the moment, only contains `validator` function.
     mountedFields: Record<string, InternalFieldInfo> = {};
 
+    unmounted = false;
+
     // shouldComponentUpdate(nextProps: FormProps, nextState: FormState) {
     //   (Object.keys(nextProps) as (keyof FormProps)[]).forEach(key => {
     //     if (nextProps[key] !== this.props[key]) {
@@ -74,7 +76,9 @@ function formFactory(Provider: ContextProvider) {
         if (result instanceof Promise) {
           // This promise always resolves
           result.then(error => {
-            this.setState(updateFieldError(fieldName, error));
+            if (!this.unmounted) {
+              this.setState(updateFieldError(fieldName, error));
+            }
           });
           return null;
         }
@@ -88,11 +92,11 @@ function formFactory(Provider: ContextProvider) {
      *             as a result, allow `this.state` directly
      */
     submitForm = async () => {
-      console.log('submitForm');
       const { onSubmit } = this.props;
       if (!onSubmit) {
         return;
       }
+
       const hasError = formHasError(this.state);
       if (hasError) {
         return;
@@ -100,24 +104,31 @@ function formFactory(Provider: ContextProvider) {
 
       const result = onSubmit(getFormValues(this.state));
 
-      if (result instanceof Promise) {
-        this.setState(updateFormStatus('isSubmitting', true));
+      if (!(result instanceof Promise)) {
+        this.setState(
+          updateFormErrors(result, Object.keys(this.mountedFields))
+        );
+        return;
+      }
 
-        let errors: FormErrors;
-        try {
-          errors = await result;
-        } catch (err) {
-          // TODO
-          errors = { form: 'Error during submission' };
-        } finally {
+      this.setState(updateFormStatus('isSubmitting', true));
+
+      let errors: FormErrors;
+      try {
+        errors = await result;
+      } catch (err) {
+        // TODO
+        errors = { form: 'Error during submission' };
+      } finally {
+        if (!this.unmounted) {
           ReactDOM.unstable_batchedUpdates(() => {
-            this.setState(updateFormErrors(errors));
+            this.setState(
+              updateFormErrors(errors, Object.keys(this.mountedFields))
+            );
             this.setState(updateFormStatus('isSubmitting', false));
           });
         }
-        return;
       }
-      this.setState(updateFormErrors(result));
     };
 
     /**
@@ -143,29 +154,42 @@ function formFactory(Provider: ContextProvider) {
         return;
       }
 
+      const hasError = formHasError(this.state);
+      if (hasError) {
+        return;
+      }
+
       const result = onValidate(getFormValues(this.state));
 
-      if (result instanceof Promise) {
-        this.setState(updateFormStatus('isValidating', true));
+      if (!(result instanceof Promise)) {
+        this.setState(
+          updateFormErrors(result, Object.keys(this.mountedFields)),
+          this.submitForm
+        );
+        return;
+      }
 
-        let errors: FormErrors;
-        try {
-          errors = await result;
-        } catch (err) {
-          // TODO
-          errors = { form: 'Error during validation' };
-        } finally {
+      this.setState(updateFormStatus('isValidating', true));
+
+      let errors: FormErrors;
+      try {
+        errors = await result;
+      } catch (err) {
+        // TODO
+        errors = { form: 'Error during validation' };
+      } finally {
+        if (!this.unmounted) {
           ReactDOM.unstable_batchedUpdates(() => {
-            this.setState(updateFormErrors(errors));
+            this.setState(
+              updateFormErrors(errors, Object.keys(this.mountedFields))
+            );
             this.setState(
               updateFormStatus('isValidating', false),
               this.submitForm
             );
           });
         }
-        return;
       }
-      this.setState(updateFormErrors(result), this.submitForm);
     };
 
     /**
@@ -196,6 +220,10 @@ function formFactory(Provider: ContextProvider) {
       registerField: this.registerField,
       validateField: this.validateField,
     };
+
+    componentWillUnmount() {
+      this.unmounted = true;
+    }
 
     render() {
       const {
