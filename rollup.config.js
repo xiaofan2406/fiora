@@ -51,6 +51,7 @@ export default [
       name: 'Fiora',
       globals: {
         react: 'React',
+        'react-dom': 'ReactDOM',
       },
       sourcemap: true,
     },

@@ -22,7 +22,6 @@
   "sideEffects": false,
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "precommit": "lint-staged",
     "lint:tslint": "tslint 'src/**/*.{ts,tsx}' './fiora.d.ts' -c tslint.json",
     "lint:eslint": "eslint '**/*.js' --ignore-path .gitignore",
     "lint:prettier": "prettier-check '**/*.{js,json,ts,tsx,md}' --ignore-path .gitignore",
@@ -40,6 +39,11 @@
     "docs:build": "cd ./www && yarn build",
     "predocs:release": "yarn docs:build",
     "docs:release": "surge -p ./www/public -d fiora.surge.sh"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
     "*.{js,json,ts,tsx,md}": [
@@ -59,7 +63,8 @@
     "Edge >= 15"
   ],
   "peerDependencies": {
-    "react": "^16.4.2"
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
   },
   "dependencies": {},
   "devDependencies": {
@@ -73,7 +78,7 @@
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.8",
     "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "^9.0.0",
+    "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "eslint": "^5.6.0",
     "eslint-config-airbnb": "^17.1.0",
@@ -81,7 +86,7 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.1",
-    "husky": "^0.14.3",
+    "husky": "^1.0.1",
     "jest": "^23.6.0",
     "jest-dom": "^1.12.1",
     "lint-staged": "^7.3.0",
