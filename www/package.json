@@ -1,20 +1,12 @@
 {
-  "name": "gatsby-live-mdx",
-  "description": "Gatsby with react-live and mdx starter",
-  "version": "1.0.0",
-  "author": "Xiaofan Wu <xiaofan2406@gmail.com> (https://github.com/xiaofan2406",
+  "name": "fiora-docs",
+  "description": "Documentation website for fiora",
+  "version": "0.0.0",
+  "author": "Xiaofan Wu <xiaofan2406@gmail.com>",
   "keywords": [
-    "gatsby",
-    "react-live",
-    "mdx"
+    "fiora",
+    "documentation"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/xiaofan2406/gatsby-live-mdx"
-  },
-  "bugs": {
-    "url": "https://github.com/xiaofan2406/gatsby-live-mdx/issues"
-  },
   "engines": {
     "node": ">=8"
   },

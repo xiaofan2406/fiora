@@ -5,7 +5,7 @@ const emotionConfig =
 
 module.exports = {
   siteMetadata: {
-    title: 'gatsby-live-mdx',
+    title: 'Fiora',
   },
   plugins: [
     'gatsby-plugin-react-helmet',
@@ -23,8 +23,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: 'gatsby-live-mdx',
-        short_name: 'starter',
+        name: 'Fiora',
+        short_name: 'fiora',
         start_url: '/',
         background_color: '#663399',
         theme_color: '#663399',
