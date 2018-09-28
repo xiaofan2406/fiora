@@ -20,31 +20,10 @@
   },
   "license": "MIT",
   "scripts": {
-    "lint:eslint": "eslint '**/*.js' --ignore-path .gitignore",
-    "lint:prettier": "prettier-check '**/*.{js,json,css,md}' --ignore-path .gitignore",
-    "lint": "yarn lint:eslint && yarn lint:prettier",
-    "format": "prettier '**/*.{js,json,css,md}' --write  --ignore-path .gitignore",
-    "prebuild": "yarn lint",
     "build": "gatsby build",
     "dev": "gatsby develop",
     "predeploy": "yarn build",
-    "deploy": "surge -p ./public -d gatsby-live-mdx.surge.sh",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,json,css,md}": [
-      "prettier --write",
-      "git add"
-    ]
-  },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "es5"
+    "deploy": "surge -p ./public -d fiora.surge.sh"
   },
   "dependencies": {
     "@mdx-js/mdx": "^0.15.4",
@@ -58,7 +37,6 @@
     "gatsby-plugin-offline": "^2.0.5",
     "gatsby-plugin-react-helmet": "^3.0.0",
     "prismjs": "^1.15.0",
-    "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-emotion": "^9.2.10",
@@ -66,16 +44,7 @@
     "react-live": "^1.11.0"
   },
   "devDependencies": {
-    "eslint": "^5.6.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-prettier": "^3.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-react": "^7.11.1",
-    "husky": "^1.0.1",
-    "lint-staged": "^7.3.0",
-    "prettier": "^1.14.3",
-    "prettier-check": "^2.0.0",
+    "prop-types": "^15.6.2",
     "surge": "^0.20.1"
   }
 }
