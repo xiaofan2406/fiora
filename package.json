@@ -21,7 +21,7 @@
   "typings": "./fiora.d.ts",
   "sideEffects": false,
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "type-check": "tsc --noEmit",
     "lint:tslint": "tslint 'src/**/*.{ts,tsx}' './fiora.d.ts' -c tslint.json",
     "lint:eslint": "eslint '**/*.js' --ignore-path .gitignore",
     "lint:prettier": "prettier-check '**/*.{js,json,ts,tsx,md}' --ignore-path .gitignore",
@@ -29,7 +29,7 @@
     "format": "prettier '**/*.{js,json,ts,tsx,md}' --write --ignore-path .gitignore",
     "test": "NODE_ENV=test jest --watch --updateSnapshot",
     "coverage": "NODE_ENV=test jest --coverage",
-    "prebuild": "rm -rf dist",
+    "prebuild": "yarn type-check && yarn lint && rm -rf dist",
     "build:cjs": "NODE_ENV=production rollup -c",
     "build:esm": "NODE_ENV=production babel src --out-dir dist/esm --extensions '.ts,.tsx'",
     "build": "yarn build:cjs && yarn build:esm",
