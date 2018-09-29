@@ -20,6 +20,7 @@ module.exports = {
       resolve: `gatsby-plugin-emotion`,
       options: emotionConfig,
     },
+    'gatsby-plugin-typescript',
     {
       resolve: `gatsby-plugin-manifest`,
       options: {

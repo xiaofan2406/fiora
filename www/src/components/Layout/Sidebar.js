@@ -47,11 +47,11 @@ function Sidebar() {
           Home
         </Link>
         <Link
-          to="/mdx"
+          to="/tutorial"
           className={cssNavLink}
           activeClassName={cssActiveNavLink}
         >
-          MDX
+          Tutorial
         </Link>
         <Link
           to="/react-live"

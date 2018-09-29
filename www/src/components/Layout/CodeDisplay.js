@@ -45,10 +45,11 @@ const cssError = css`
   padding: 12px;
 `;
 
-function CodeDisplay({ code, showEditor, previewAddon }) {
+function CodeDisplay({ code, scope, showEditor, previewAddon }) {
   return (
     <LiveProvider
       code={code}
+      scope={scope}
       mountStylesheet={false}
       className={cx({ [cssLive]: showEditor })}
     >
@@ -76,6 +77,7 @@ function CodeDisplay({ code, showEditor, previewAddon }) {
 
 CodeDisplay.propTypes = {
   code: PropTypes.string.isRequired,
+  scope: PropTypes.object,
   showEditor: PropTypes.bool,
   previewAddon: PropTypes.node,
 };

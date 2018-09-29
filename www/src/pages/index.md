@@ -1,29 +1,21 @@
 import { Link } from 'gatsby';
-import Editor from '../components/Editor';
 
-# Hi people
+# Fiora
 
-Welcome to your new Gatsby site.
+Fiora aims to help you build forms in React with ease.
 
-This starter kit features:
+## Get Started
 
-- [`react-live`](https://github.com/FormidableLabs/react-live)
-- [`gatsby-mdx`](https://github.com/ChristopherBiscardi/gatsby-mdx)
-- [`prismjs`](https://prismjs.com)
+Install using `yarn`
 
-Ultimately, it allows you to create website with live editing and syntax highlighting quickly.
-
-<Editor>
-
-```jsx
-<div>
-  <span>Start typing here!</span>
-</div>
+```sh
+yarn add fiora
 ```
 
-</Editor>
+or if you prefer `npm`
 
-In addition, it also includes
+```sh
+npm install fiora
+```
 
-- [`react-emotion`](https://emotion.sh/docs/introduction)
-- [`reset.css`](https://github.com/Semantic-Org/Semantic-UI/blob/master/dist/components/reset.css)
+Next, go through the <Link to="/tutorial">tutorial</Link>.
