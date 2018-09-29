@@ -8,7 +8,7 @@ export const getFormValues = (state: FormState) =>
   );
 
 export const getFieldValue = (fieldName: string, state: FormState) =>
-  state.fields[fieldName] ? state.fields[fieldName].value : undefined;
+  state.fields[fieldName] ? state.fields[fieldName].value : '';
 
 export function getInitialValues(initialValues?: FormValues) {
   return initialValues
@@ -120,4 +120,8 @@ export function formHasError(state: FormState) {
     state.error ||
     Object.keys(state.fields).some(fieldName => state.fields[fieldName].error)
   );
+}
+
+export function defaultFormValidation() {
+  return;
 }

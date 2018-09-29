@@ -35,7 +35,7 @@ class SignUp extends React.Component {
           </FormMeta>
           <Field name="username" onValidate={usernameValidation}>
             {({ value, error, isTouched, updateValue, validate }) => (
-              <>
+              <div>
                 <input
                   data-testid="usernameInput"
                   value={value}
@@ -49,7 +49,7 @@ class SignUp extends React.Component {
                     error: {JSON.stringify(error)}
                   </span>
                 ) : null}
-              </>
+              </div>
             )}
           </Field>
           <Field name="password" onValidate={passwordValidation}>
@@ -59,7 +59,7 @@ class SignUp extends React.Component {
                 onValidate={passwordRepeatValidation(password.value)}
               >
                 {passwordRepeat => (
-                  <>
+                  <div>
                     <input
                       data-testid="passwordInput"
                       value={password.value}
@@ -87,7 +87,7 @@ class SignUp extends React.Component {
                         error: {JSON.stringify(passwordRepeat.error)}
                       </span>
                     ) : null}
-                  </>
+                  </div>
                 )}
               </Field>
             )}

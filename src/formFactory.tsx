@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {
+  defaultFormValidation,
   formHasError,
   getFieldValue,
   getFormValues,
@@ -13,6 +14,9 @@ import {
 
 function formFactory(Provider: ContextProvider) {
   return class Form extends React.Component<FormProps, FormState> {
+    static defaultProps = {
+      onValidate: defaultFormValidation,
+    };
     // Keep tracks of what fields are mounted in the Form.
     // This is the source of truth for field names that belongs to the form.
     // At the moment, only contains `validator` function.
@@ -87,6 +91,46 @@ function formFactory(Provider: ContextProvider) {
       });
     };
 
+    validateAllFields = async () => {
+      const errors: FormErrors = {};
+      const asyncValidations: [string, Promise<FieldError>][] = [];
+      let hasAsync = false;
+
+      Object.keys(this.mountedFields).forEach(fieldName => {
+        const { validator } = this.mountedFields[fieldName];
+        const result = validator(getFieldValue(fieldName, this.state));
+
+        if (result instanceof Promise) {
+          hasAsync = true;
+          asyncValidations.push([fieldName, result]);
+        } else {
+          errors[fieldName] = result;
+        }
+      });
+
+      if (hasAsync) {
+        this.setState(updateFormStatus('isValidating', true));
+
+        const results = await Promise.all(
+          asyncValidations.map(entry => entry[1])
+        );
+        asyncValidations.forEach((entry, index) => {
+          errors[entry[0]] = results[index];
+        });
+      }
+
+      ReactDOM.unstable_batchedUpdates(() => {
+        this.setState(
+          updateFormErrors(errors, Object.keys(this.mountedFields))
+        );
+        const hasError = Object.values(errors).some(error => !!error);
+
+        if (hasError) {
+          this.setState(updateFormStatus('isValidating', false));
+        }
+      });
+    };
+
     /**
      * Assumption: this func is triggered only via setState callback.
      *             as a result, allow `this.state` directly
@@ -140,26 +184,32 @@ function formFactory(Provider: ContextProvider) {
      * It will proceed to do the following in the order:
      *    - Check if there is any error currently.
      *    - If there is any error then terminate else continue.
+     *    - Run all the fields' validations
+     *    - If there is any error then terminate else continue.
      *    - Run the form's validation.
      *    - If there is any error then terminate else continue.
      *    - Run the form's submission.
-     *    - If there is any error return false else return true.
      * @param {SyntheticEvent} event The onSubmit event of the HTML form.
      * @returns {boolean} Representing if there were any error.
      */
     handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
       event.preventDefault();
       const { onValidate } = this.props;
-      if (!onValidate) {
-        return;
-      }
 
       const hasError = formHasError(this.state);
       if (hasError) {
         return;
       }
 
-      const result = onValidate(getFormValues(this.state));
+      await this.validateAllFields();
+
+      const hasFieldErrors = formHasError(this.state);
+
+      if (hasFieldErrors) {
+        return;
+      }
+
+      const result = onValidate!(getFormValues(this.state));
 
       if (!(result instanceof Promise)) {
         this.setState(
@@ -234,7 +284,7 @@ function formFactory(Provider: ContextProvider) {
         initialValues,
         ...rest
       } = this.props;
-      console.log('[Form]: render');
+      // console.log('[Form]: render');
 
       return (
         <Provider value={this.state}>

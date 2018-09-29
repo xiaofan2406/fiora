@@ -208,13 +208,13 @@ describe('password repeat input', () => {
   });
 });
 
-describe('submission', () => {
+describe.only('submission', () => {
   beforeEach(() => {
     jest.spyOn(props, 'formValidate');
     jest.spyOn(props, 'formSubmit');
   });
 
-  it('submits successfully when all data are valid', async () => {
+  it.only('submits successfully when all data are valid', async () => {
     const { getByTestId } = render(<SignUp {...props} />);
 
     fireEvent.change(getByTestId('usernameInput'), {
@@ -227,6 +227,8 @@ describe('submission', () => {
       target: { value: '1234567' },
     });
     fireEvent.click(getByTestId('submit'));
+
+    await Promise.resolve();
 
     expect(props.formValidate).toHaveBeenCalledTimes(1);
     expect(props.formSubmit).toHaveBeenCalledTimes(1);

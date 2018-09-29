@@ -32,6 +32,32 @@ describe('updateFormErrors', () => {
     });
   });
 
+  it('can unset error by falsy error values', () => {
+    const state = {
+      fields: {
+        username: { value: 'Admin', error: 'Invalid', isTouched: true },
+        password: { value: 'secure', error: 'Invalid', isTouched: true },
+      },
+    };
+    const errors = {
+      username: null,
+      password: undefined,
+    };
+    const result = updateFormErrors(errors, ['username', 'password'])(state);
+    expect(state).toStrictEqual({
+      fields: {
+        username: { value: 'Admin', error: 'Invalid', isTouched: true },
+        password: { value: 'secure', error: 'Invalid', isTouched: true },
+      },
+    });
+    expect(result).toStrictEqual({
+      fields: {
+        username: { error: null, isTouched: true, value: 'Admin' },
+        password: { error: null, isTouched: true, value: 'secure' },
+      },
+    });
+  });
+
   it('also works with form error', () => {
     const state = {
       fields: {
