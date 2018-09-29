@@ -54,11 +54,11 @@ function Sidebar() {
           Tutorial
         </Link>
         <Link
-          to="/react-live"
+          to="/api-reference"
           className={cssNavLink}
           activeClassName={cssActiveNavLink}
         >
-          React Live
+          API Reference
         </Link>
       </nav>
     </aside>
