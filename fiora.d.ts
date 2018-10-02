@@ -42,7 +42,8 @@ export interface FieldRenderProps {
 /**
  * Field props.
  */
-export interface FieldProps {
+export interface FieldProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   onValidate?: (value: FieldValue) => FieldError | Promise<FieldError>;
   children: (props: FieldRenderProps) => React.ReactNode;

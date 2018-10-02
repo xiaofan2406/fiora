@@ -22,6 +22,7 @@ interface FormProps {
  * Field children render props.
  */
 interface FieldRenderProps {
+  name: string;
   value: FieldValue;
   error: FieldError;
   isTouched: boolean;
@@ -34,7 +35,7 @@ interface FieldRenderProps {
  * Field props.
  */
 interface FieldProps {
-  name: string;
+  name: FieldRenderProps['name'];
   onValidate?: (value: FieldValue) => FieldError | Promise<FieldError>;
   children: (props: FieldRenderProps) => React.ReactNode;
 }
