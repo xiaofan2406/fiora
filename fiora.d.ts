@@ -4,7 +4,7 @@ type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 type NativeFormProps = Omit<
   React.FormHTMLAttributes<HTMLFormElement>,
-  'children' | 'onSubmit'
+  'children' | 'onSubmit' | 'onReset'
 >;
 
 type FieldValue = any;
@@ -22,7 +22,7 @@ export interface FormProps extends NativeFormProps {
 
   onSubmit?: (formValues: FormValues) => FormErrors | Promise<FormErrors>;
 
-  onReset?: () => void;
+  onReset?: (event: React.FormEvent<HTMLFormElement>) => void;
 
   onValidate?: (formValues: FormValues) => FormErrors | Promise<FormErrors>;
 }

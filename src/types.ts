@@ -13,7 +13,7 @@ interface FormProps {
 
   onSubmit?: (formValues: FormValues) => FormErrors | Promise<FormErrors>;
 
-  onReset?: () => void;
+  onReset?: (event: React.FormEvent<HTMLFormElement>) => void;
 
   onValidate?: (formValues: FormValues) => FormErrors | Promise<FormErrors>;
 }

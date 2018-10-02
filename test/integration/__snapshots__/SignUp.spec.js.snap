@@ -4,18 +4,22 @@ exports[`matches snapshot 1`] = `
 <form
   data-testid="signUpForm"
 >
-  <input
-    data-testid="usernameInput"
-    value=""
-  />
-  <input
-    data-testid="passwordInput"
-    value=""
-  />
-  <input
-    data-testid="passwordRepeatInput"
-    value=""
-  />
+  <div>
+    <input
+      data-testid="usernameInput"
+      value=""
+    />
+  </div>
+  <div>
+    <input
+      data-testid="passwordInput"
+      value=""
+    />
+    <input
+      data-testid="passwordRepeatInput"
+      value=""
+    />
+  </div>
   <button
     data-testid="reset"
     type="reset"

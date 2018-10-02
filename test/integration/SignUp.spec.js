@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, wait } from 'react-testing-library';
 import SignUp from './SignUp';
 
-const usernameValidation = username => {
+const usernameValidation = async username => {
   if (!username) {
     return 'Username is required';
   }
@@ -57,10 +57,15 @@ const formValidate = data =>
     ? { form: 'Password should not be similar to username' }
     : null;
 
+const formReset = () => {
+  console.log('reset');
+};
+
 let props;
 
 beforeEach(() => {
   props = {
+    formReset,
     formSubmit,
     formValidate,
     usernameValidation,
@@ -108,16 +113,16 @@ describe('username input', () => {
     const inputEl = getByTestId('usernameInput');
 
     fireEvent.change(inputEl, { target: { value: 'n' } });
-    await wait(() =>
-      expect(queryByTestId('usernameError')).toHaveTextContent(
+    await wait(() => {
+      expect(getByTestId('usernameError')).toHaveTextContent(
         'Username should be as least 5 characters'
-      )
-    );
+      );
+    });
 
     fireEvent.change(inputEl, { target: { value: 'new username' } });
-    await wait(() =>
-      expect(queryByTestId('usernameError')).not.toBeInTheDocument()
-    );
+    await wait(() => {
+      expect(queryByTestId('usernameError')).not.toBeInTheDocument();
+    });
   });
 
   it('shows required error only when input is cleared, but not initially', async () => {
@@ -128,11 +133,11 @@ describe('username input', () => {
 
     fireEvent.change(inputEl, { target: { value: 'fiora2018' } });
     fireEvent.change(inputEl, { target: { value: '' } });
-    await wait(() =>
+    await wait(() => {
       expect(getByTestId('usernameError')).toHaveTextContent(
         'Username is required'
-      )
-    );
+      );
+    });
   });
 });
 
@@ -142,25 +147,25 @@ describe('password input', () => {
     const inputEl = getByTestId('passwordInput');
 
     fireEvent.blur(inputEl);
-    await wait(() =>
+    await wait(() => {
       expect(getByTestId('passwordError')).toHaveTextContent(
         'Password is required'
-      )
-    );
+      );
+    });
 
     fireEvent.change(inputEl, { target: { value: '12345' } });
     fireEvent.blur(inputEl);
-    await wait(() =>
+    await wait(() => {
       expect(getByTestId('passwordError')).toHaveTextContent(
         'Password should be as least 6 characters'
-      )
-    );
+      );
+    });
 
     fireEvent.change(inputEl, { target: { value: '123456789' } });
     fireEvent.blur(inputEl);
-    await wait(() =>
-      expect(queryByTestId('passwordError')).not.toBeInTheDocument()
-    );
+    await wait(() => {
+      expect(queryByTestId('passwordError')).not.toBeInTheDocument();
+    });
   });
 });
 
@@ -170,19 +175,19 @@ describe('password repeat input', () => {
     const inputEl = getByTestId('passwordRepeatInput');
 
     fireEvent.blur(inputEl);
-    await wait(() =>
+    await wait(() => {
       expect(getByTestId('passwordRepeatError')).toHaveTextContent(
         'Password is required'
-      )
-    );
+      );
+    });
 
     fireEvent.change(inputEl, { target: { value: '12345' } });
     fireEvent.blur(inputEl);
-    await wait(() =>
+    await wait(() => {
       expect(getByTestId('passwordRepeatError')).toHaveTextContent(
         'Password should be as least 6 characters'
-      )
-    );
+      );
+    });
   });
 
   it('validates the password repeat against password', async () => {
@@ -194,27 +199,27 @@ describe('password repeat input', () => {
 
     fireEvent.change(inputEl, { target: { value: '123456' } });
     fireEvent.blur(inputEl);
-    await wait(() =>
+    await wait(() => {
       expect(getByTestId('passwordRepeatError')).toHaveTextContent(
         'Passwords do not match'
-      )
-    );
+      );
+    });
 
     fireEvent.change(inputEl, { target: { value: '12345678' } });
     fireEvent.blur(inputEl);
-    await wait(() =>
-      expect(queryByTestId('passwordRepeatError')).not.toBeInTheDocument()
-    );
+    await wait(() => {
+      expect(queryByTestId('passwordRepeatError')).not.toBeInTheDocument();
+    });
   });
 });
 
-describe.only('submission', () => {
+describe('submission', () => {
   beforeEach(() => {
     jest.spyOn(props, 'formValidate');
     jest.spyOn(props, 'formSubmit');
   });
 
-  it.only('submits successfully when all data are valid', async () => {
+  it('submits successfully when all data are valid', async () => {
     const { getByTestId } = render(<SignUp {...props} />);
 
     fireEvent.change(getByTestId('usernameInput'), {
@@ -228,10 +233,10 @@ describe.only('submission', () => {
     });
     fireEvent.click(getByTestId('submit'));
 
-    await Promise.resolve();
-
-    expect(props.formValidate).toHaveBeenCalledTimes(1);
-    expect(props.formSubmit).toHaveBeenCalledTimes(1);
+    await wait(() => {
+      expect(props.formValidate).toHaveBeenCalledTimes(1);
+      expect(props.formSubmit).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('skips submission if the form has error', async () => {
@@ -242,11 +247,11 @@ describe.only('submission', () => {
     });
     fireEvent.click(getByTestId('submit'));
 
-    await wait(() =>
+    await wait(() => {
       expect(queryByTestId('usernameError')).toHaveTextContent(
         'Username should be as least 5 characters'
-      )
-    );
+      );
+    });
     expect(props.formValidate).toHaveBeenCalledTimes(0);
     expect(props.formSubmit).toHaveBeenCalledTimes(0);
   });

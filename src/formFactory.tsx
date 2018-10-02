@@ -49,9 +49,7 @@ function formFactory(Provider: ContextProvider) {
      * @param {InternalFieldInfo} info The info to replace
      */
     registerField = (fieldName: string, info: InternalFieldInfo) => {
-      if (!this.mountedFields[fieldName]) {
-        this.mountedFields[fieldName] = info;
-      }
+      this.mountedFields[fieldName] = info;
     };
 
     /**
@@ -189,10 +187,10 @@ function formFactory(Provider: ContextProvider) {
      *    - Run the form's validation.
      *    - If there is any error then terminate else continue.
      *    - Run the form's submission.
-     * @param {SyntheticEvent} event The onSubmit event of the HTML form.
+     * @param {React.FormEvent} event The onSubmit event of the HTML form.
      * @returns {boolean} Representing if there were any error.
      */
-    handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const { onValidate } = this.props;
 
@@ -246,7 +244,8 @@ function formFactory(Provider: ContextProvider) {
      * Reset the form.
      * It will clear all fields' state and set values to initial values.
      */
-    handleReset = () => {
+    handleReset = (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
       const { initialValues, onReset } = this.props;
 
       this.setState({
@@ -257,7 +256,7 @@ function formFactory(Provider: ContextProvider) {
       });
 
       if (onReset) {
-        onReset();
+        onReset(event);
       }
     };
 
@@ -278,10 +277,10 @@ function formFactory(Provider: ContextProvider) {
     render() {
       const {
         children,
-        onSubmit,
-        onReset,
         onValidate,
         initialValues,
+        onSubmit,
+        onReset,
         ...rest
       } = this.props;
       // console.log('[Form]: render');
