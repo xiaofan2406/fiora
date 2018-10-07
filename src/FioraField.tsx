@@ -9,7 +9,7 @@ class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
     value: '',
   };
 
-  state = {
+  state: FioraFieldState = {
     isValidating: false,
   };
 
@@ -44,21 +44,21 @@ class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
     registerField(name, { validator: this.validator });
   }
 
-  updateValue = (newValue: FieldValue) => {
+  private updateValue = (newValue: FieldValue) => {
     const { updateValue, name } = this.props;
 
     updateValue(name, newValue);
   };
 
-  beforeValidate = () => {
+  private beforeValidate = () => {
     this.setState({ isValidating: true });
   };
 
-  afterValidate = () => {
+  private afterValidate = () => {
     this.setState({ isValidating: false });
   };
 
-  validator = (value: FieldValue) => {
+  private validator = (value: FieldValue) => {
     const { onValidate } = this.props;
 
     if (onValidate) {
@@ -81,7 +81,7 @@ class FioraField extends React.PureComponent<FioraFieldProps, FioraFieldState> {
     }
   };
 
-  validate = () => {
+  private validate = () => {
     const { name, validateField } = this.props;
 
     validateField(name);
