@@ -20,9 +20,9 @@ function formFactory(Provider: ContextProvider) {
     // Keep tracks of what fields are mounted in the Form.
     // This is the source of truth for field names that belongs to the form.
     // At the moment, only contains `validator` function.
-    mountedFields: Record<string, InternalFieldInfo> = {};
+    private mountedFields: Record<string, InternalFieldInfo> = {};
 
-    unmounted = false;
+    private unmounted = false;
 
     // shouldComponentUpdate(nextProps: FormProps, nextState: FormState) {
     //   (Object.keys(nextProps) as (keyof FormProps)[]).forEach(key => {
@@ -48,7 +48,7 @@ function formFactory(Provider: ContextProvider) {
      * @param {string} fieldName The name of the field.
      * @param {InternalFieldInfo} info The info to replace
      */
-    registerField = (fieldName: string, info: InternalFieldInfo) => {
+    private registerField = (fieldName: string, info: InternalFieldInfo) => {
       this.mountedFields[fieldName] = info;
     };
 
@@ -57,7 +57,7 @@ function formFactory(Provider: ContextProvider) {
      * @param {string} fieldName The name of the field.
      * @param {any} value The new value for the field.
      */
-    updateValue = (fieldName: string, value: FieldValue) => {
+    private updateValue = (fieldName: string, value: FieldValue) => {
       this.setState(updateFieldValue(fieldName, value));
     };
 
@@ -69,7 +69,7 @@ function formFactory(Provider: ContextProvider) {
      * where updateValue is called, need to use the functional setState here.
      * @param {string} fieldName The name of the field.
      */
-    validateField = (fieldName: string) => {
+    private validateField = (fieldName: string) => {
       const { validator } = this.mountedFields[fieldName];
 
       this.setState(prevState => {
@@ -89,7 +89,7 @@ function formFactory(Provider: ContextProvider) {
       });
     };
 
-    validateAllFields = async () => {
+    private validateAllFields = async () => {
       const errors: FormErrors = {};
       const asyncValidations: [string, Promise<FieldError>][] = [];
       let hasAsync = false;
@@ -133,7 +133,7 @@ function formFactory(Provider: ContextProvider) {
      * Assumption: this func is triggered only via setState callback.
      *             as a result, allow `this.state` directly
      */
-    submitForm = async () => {
+    private submitForm = async () => {
       const { onSubmit } = this.props;
       if (!onSubmit) {
         return;
@@ -190,7 +190,7 @@ function formFactory(Provider: ContextProvider) {
      * @param {React.FormEvent} event The onSubmit event of the HTML form.
      * @returns {boolean} Representing if there were any error.
      */
-    handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    private handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const { onValidate } = this.props;
 
@@ -244,7 +244,7 @@ function formFactory(Provider: ContextProvider) {
      * Reset the form.
      * It will clear all fields' state and set values to initial values.
      */
-    handleReset = (event: React.FormEvent<HTMLFormElement>) => {
+    private handleReset = (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const { initialValues, onReset } = this.props;
 
