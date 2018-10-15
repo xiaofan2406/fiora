@@ -2,6 +2,7 @@ const env = process.env.NODE_ENV;
 
 const isTest = env === 'test'; // used for testing lib src
 const isProduction = env === 'production'; // used for rollup build
+const cjs = process.env.MODULE === 'cjs';
 
 if (!isTest && !isProduction) {
   throw new Error(
@@ -16,7 +17,7 @@ module.exports = {
       {
         targets: { node: 'current' },
         useBuiltIns: 'usage',
-        modules: isTest ? 'commonjs' : false,
+        modules: cjs || isTest ? 'commonjs' : false,
       },
     ],
     ['@babel/preset-react', { useBuiltIns: true }],
